@@ -1,4 +1,10 @@
-# SSE_Groupwork
+# Presentation
+
+## ...
+
+...
+
+# Research process
 
 ## Initial ideas
 
@@ -32,9 +38,7 @@ Keep track of inventories, health points, ...
 
 Have a GM page with all the info and a player page with only the player's info ?
 
----
-
-Maybe at some point AI chatbot for "generate a quest" or "generate a monster interaction" or something
+(Maybe at some point AI chatbot for "generate a quest" or "generate a monster interaction" or something)
 
 
 
