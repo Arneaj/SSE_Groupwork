@@ -1,9 +1,6 @@
 name: Python CI
 
-on:
-	push:
-		branches:
-			main
+on: [push]
 
 jobs:
 	deploy_to_impaas:
@@ -14,6 +11,6 @@ jobs:
 			- name: ImPaaS-Deploy
 			  uses: /impaas/impaas-deploy@v3 
 		      with:
-			    app-name: name_of_app
-			    deployment-token: ${{ secrets.IMPAAS_DEPLOY_TOKEN }}
-			    method: PLATFORM
+            app-name: sse-coursework1
+            deployment-token: ${{ secrets.IMPAAS_DEPLOY_TOKEN }}
+            method: PLATFORM
