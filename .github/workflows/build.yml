@@ -3,14 +3,14 @@ name: Python CI
 on: [push]
 
 jobs:
-	deploy_to_impaas:
-		runs-on: ubuntu-latest
-		steps:
-			- name: Checkout
-			  uses: actions/checkout@v4
-			- name: ImPaaS-Deploy
-			  uses: /impaas/impaas-deploy@v3 
-		      with:
-            app-name: sse-coursework1
-            deployment-token: ${{ secrets.IMPAAS_DEPLOY_TOKEN }}
-            method: PLATFORM
+  deploy-to-impaas:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+    - name: ImPaaS-Deploy
+      uses: /impaas/impaas-deploy@v3
+      with:
+        app-name: sse-groupwork1
+        deployment-token: ${{ secrets.IMPAAS_DEPLOY_TOKEN }}
+        method: PLATFORM
