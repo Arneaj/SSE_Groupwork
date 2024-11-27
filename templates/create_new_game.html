@@ -23,10 +23,10 @@
             grid-area: header;
             position: sticky;
         }
-        .page-center
+        .page
         {
             grid-area: main;
-            text-align: center;
+            backdrop-filter: blur(4px);
             background-color: rgba(0,0,0, 0.6);
             position: absolute;
             top: 50%;
@@ -49,7 +49,7 @@
                 <h1 class="nav-bar"> D&D GM Board </h1>
             </a>
 
-            <form class="page-center" action="/STARTGAME">
+            <form class="page" action="/STARTGAME">
                 <h1>Create New Game From</h1>
                 <label for="gameName">Enter the name of your new game:</label>
                 <input type="text" name="gameName">

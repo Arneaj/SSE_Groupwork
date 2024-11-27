@@ -9,7 +9,7 @@
         body
         {
             background: url("https://images5.alphacoders.com/890/890333.png") no-repeat center fixed; 
-            background-size: cover;
+            background-size: cover; 
         }
         .container {
             width: 100%;
@@ -25,9 +25,10 @@
             grid-area: header;
             position: sticky;
         }
-        .page-center
+        .page
         {
             grid-area: main;
+            backdrop-filter: blur(4px);
             text-align: center;
             background-color: rgba(0,0,0, 0.6);
             position: absolute;
@@ -37,7 +38,10 @@
             z-index: 2;
             width: 30%;
             border-radius: 25px;
-            padding: 30px;
+            padding: 50px 30px 30px 30px;
+        }
+        .button{
+            font-size: 2rem;
         }
         a:link { text-decoration: none; } 
         a:visited { text-decoration: none; } 
@@ -51,7 +55,7 @@
             <h1 class="nav-bar"> D&D GM Board </h1>
         </a>
 
-        <div class="page-center"> 
+        <div class="page"> 
 
             <a href="/game_creation">
                 <button class="button"> Create new game </button>
