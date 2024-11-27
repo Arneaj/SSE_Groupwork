@@ -2,17 +2,62 @@
 <html>
     <head lang="en">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css">
+        <title>SSE Groupwork</title>
+    <style>
+        body
+        {
+            background: url("https://images5.alphacoders.com/890/890333.png") no-repeat center fixed; 
+            background-size: cover;
+        }
+        .container {
+            height: 100%;
+            width: 100%;
+            display: grid;
+            grid-template-rows: 1fr 9fr;
+            grid-template-areas: 
+              "header";
+              "main";
+        }
+        .nav-bar
+        {
+            grid-area: header;
+            position: sticky;
+        }
+        .page-center
+        {
+            grid-area: main;
+            text-align: center;
+            background-color: rgba(0,0,0, 0.4);
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 2;
+            width: 30%;
+            border-radius: 25px;
+            padding: 30px;
+        }
+        a:link { text-decoration: none; } 
+        a:visited { text-decoration: none; } 
+        a:hover { text-decoration: none; } 
+        a:active { text-decoration: none; }
+    </style>
     </head>
     <body>
-        <form action="/STARTGAME">
-            <h1>Create New Game From</h1>
-            <label for="gameName">Enter the name of your new game:</label>
-            <input type="text" name="gameName">
-        <!--Might need some javascript to get a list of names for players-->
+        <div class="container">
+            <a href="/">
+                <h1 class="nav-bar"> D&D GM Board </h1>
+            </a>
 
-            <label for="Submit"></label>
-            <button name="submit">Start your new game!</button>
-            
-        </form>
+            <form class="page-center" action="/STARTGAME">
+                <h1>Create New Game From</h1>
+                <label for="gameName">Enter the name of your new game:</label>
+                <input type="text" name="gameName">
+            <!--Might need some javascript to get a list of names for players-->
+
+                <label for="Submit"></label>
+                <button name="submit">Start your new game!</button>
+                
+            </form>
     </body>
 </html>
