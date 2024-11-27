@@ -6,7 +6,16 @@ app = Flask(__name__)
 def index():
 	return render_template("index.html")
 
+
 @app.route('/STARTGAME')
 def startGame():
 	return render_template("main.html")
 
+
+@app.route('/game_creation')
+def create_game():
+    return render_template("create_new_game.html")
+
+@app.route('/load_game')
+def games_index():
+    return render_template("games_index.html")
