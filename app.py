@@ -16,6 +16,6 @@ def startGame():
 def create_game():
     return render_template("create_new_game.html")
 
-@app.route('/load_game')
+@app.route('/games_index')
 def games_index():
     return render_template("games_index.html")
