@@ -1,0 +1,48 @@
+body
+{
+    background: url("https://images5.alphacoders.com/890/890333.png") no-repeat center fixed; 
+    background-size: cover;
+    color: white;
+}
+
+h1 {
+    color: white;
+}
+
+.container {
+    width: 100%;
+    height: auto;
+    display: grid;
+    grid-template-rows: 1fr 9fr;
+    grid-template-areas: 
+        "header";
+        "main";
+}
+
+.nav-bar
+{
+    grid-area: header;
+    position: sticky;
+    text-shadow: 1px 1px 2px black;
+    z-index: 3;
+}
+
+.page
+{
+    grid-area: main;
+    backdrop-filter: blur(4px);
+    background-color: rgba(0,0,0, 0.6);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+    width: 50%;
+    border-radius: 25px;
+    padding: 30px;
+}
+
+a:link { text-decoration: none; } 
+a:visited { text-decoration: none; } 
+a:hover { text-decoration: none; } 
+a:active { text-decoration: none; }
