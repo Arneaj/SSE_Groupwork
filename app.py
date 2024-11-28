@@ -35,6 +35,10 @@ def startGame():
 def create_game():
     return render_template("create_new_game.html")
 
+@app.route('/player_creation')
+def create_player():
+    return render_template('create_new_player.html')
+
 
 Games = [
 	dict(

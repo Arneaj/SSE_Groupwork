@@ -20,24 +20,9 @@
                     <option>Select</option>
                 </select>
 
-                <select id="mySelect">
-                    <option value="option1">Option 1</option>
-                    <option value="option2">Option 2</option>
-                </select>
-                
-                <button onclick="addOption()">Add Option</button>
-                
-                <script>
-                function addOption() {
-                    var newOption = document.createElement("option");
-                    newOption.value = "option3";
-                    newOption.textContent = "Option 3";
-                    
-                    var selectElement = document.getElementById("mySelect");
-                    selectElement.appendChild(newOption);
-                }
-                </script>
-
+                <a href="/player_creation">
+                    <button> Create new player </button>
+                </a>
                 
                 <label for="Submit"></label>
                 <button name="submit">Start your new game!</button>
