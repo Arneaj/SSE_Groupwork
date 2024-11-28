@@ -56,3 +56,7 @@ def games_index():
     games = Games ### REQUEST FROM DATABASE!
     
     return render_template("games_index.html", games=games)
+
+if __name__ == "__main__":
+     app.debug = True
+     app.run()

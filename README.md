@@ -1,4 +1,5 @@
-## DnD Gamemaster Tracker App
+# gm_app
+## Game Master Helper App
 
 ## Pre
 Make sure you have Python3 on your machine.
@@ -9,7 +10,7 @@ To run the app:
 python3 venv venv
 source venv/bin/activate
 pip install --upgrade pip && pip install -r requirements.txt
-export FLASK_APP=todoapp/app.py
+export FLASK_APP=gmapp/app.py
 export FLASK_ENV=development
 flask run
 ```
