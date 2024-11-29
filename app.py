@@ -1,11 +1,11 @@
 from flask import Flask, render_template, request, jsonify
 from sqlalchemy import create_engine, text
-from dotenv import load_dotenv
+#from dotenv import load_dotenv
 import os
 
 app = Flask(__name__)
 
-
+"""
 load_dotenv()
 DATABASE_URL = os.getenv("DATABASE_URL")
 engine = create_engine(DATABASE_URL)
@@ -21,6 +21,7 @@ def test_db():
 
 if __name__ == '__main__':
     app.run(debug=True)
+"""
 
 @app.route('/')
 def index():
@@ -61,6 +62,3 @@ def games_index():
     
     return render_template("games_index.html", games=games)
 
-if __name__ == "__main__":
-     app.debug = True
-     app.run()

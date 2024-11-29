@@ -5,17 +5,20 @@ body
     color: white;
 }
 
-h1 {
+h1 
+{
     color: white;
 }
 
-.container {
+.container 
+{
     width: 100%;
     height: auto;
+
     display: grid;
     grid-template-rows: 1fr 9fr;
     grid-template-areas: 
-        "header";
+        "header",
         "main";
 }
 
@@ -32,14 +35,15 @@ h1 {
     grid-area: main;
     backdrop-filter: blur(4px);
     background-color: rgba(0,0,0, 0.6);
+    z-index: 2;
+}
+
+.center
+{
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    z-index: 2;
-    width: 50%;
-    border-radius: 25px;
-    padding: 30px;
 }
 
 .button{
