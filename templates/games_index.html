@@ -3,44 +3,16 @@
     <head>
         <meta charset="UTF-8">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css">
+        <link rel="stylesheet" href="/static/styles.css">
         <title>SSE Groupwork</title>
         <style>
-            body
+            .box-style
             {
-                background: url("https://images5.alphacoders.com/890/890333.png") no-repeat center fixed; 
-                background-size: cover; 
-            }
-            .container {
-                width: 100%;
-                height: auto;
-
-                display: grid;
-                grid-template-rows: 1fr 9fr;
-                grid-template-areas: 
-                        "header",
-                        "main";
-            }
-            .nav-bar
-            {
-                grid-area: header;
-                position: sticky;
-                text-shadow: 1px 1px 2px black;
-            }
-            .page
-            {
-                grid-area: main;
-                backdrop-filter: blur(4px);
-                background-color: rgba(0,0,0, 0.6);
-                z-index: 2;
                 width: 70%;
                 height: 15%;                
                 border-radius: 25px;
                 padding: 5px 30px 10px 30px;
             }
-            a:link { text-decoration: none; } 
-            a:visited { text-decoration: none; } 
-            a:hover { text-decoration: none; } 
-            a:active { text-decoration: none; }
         </style>
     </head>
     <body>
@@ -50,7 +22,7 @@
             </a>
 
             <ul style="list-style-type: none;">{% for game in games %}
-                <li class="page">
+                <li class="page box-style">
                     <h2> {{game.name}} </h2>
 
                     <p>
