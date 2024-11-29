@@ -12,12 +12,13 @@
             }
             .container {
                 width: 100%;
-                height:auto;
+                height: auto;
+
                 display: grid;
                 grid-template-rows: 1fr 9fr;
                 grid-template-areas: 
-                "header";
-                "main";
+                        "header";
+                        "main";
             }
             .nav-bar
             {
@@ -30,14 +31,10 @@
                 grid-area: main;
                 backdrop-filter: blur(4px);
                 background-color: rgba(0,0,0, 0.6);
-                position: absolute;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
                 z-index: 2;
-                width: 30%;
-                border-radius: 25px;
-                padding: 50px 30px 30px 30px;
+                width: 70%;
+                height: 15%;                border-radius: 25px;
+                padding: 5px 30px 10px 30px;
             }
             a:link { text-decoration: none; } 
             a:visited { text-decoration: none; } 
@@ -51,7 +48,7 @@
                 <h1 class="nav-bar"> D&D GM Board </h1>
             </a>
 
-            <ul>{% for game in games %}
+            <ul style="list-style-type: none;">{% for game in games %}
                 <li class="page">
                     <h2> {{game.name}} </h2>
 
