@@ -42,23 +42,17 @@ def create_player():
 
 
 Games = [
-	dict(
-		{
-      "name": "Game1",
-      "players": ["Molly, Callum, Charlotte, Arnie"]
-     	}
-  	),
-	dict(
-		{
-      "name": "Game2",
-      "players": ["Molly, Callum, Charlotte, Arnie"]
-        }
-	)
+	{
+        "name": "Game1",
+        "players": "Molly, Callum, Charlotte, Arnie"
+    },
+
+	{
+        "name": "Game2",
+        "players": "Molly, Callum, Charlotte"
+    }
 ]
 
-@app.route('/games_index', methods=["POST", "GET"])
+@app.route('/games_index', methods=["GET", "POST"])
 def games_index():
-    games = Games ### REQUEST FROM DATABASE!
-    
-    return render_template("games_index.html", games=games)
-
+    return render_template("games_index.html", games=Games)
