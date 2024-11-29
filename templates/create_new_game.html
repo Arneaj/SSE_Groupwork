@@ -2,60 +2,28 @@
 <html>
     <head lang="en">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css">
+        <link rel="stylesheet" href="/static/styles.css">
         <title>SSE Groupwork</title>
-    <style>
-        body
-        {
-            background: url("https://images5.alphacoders.com/890/890333.png") no-repeat center fixed; 
-            background-size: cover;
-        }
-        .container {
-            width: 100%;
-            height: auto;
-            display: grid;
-            grid-template-rows: 1fr 9fr;
-            grid-template-areas: 
-              "header";
-              "main";
-        }
-        .nav-bar
-        {
-            grid-area: header;
-            position: sticky;
-            text-shadow: 1px 1px 2px black;
-        }
-        .page
-        {
-            grid-area: main;
-            backdrop-filter: blur(4px);
-            background-color: rgba(0,0,0, 0.6);
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 2;
-            width: 50%;
-            border-radius: 25px;
-            padding: 30px;
-        }
-        a:link { text-decoration: none; } 
-        a:visited { text-decoration: none; } 
-        a:hover { text-decoration: none; } 
-        a:active { text-decoration: none; }
-    </style>
     </head>
     <body>
         <div class="container">
             <a href="/">
                 <h1 class="nav-bar"> D&D GM Board </h1>
             </a>
-
             <form class="page" action="/STARTGAME">
                 <h1>Create New Game From</h1>
                 <label for="gameName">Enter the name of your new game:</label>
                 <input type="text" name="gameName">
             <!--Might need some javascript to get a list of names for players-->
+                <label for="playerName">Choose which players are p[art of your game</label>
+                <select name="playerName">
+                    <option>Select</option>
+                </select>
 
+                <a href="/player_creation">
+                    <button> Create new player </button>
+                </a>
+                
                 <label for="Submit"></label>
                 <button name="submit">Start your new game!</button>
                 
