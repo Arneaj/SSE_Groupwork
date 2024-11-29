@@ -32,7 +32,7 @@ Games = [
 	)
 ]
 
-@app.route('/games_index', methods=["POST"])
+@app.route('/games_index', methods=["POST", "GET"])
 def games_index():
     games = Games ### REQUEST FROM DATABASE!
     

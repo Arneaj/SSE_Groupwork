@@ -52,14 +52,15 @@
             </a>
 
             <ul>{% for game in games %}
-                <li>
+                <li class="page">
                     <h2> {{game.name}} </h2>
 
                     <p>
-                        Players: {% for player in game.players %} {{players.name}}  {% end for %}
+                        Players: {% for player in game.players %} {{player.name}}  {% endfor %}
                     </p>
-                </li>                
-            {% end for %} </ul>
+                </li>  
+                <br>              
+            {% endfor %} </ul>     
         </div>
     </body>
 </html>
