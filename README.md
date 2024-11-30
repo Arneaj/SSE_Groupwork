@@ -7,7 +7,7 @@ Make sure you have Python3 on your machine.
 ## Running the app
 To run the app:
 ```bash
-python3 venv venv
+python3 -m venv venv
 source venv/bin/activate
 pip install --upgrade pip && pip install -r requirements.txt
 export FLASK_APP=gmapp/app.py
