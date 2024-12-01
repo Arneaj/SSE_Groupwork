@@ -54,10 +54,11 @@ const submitGame = () => {
     fetch("/STARTGAME", {
         method: "POST",
         headers: {
-            "Content-Type": "application/py",
+            "Content-Type": "application/json",
         },
         body: JSON.stringify(playerList),  // Send the list as JSON
     })
+    .then(response => response.json())
 }
 
 document.getElementById("addPlayerButton").addEventListener("click", addPlayer);

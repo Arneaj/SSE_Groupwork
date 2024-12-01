@@ -31,7 +31,9 @@ def index():
 @app.route('/STARTGAME')
 def startGame():
     game_name_input = request.form.get("gameName")
-    player_list = request.get_json()
+    data = request.get_json()
+    player_list = data['list']
+    print(player_list)
     
     return render_template("main.html", game_name=game_name_input, player_list=player_list)
 
