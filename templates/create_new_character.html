@@ -7,10 +7,11 @@
     <body>
         <div class="container">
             <form action="/save_player">
-                <label>Associated Player: </label>
-                <input type="text">
                 <label>Character name: </label>
                 <input type="text">
+
+                <hr>
+
                 <label>Choose race: </label>
                 <!--Need to make this select list use the api (potentially)-->
                 <select>
@@ -31,7 +32,26 @@
                         <option value="{{ background.index }}">{{ background.name }}</option>
                     {% endfor %}
                 </select>
-    
+
+                <hr>
+                <!--Ability scores-->
+                <!--Will need to add race ability scores to ones chosen-->
+                <!--Need to determine ability modifier depending on ability scores-->
+                <label for="strength">Strength</label>
+                <input type="number" name="strength">
+                <label for="dexterity">Dexterity</label>
+                <input type="number" name="dexterity">
+                <label for="constitution">Constitution</label>
+                <input type="number" name="constitution">
+                <label for="intelligence">Intelligence</label>
+                <input type="number" name="intelligence">
+                <label for="wisdom">Wisdom</label>
+                <input type="number" name="wisdom">
+                <label for="charisma">Charisma</label>
+                <input type="number" name="charisma">
+
+                <!--determine proficiency and saving throws after character creation-->
+
                 <label for="Submit"></label>
                 <button name="submit">Save Character</button>
             </form>
