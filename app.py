@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, requests
 from sqlalchemy import create_engine, text
 #from dotenv import load_dotenv
 import os
@@ -38,7 +38,20 @@ def create_game():
 
 @app.route('/player_creation')
 def create_player():
-    return render_template('create_new_player.html')
+    # got to api and get all information that is needed
+
+    # get races
+    url = "https://www.dnd5eapi.co/api/races"
+    response = requests.get(url)
+    if response.status_code == 200:
+        races_response = response.json()
+
+    races = races_response["results"]
+    
+    return render_template(
+        'create_new_player.html',
+        races=races,
+    )
 
 
 Games = [
