@@ -1,4 +1,5 @@
-from flask import Flask, render_template, request, jsonify, requests
+from flask import Flask, render_template, request, jsonify
+import requests
 from sqlalchemy import create_engine, text
 #from dotenv import load_dotenv
 import os
@@ -56,10 +57,18 @@ def create_player():
 
     classes = classes_response["results"]
 
+    url = "https://www.dnd5eapi.co/api/backgrounds"
+    response = requests.get(url)
+    if response.status_code == 200:
+        backgrounds_response = response.json()
+
+    backgrounds = backgrounds_response["results"]
+
     return render_template(
-        'create_new_player.html',
+        'create_new_character.html',
         races=races,
-        classes=classes
+        classes=classes,
+        backgrounds=backgrounds,
     )
 
 

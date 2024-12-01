@@ -20,14 +20,20 @@
             </a>
 
             <form class="page center box-style" action="/STARTGAME">
-                <h1>Create New Game From</h1>
+                <h1>Create New Game</h1>
                 <label for="gameName">Enter the name of your new game:</label>
                 <input type="text" name="gameName">
-            <!--Might need some javascript to get a list of names for players-->
-                <label for="playerName">Choose which players are part of your game</label>
-                <select name="playerName">
-                    <option>Select</option>
-                </select>
+            <!--Might need some javascript to get a list of names for players
+            when entering player name, if new, add to database, if not access
+            name in database-->
+            <div>
+                <h4>Current Players in the Game:</h2>
+                <ul id="playerList"></ul>
+                <input class="inline" id="playerInput" for="player" type="text">
+                <button class="inline" type="button" id="addPlayerButton">Add Player</button>
+            </div>
+                
+                <label for="player">Enter the names of players that are in your game</label>
 
                 <a href="/player_creation">
                     <button type="button"> Create new player </button>
@@ -39,7 +45,7 @@
                     <label for="Submit"></label>
                     <button name="submit">Start your new game!</button>
                 </div>
-                
+                <script src="/static/list_players.js"></script>
             </form>
         </div>
     </body>

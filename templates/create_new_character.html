@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/dark.css">
+        <link ref="stylesheet" href="/static/styles.css">
+    </head>
+    <body>
+        <div class="container">
+            <form action="/save_player">
+                <label>Associated Player: </label>
+                <input type="text">
+                <label>Character name: </label>
+                <input type="text">
+                <label>Choose race: </label>
+                <!--Need to make this select list use the api (potentially)-->
+                <select>
+                    {% for race in races %}
+                        <option value="{{ race.index }}">{{ race.name }}</option>
+                    {% endfor %}
+                </select>
+                <label>Choose a class: </label>
+                <select>
+                    {% for class in classes %}
+                        <option value="{{ class.index }}">{{ class.name }}</option>
+                    {% endfor %}
+                </select>
+
+                <label>Choose a background: </label>
+                <select>
+                    {% for background in backgrounds %}
+                        <option value="{{ background.index }}">{{ background.name }}</option>
+                    {% endfor %}
+                </select>
+    
+                <label for="Submit"></label>
+                <button name="submit">Save Character</button>
+            </form>
+        </div>
+
+    </body>
+</html>
