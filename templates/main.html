@@ -4,6 +4,20 @@
         <link rel="stylesheet" href="/static/styles.css">
     </head>
     <body>
-        <h1>Main page</h1>
+        <header>
+            <h1>Game: {{ game_name }}</h1>
+        </header>
+        
+        <div class="characters">
+            <h2>Characters</h2>
+            {% for player in player_list %}
+                <p value="{{ player }}">{{ player }}</p>
+            {% endfor %}
+
+        </div>
+        <div class="npcs">
+            <h2>NPCs</h2>
+
+        </div>
     </body>
 </html>

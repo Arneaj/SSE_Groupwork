@@ -30,12 +30,16 @@ def index():
 
 @app.route('/STARTGAME')
 def startGame():
-	return render_template("main.html")
+    game_name_input = request.form.get("gameName")
+    player_list = request.get_json()
+    
+    return render_template("main.html", game_name=game_name_input, player_list=player_list)
 
 
 @app.route('/game_creation')
 def create_game():
-    return render_template("create_new_game.html")
+    return render_template(
+        "create_new_game.html")
 
 @app.route('/player_creation')
 def create_player():

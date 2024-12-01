@@ -15,12 +15,14 @@
                 <label>Choose race: </label>
                 <!--Need to make this select list use the api (potentially)-->
                 <select>
+                    <option>select one</option>
                     {% for race in races %}
                         <option value="{{ race.index }}">{{ race.name }}</option>
                     {% endfor %}
                 </select>
                 <label>Choose a class: </label>
                 <select>
+                    <option>select one</option>
                     {% for class in classes %}
                         <option value="{{ class.index }}">{{ class.name }}</option>
                     {% endfor %}
@@ -28,6 +30,7 @@
 
                 <label>Choose a background: </label>
                 <select>
+                    <option>select one</option>
                     {% for background in backgrounds %}
                         <option value="{{ background.index }}">{{ background.name }}</option>
                     {% endfor %}
