@@ -41,16 +41,25 @@ def create_player():
     # got to api and get all information that is needed
 
     # get races
-    url = "https://www.dnd5eapi.co/api/races"
-    response = requests.get(url)
-    if response.status_code == 200:
-        races_response = response.json()
+    # url = "https://www.dnd5eapi.co/api/races"
+    # response = requests.get(url)
+    # if response.status_code == 200:
+    #     races_response = response.json()
 
-    races = races_response["results"]
-    
+    # races = races_response["results"]
+
+    # # get classes
+    # url = "https://www.dnd5eapi.co/api/classes"
+    # response = requests.get(url)
+    # if response.status_code == 200:
+    #     classes_response = response.json()
+
+    # classes = classes_response["results"]
+
     return render_template(
         'create_new_player.html',
-        races=races,
+        #races=races,
+        #classes=classes
     )
 
 
