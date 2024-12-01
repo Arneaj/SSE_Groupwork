@@ -54,9 +54,9 @@ const submitGame = () => {
     fetch("/STARTGAME", {
         method: "POST",
         headers: {
-            "Content-Type": "application/json",
+            "Content-Type": "application/py",
         },
-        body: JSON.stringify(playerList),  // Send the list as JSON
+        body: JSON.stringify({list: playerList}),  // Send the list as JSON
     })
     .then(response => response.json())
 }

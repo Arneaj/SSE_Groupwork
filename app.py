@@ -28,7 +28,7 @@ if __name__ == '__main__':
 def index():
 	return render_template("index.html")
 
-@app.route('/STARTGAME')
+@app.route('/STARTGAME', methods=["POST"])
 def startGame():
     game_name_input = request.form.get("gameName")
     data = request.get_json()
