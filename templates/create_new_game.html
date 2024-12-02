@@ -27,14 +27,20 @@
             when entering player name, if new, add to database, if not access
             name in database-->
             <div>
-                <h4>Current Players in the Game:</h2>
-                <ul id="playerList"></ul>
-                <input class="inline" id="playerInput" for="player" type="text">
-                <button class="inline" type="button" id="addPlayerButton">Add Player</button>
-            </div>
-                
-                <label for="player">Enter the names of players that are in your game</label>
+                <label>Select the character you wish to add to your game:</label>
+                <select id="select1">
+                    <option value="Name 1">Name 1</option>
+                    <option value="Name 2">Name 2</option>
+                    <option value="Name 3">Name 3</option>
+                </select>
 
+                <button type="button" onclick="getPlayer()">Add Player to Game</button>
+
+                <h3>Current List of Characters in Game:</h3>
+                <ul id="playerListContainer">
+                    <!-- Selected items will appear here -->
+                </ul>
+            </div>  
                 <a href="/player_creation">
                     <button type="button"> Create new player </button>
                 </a>
@@ -45,7 +51,9 @@
                     <label for="submit"></label>
                     <button id="submitGame" name="submit">Start your new game!</button>
                 </div>
+                <!--Scripts-->
                 <script src="/static/list_players.js"></script>
+                
             </form>
         </div>
     </body>
