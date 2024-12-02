@@ -7,38 +7,51 @@
 
         <style>
             .box-style
-            {
-                width: 70%;
-                height: auto;                
+            {             
                 border-radius: 25px;
                 padding: 5px 30px 10px 30px;
             }
 
-            .flexbox
+            .flexboxrow
             {
                 display: flex;
-                height: 70%;
-                width: 90%;
-                flex-wrap: wrap;
-                align-content: stretch;
+                height: 40%;
+                align-items: stretch;
+                justify-content: center;
             }
-            .flex-container > div {
+            .flexboxrow > div 
+            {
                 width: 40%;
+                margin: 10px;
+            }
+
+            .flexboxcol
+            {
+                display: flex;
+                height: 150%;
+                flex-direction: column;
+                align-items: stretch;
+                justify-content: center;
+            }
+            .flexboxcol > div 
+            {
+                width: 170%;
+                transform: translate(-20%, 0%);
                 margin: 10px;
                 text-align: center;
             }
         </style>
     </head>
     <body>
-        <div class="container">
+        <div class="flexboxcol">
             <a href="/">
-                <h1 class="nav-bar"> D&D GM Board </h1>
+                <div class="nav-bar">
+                    <h1> D&D GM Board </h1>
+                </div>
             </a>
+            <h1 style="text-align:"> Game: {{ game.name }} </h1>
 
-            <div class="flexbox center">
-                <header class="page box-style">
-                    <h1>Game: {{ game.name }}</h1>
-                </header>
+            <div class="flexboxrow">
                 
                 <div class="characters page box-style">
                     <h2>Characters</h2>
@@ -53,9 +66,20 @@
                 </div>
             </div>
 
-            <flexbox>
-                <p> blablabla </p>
-            </flexbox>
+            <div class="flexboxrow">
+                
+                <div class="characters page box-style">
+                    <h2>Characters</h2>
+                    {% for player in game.players %}
+                        <p value="{{ player }}">{{ player }}</p>
+                    {% endfor %}
+
+                </div>
+                <div class="npcs page box-style">
+                    <h2>NPCs</h2>
+
+                </div>
+            </div>
         </div>
     </body>
 </html>

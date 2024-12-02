@@ -43,7 +43,7 @@ def index():
 @app.route('/STARTGAME', methods=["GET", "POST"])
 def startGame():
     game_name_input = request.args.get("gameName")
-    print(game_name_input)
+    
     passed_game = Games[0]
     
     for game in Games:
