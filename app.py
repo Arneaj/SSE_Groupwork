@@ -4,7 +4,7 @@ from sqlalchemy import create_engine, text
 from dotenv import load_dotenv
 import os
 
-app = Flask(__name__, template_folder="src/templates", static_folder="src/static")
+app = Flask(__name__, template_folder="templates", static_folder="static")
 
 
 load_dotenv() # Loading the environment variables
@@ -93,8 +93,6 @@ def startGame():
     
     
     # here should be API request to get the actual game we want from the game_name !
-    
-    
 
     return render_template("main.html", game=passed_game, players=passed_players)
 
