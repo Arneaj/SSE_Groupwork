@@ -25,12 +25,12 @@
                 <li class="page box-style">
                     <h2> {{game.name}} </h2>
 
-                    <a href="/STARTGAME"> 
+                    <a href="/STARTGAME?gameName={{game.name}}&list={{game.players}}"> 
                         <button style="position: absolute; top: 35%; left: 70%;"> Start game </button> 
                     </a>
 
                     <p>
-                        Players: {{game.players}}
+                        Players: {% for player in game.players %} {{player}} {% endfor %}
                     </p>
                 </li>  
                 <br>              

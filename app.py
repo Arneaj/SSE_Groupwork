@@ -31,8 +31,9 @@ def index():
 @app.route('/STARTGAME', methods=["GET", "POST"])
 def startGame():
     game_name_input = request.form.get("gameName")
-    data = request.get_json()
-    player_list = data['list']
+    #data = request.get_json()
+    #player_list = data['list']
+    player_list = request.form.get("list")
     print(player_list)
     
     return render_template("main.html", game_name=game_name_input, player_list=player_list)
@@ -81,12 +82,12 @@ def create_player():
 Games = [
 	{
         "name": "Game1",
-        "players": "Molly, Callum, Charlotte, Arnie" # Still need to link the players from the database once created
+        "players": ["Molly","Callum","Charlotte","Arnie"] # Still need to link the players from the database once created
     },
 
 	{
         "name": "Game2",
-        "players": "Molly, Callum, Charlotte"
+        "players": ["Molly","Callum","Charlotte"]
     }
 ]
 
