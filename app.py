@@ -5,6 +5,9 @@ from dotenv import load_dotenv
 import os
 import click
 from game_database import db
+from player import Player
+from cli import create_all, drop_all, populate  # Importing commands
+
 
 app = Flask(__name__, template_folder="templates", static_folder="static")
 
@@ -12,15 +15,15 @@ app = Flask(__name__, template_folder="templates", static_folder="static")
 load_dotenv() # Loading the environment variables
 
 # Configuring database
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite://gmboard.db"
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///gmboard.db" # SQLite URL
 app.config["DND_API_KEY"] = os.getenv("DND_API_KEY")
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 # Initialising database
 db.init_app(app)
 
-# Registering blueprints - come back to later!
-app.register_blueprint(blueprints.collection)
+# Registering blueprints - come back to later! If others don't want we dont have to do this
+# app.register_blueprint(blueprints.collection)
 
 # Adding commands to access and modify the database - dont work yet but they will
 with app.app_context():

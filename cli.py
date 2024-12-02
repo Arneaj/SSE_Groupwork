@@ -2,6 +2,7 @@
 from game_database import db as database
 import click
 from flask.cli import with_appcontext
+from player import Player
 
 
 @click.command("create_all", help="Create tables")
@@ -32,7 +33,7 @@ def populate():
             game_id=1
         ),
         Player(
-            id=2
+            id=2,
             name="Molly",
             species="Human",
             abilities="Wizard",  # class is reserved word in Python, so calling DnD class "abilities"
