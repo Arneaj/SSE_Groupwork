@@ -90,6 +90,7 @@ Games = [
     }
 ]
 
-@app.route('/games_index/', methods=["GET", "POST"])
+
+@app.route('/games_index', methods=["GET", "POST"])
 def games_index():
     return render_template("games_index.html", games=Games)
