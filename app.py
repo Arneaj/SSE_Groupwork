@@ -36,6 +36,33 @@ Games = [
     }
 ]
 
+Players = [
+    {
+        "name": "Arnie",
+        "max_HP": 120,
+        "current_HP": 100,
+        "ability": [ 0,0,0,0,0,0 ]
+    },
+    {
+        "name": "Charlotte",
+        "max_HP": 120,
+        "current_HP": 120,
+        "ability": [ 0,0,0,0,0,0 ]
+    },
+    {
+        "name": "Molly",
+        "max_HP": 120,
+        "current_HP": 110,
+        "ability": [ 0,0,0,0,0,0 ]
+    },
+    {
+        "name": "Callum",
+        "max_HP": 1000,
+        "current_HP": 205,
+        "ability": [ 0,0,0,0,0,0 ]
+    }
+]
+
 @app.route('/')
 def index():
 	return render_template("index.html")
@@ -49,9 +76,19 @@ def startGame():
     for game in Games:
         if game["name"] == game_name_input:
             passed_game = game
+            
+    passed_players = []
+    
+    for player in Players:
+        if player["name"] in passed_game["players"]:
+            passed_players.append(player)
+    
+    
     # here should be API request to get the actual game we want from the game_name !
+    
+    
 
-    return render_template("main.html", game=passed_game)
+    return render_template("main.html", game=passed_game, players=passed_players)
 
 
 @app.route('/game_creation')
