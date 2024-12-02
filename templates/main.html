@@ -64,8 +64,28 @@
                     {% endfor %}
 
                 </div>
-                <div class="npcs page box-style">
-                    <h2>NPCs</h2>
+                <div class="monsters page box-style">
+                    <h2>Monsters</h2>
+                    <label>Challenge rating: </label>
+                    <input type="number" name="challenge" id="challenge" style="width:15%;">
+
+                    <a id="searchMonsterLink" href="#">
+                    <button style="position: absolute; top: 26%; left: 30%;"> 
+                            Search 
+                    </button>
+                    </a>
+
+                    <label style="position: absolute; top: 19%; left: 55%;">List of monsters with that level: </label>
+                    <select style="position: absolute; top: 26%; left: 55%;">
+                        <option>Select one</option>
+                        {% for monster in monsters %}
+                        <option value="{{ monster.index }}">{{ monster.name }}</option>
+                        {% endfor %}
+                    </select>
+
+                    <p> Monster details </p>
+                    HP: {{ current_monster }}
+
 
                 </div>
             </div>
@@ -84,3 +104,18 @@
         </div>
     </body>
 </html>
+
+
+
+<script>
+    // Get the necessary elements
+    const challengeInput = document.getElementById('challenge');
+    const searchMonsterLink = document.getElementById('searchMonsterLink');
+
+    // Event listener to update the href when input changes
+    challengeInput.addEventListener('input', () => {
+        const challengeValue = challengeInput.value; // Get the input value
+        const gameName = "{{game.name}}"; // Use the existing game name
+        searchMonsterLink.href = `/STARTGAME?gameName=${gameName}&challenge_index=${challengeValue}`;
+    });
+</script>

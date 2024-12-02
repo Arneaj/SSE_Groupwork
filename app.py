@@ -77,24 +77,44 @@ def index():
 
 @app.route('/STARTGAME', methods=["GET", "POST"])
 def startGame():
+    # get the game from the request
     game_name_input = request.args.get("gameName")
     
+    # get the game from the database
     passed_game = Games[0]
     
     for game in Games:
         if game["name"] == game_name_input:
             passed_game = game
             
+    # get the players of that game from the database
     passed_players = []
     
     for player in Players:
         if player["name"] in passed_game["players"]:
             passed_players.append(player)
     
-    
     # here should be API request to get the actual game we want from the game_name !
+    
+    # here get the monsters
+    challenge_rating_input = request.args.get("challenge_index")
+    
+    if challenge_rating_input == None:
+        challenge_rating_input = 0
+    
+    url = f'https://www.dnd5eapi.co/api/monsters?challenge_rating={challenge_rating_input}'
+    response = requests.get(url)
+    if response.status_code == 200:
+        monsters_response = response.json()
 
-    return render_template("main.html", game=passed_game, players=passed_players)
+    monsters = monsters_response["results"]
+
+    return render_template(
+        "main.html", 
+        game=passed_game, 
+        players=passed_players,
+        monsters=monsters,
+        )
 
 
 @app.route('/game_creation')
