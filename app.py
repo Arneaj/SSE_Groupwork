@@ -42,12 +42,16 @@ def index():
 
 @app.route('/STARTGAME', methods=["GET", "POST"])
 def startGame():
-    game_name_input = "Game1"  # request.form.get("gameName")
-    game = Games[0]  # here should be API request to get the actual game we want from the game_name !
-    #data = request.get_json()
-    #player_list = data['list']
+    game_name_input = request.args.get("gameName")
+    print(game_name_input)
+    passed_game = Games[0]
     
-    return render_template("main.html", game=game)
+    for game in Games:
+        if game["name"] == game_name_input:
+            passed_game = game
+    # here should be API request to get the actual game we want from the game_name !
+
+    return render_template("main.html", game=passed_game)
 
 
 @app.route('/game_creation')
