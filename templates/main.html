@@ -13,6 +13,20 @@
                 border-radius: 25px;
                 padding: 5px 30px 10px 30px;
             }
+
+            .flexbox
+            {
+                display: flex;
+                height: 70%;
+                width: 90%;
+                flex-wrap: wrap;
+                align-content: stretch;
+            }
+            .flex-container > div {
+                width: 40%;
+                margin: 10px;
+                text-align: center;
+            }
         </style>
     </head>
     <body>
@@ -21,23 +35,27 @@
                 <h1 class="nav-bar"> D&D GM Board </h1>
             </a>
 
-            <div class="page center box-style">
-                <header>
+            <div class="flexbox center">
+                <header class="page box-style">
                     <h1>Game: {{ game.name }}</h1>
                 </header>
                 
-                <div class="characters">
+                <div class="characters page box-style">
                     <h2>Characters</h2>
                     {% for player in game.players %}
                         <p value="{{ player }}">{{ player }}</p>
                     {% endfor %}
 
                 </div>
-                <div class="npcs">
+                <div class="npcs page box-style">
                     <h2>NPCs</h2>
 
                 </div>
             </div>
+
+            <flexbox>
+                <p> blablabla </p>
+            </flexbox>
         </div>
     </body>
 </html>
