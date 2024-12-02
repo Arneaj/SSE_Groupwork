@@ -1,0 +1,8 @@
+Metadata-Version: 2.1
+Name: SSE_Groupwork
+Version: 0.1
+Requires-Dist: flask
+Requires-Dist: requests
+Requires-Dist: sqlalchemy
+Requires-Dist: python-dotenv
+Requires-Dist: pytest
