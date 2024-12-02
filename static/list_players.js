@@ -1,65 +1,54 @@
+// Array to store players
 const playerList = [];
+            
+// Function to add player selected to list
+function getPlayer() {
+    // Get value of selected input
+    const selectElement = document.querySelector('#select1');
+    const selectedValue = selectElement.options[selectElement.selectedIndex].value;
 
-const addPlayer = () => {
-    const playerInput = document.getElementById("playerInput");
-    const listPlayer = {
-        id: Date.now(),
-        text: playerInput.value,
-    };
-
-    if (listPlayer.text.trim() !== "") {
-        playerList.push(listPlayer);
-        renderList();
-        playerInput.value = "";
-    };
-};
-
-const removePlayer = (id) => {
-    const index = playerList.findIndex(item => item.id === id);
-    if (index !== -1) {
-        playerList.splice(index, 1);
-        renderList();
+    // Check if the selected value is already in the list
+    if (!playerList.includes(selectedValue)) {
+        playerList.push(selectedValue);
+        renderPlayerList();
     }
-};
-
-const renderList = () => {
-    const playerListContainer = document.getElementById("playerList");
-    playerListContainer.innerHTML = "";
-
-    playerList.forEach(item =>{
-        const li = document.createElement("li");
-        li.textContent = item.text;
-        li.setAttribute("class", "inline");
-
-        const buttonContainer = document.createElement("div");
-        buttonContainer.classList.add("button-container");
-
-        const deleteButton = document.createElement("button");
-        deleteButton.setAttribute("type", "button");
-        deleteButton.setAttribute("class", "inline");
-        deleteButton.textContent = "Delete";
-        deleteButton.addEventListener("click", () => removePlayer(item.id));
-        buttonContainer.appendChild(deleteButton);
-
-        li.appendChild(buttonContainer);
-        playerListContainer.appendChild(li);
-
-        setTimeout(() => {
-            li.classList.add("fade-in");
-        }, 10)
-    });
-};
-
-const submitGame = () => {
-    fetch("/STARTGAME", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/py",
-        },
-        body: JSON.stringify({list: playerList}),  // Send the list as JSON
-    })
-    .then(response => response.json())
 }
 
-document.getElementById("addPlayerButton").addEventListener("click", addPlayer);
-document.getElementById("submitGame").addEventListener("click", submitGame);
+// Function to remove player from the list
+function removePlayer(player) {
+    // Find the index of the player in the array
+    const index = playerList.indexOf(player);
+    if (index !== -1) {
+        // Remove the player from the array
+        playerList.splice(index, 1);
+        renderPlayerList();
+    }
+}
+
+// Function to render the player list
+function renderPlayerList() {
+    const playerListContainer = document.querySelector('#playerListContainer');
+    playerListContainer.innerHTML = "";
+
+    // Loop through the playerList and create a <li> for each item
+    playerList.forEach(item => {
+        const li = document.createElement("li");
+
+        // Add the item text to the <li>
+        li.textContent = item;
+
+        // Create a "Remove player" button
+        const removeButton = document.createElement("button");
+        removeButton.setAttribute("type", "button")
+        removeButton.textContent = "Remove";
+        removeButton.onclick = function () {
+            removePlayer(item);
+        };
+
+        // Append the remove button to the <li>
+        li.appendChild(removeButton);
+
+        // Append the <li> to the list container
+        playerListContainer.appendChild(li);
+    });
+}
