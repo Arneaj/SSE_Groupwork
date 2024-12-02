@@ -1,10 +1,18 @@
 from flask import Flask, render_template, request, jsonify
 import requests
 from sqlalchemy import create_engine, text
-#from dotenv import load_dotenv
+from dotenv import load_dotenv
 import os
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder="src/templates", static_folder="src/static")
+
+
+load_dotenv() # Loading the environment variables
+
+# Configuring database
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite://gmboard.db"
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+
 
 """
 load_dotenv()
