@@ -24,19 +24,30 @@ if __name__ == '__main__':
     app.run(debug=True)
 """
 
+Games = [
+	{
+        "name": "Game1",
+        "players": ["Molly","Callum","Charlotte","Arnie"] # Still need to link the players from the database once created
+    },
+
+	{
+        "name": "Game2",
+        "players": ["Molly","Callum","Charlotte"]
+    }
+]
+
 @app.route('/')
 def index():
 	return render_template("index.html")
 
 @app.route('/STARTGAME', methods=["GET", "POST"])
 def startGame():
-    game_name_input = request.form.get("gameName")
+    game_name_input = "Game1"  # request.form.get("gameName")
+    game = Games[0]  # here should be API request to get the actual game we want from the game_name !
     #data = request.get_json()
     #player_list = data['list']
-    player_list = request.form.get("list")
-    print(player_list)
     
-    return render_template("main.html", game_name=game_name_input, player_list=player_list)
+    return render_template("main.html", game=game)
 
 
 @app.route('/game_creation')
@@ -77,19 +88,6 @@ def create_player():
         classes=classes,
         backgrounds=backgrounds,
     )
-
-
-Games = [
-	{
-        "name": "Game1",
-        "players": ["Molly","Callum","Charlotte","Arnie"] # Still need to link the players from the database once created
-    },
-
-	{
-        "name": "Game2",
-        "players": ["Molly","Callum","Charlotte"]
-    }
-]
 
 
 @app.route('/games_index', methods=["GET", "POST"])
