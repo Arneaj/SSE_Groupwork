@@ -3,16 +3,39 @@ import requests
 from sqlalchemy import create_engine, text
 from dotenv import load_dotenv
 import os
+import click
+from game_database import db
 
-app = Flask(__name__, template_folder="src/templates", static_folder="src/static")
+app = Flask(__name__, template_folder="templates", static_folder="static")
 
 
 load_dotenv() # Loading the environment variables
 
 # Configuring database
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite://gmboard.db"
+app.config["DND_API_KEY"] = os.getenv("DND_API_KEY")
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
+# Initialising database
+db.init_app(app)
+
+# Registering blueprints - come back to later!
+app.register_blueprint(blueprints.collection)
+
+# Adding commands to access and modify the database - dont work yet but they will
+with app.app_context():
+    app.cli.add_command(create_all)
+    app.cli.add_command(populate)
+    app.cli.add_command(drop_all)
+    
+    # Debugging statement echoing that CLI commands registered
+    click.echo("Registered CLI commands successfully.")
+
+
+@app.route("/player_data")
+def collection():
+    players = Player.query.all() 
+    return render_template("main.html", players=players) # Check whether this is correct - not duplicationg
 
 """
 load_dotenv()
