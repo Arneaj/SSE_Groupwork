@@ -1,0 +1,12 @@
+README.md
+setup.py
+SSE_Groupwork.egg-info/PKG-INFO
+SSE_Groupwork.egg-info/SOURCES.txt
+SSE_Groupwork.egg-info/dependency_links.txt
+SSE_Groupwork.egg-info/requires.txt
+SSE_Groupwork.egg-info/top_level.txt
+tests/__init__.py
+tests/test_api_integration.py
+tests/test_app.py
+tests/test_character_creation.py
+tests/test_game_creation.py

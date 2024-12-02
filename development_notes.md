@@ -35,3 +35,18 @@ Keep track of inventories, health points, ...
 Have a GM page with all the info and a player page with only the player's info ?
 
 (Maybe at some point AI chatbot for "generate a quest" or "generate a monster interaction" or something)
+
+## Tables:
+Player table (the things you need as soon as the game loads, base info every player has)
+Columns:
+id
+name
+species
+class
+abilities
+alignment
+skill
+current_health
+max_health
+game_id
+
