@@ -104,7 +104,7 @@
                     <p id="alignment">Alignment: </p>
 
                     <p id="monster-hp">HP: </p>
-                    <p id="monster-dice">Dice: </p>
+                    <p id="monster-dice">Attack: </p>
 
                     <table>
                         <tr>
@@ -174,7 +174,7 @@
             document.getElementById("alignment").textContent = `Alignment: ${data.alignment}`;
 
             document.getElementById("monster-hp").textContent = `HP: ${data.hit_points}`;
-            document.getElementById("monster-dice").textContent = `Attack: ${data.hit_dice}`;
+            document.getElementById("monster-dice").textContent = `Attack: ${data.hit_points_roll}`;
 
             document.getElementById("str").textContent = `${data.strength}`;
             document.getElementById("dex").textContent = `${data.dexterity}`;

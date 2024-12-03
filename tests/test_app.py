@@ -1,7 +1,7 @@
 import pytest
 import requests
 from unittest.mock import patch
-import app
+from ..app import *
 
 # Test the Race API integration
 @patch('app.requests.get')
