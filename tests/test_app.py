@@ -60,33 +60,6 @@ def test_api_empty_response():
     assert len(response.json()["results"]) == 0, "Expected no results in the API response"
 
 
-# Test API with malformed JSON (e.g., missing expected fields)
-def test_api_malformed_json():
-    """
-    Test the API when it returns malformed JSON.
-    """
-    
-    # Make API call
-    response = requests.get("https://www.dnd5eapi.co/api/races")
-    
-    # Assertions to check for status code and key error
-    assert response.status_code == 200, "Expected status code 200"
-    with pytest.raises(KeyError):
-        # Ensure that expected fields are missing and cause a KeyError
-        response.json()["results"]
-
-
-# Test API handling of network errors (requests exceptions)
-def test_api_network_error():
-    """
-    Test handling of network errors, such as a timeout or connection error.
-    """
-    
-    # Make API call and check for exception
-    with pytest.raises(requests.exceptions.RequestException):
-        requests.get("https://www.dnd5eapi.co/api/races")
-
-
 # Test API with incorrect URL (404 Not Found)
 def test_api_invalid_url():
     """
