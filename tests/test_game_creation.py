@@ -1,5 +1,5 @@
 import pytest
-from SSE_Groupwork.app import app
+from ..app import *
 
 @pytest.fixture
 def client():

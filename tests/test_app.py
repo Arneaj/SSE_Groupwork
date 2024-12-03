@@ -1,10 +1,10 @@
 import pytest
 import requests
 from unittest.mock import patch
-from SSE_Groupwork.app import app
+from ..app import *
 
 # Test the Race API integration
-@patch('app.requests.get')
+@patch('SSE_Groupwork.app.requests.get')
 def test_race_api(mock_get):
     """
     Test that the race API correctly fetches race data and returns expected values.
@@ -25,7 +25,7 @@ def test_race_api(mock_get):
 
 
 # Test the Class API integration
-@patch('app.requests.get')
+@patch('SSE_Groupwork.app.requests.get')
 def test_class_api(mock_get):
     """
     Test that the class API correctly fetches class data and returns expected values.
@@ -46,7 +46,7 @@ def test_class_api(mock_get):
 
 
 # Test invalid response (non-200 status code)
-@patch('app.requests.get')
+@patch('SSE_Groupwork.app.requests.get')
 def test_api_invalid_status_code(mock_get):
     """
     Test the API response when an invalid status code is returned (e.g., 404).
@@ -62,7 +62,7 @@ def test_api_invalid_status_code(mock_get):
 
 
 # Test API with no data (empty response)
-@patch('app.requests.get')
+@patch('SSE_Groupwork.app.requests.get')
 def test_api_empty_response(mock_get):
     """
     Test the API when it returns an empty response.
@@ -80,7 +80,7 @@ def test_api_empty_response(mock_get):
 
 
 # Test API with malformed JSON (e.g., missing expected fields)
-@patch('app.requests.get')
+@patch('SSE_Groupwork.app.requests.get')
 def test_api_malformed_json(mock_get):
     """
     Test the API when it returns malformed JSON.
@@ -100,7 +100,7 @@ def test_api_malformed_json(mock_get):
 
 
 # Test API handling of network errors (requests exceptions)
-@patch('app.requests.get')
+@patch('SSE_Groupwork.app.requests.get')
 def test_api_network_error(mock_get):
     """
     Test handling of network errors, such as a timeout or connection error.
@@ -114,7 +114,7 @@ def test_api_network_error(mock_get):
 
 
 # Test API with incorrect URL (404 Not Found)
-@patch('app.requests.get')
+@patch('SSE_Groupwork.app.requests.get')
 def test_api_invalid_url(mock_get):
     """
     Test the API with an invalid URL that should return a 404 error.

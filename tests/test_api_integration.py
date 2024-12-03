@@ -3,7 +3,7 @@ import requests
 from unittest.mock import patch
 
 # Test species API
-@patch('app.requests.get')
+@patch('SSE_Groupwork.app.requests.get')
 def test_race_api(mock_get):
     mock_get.return_value.status_code = 200
     mock_get.return_value.json.return_value = {
@@ -16,7 +16,7 @@ def test_race_api(mock_get):
     assert "Dwarf" in response.json()["results"][1]["name"]
 
 # Test class API
-@patch('app.requests.get')
+@patch('SSE_Groupwork.app.requests.get')
 def test_class_api(mock_get):
     mock_get.return_value.status_code = 200
     mock_get.return_value.json.return_value = {
