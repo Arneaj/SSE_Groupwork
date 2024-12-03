@@ -58,7 +58,21 @@
                                 HP: {{player.current_HP}}/{{player.max_HP}}
                             </li>
                             <li>
-                                Abilities: {% for ithability in player.ability %} {{ithability}} {% endfor %}
+                                <table>
+                                    <tr>
+                                        <th>Strength</th>
+                                        <th>Dexterity</th>
+                                        <th>Const.</th>
+                                        <th>Intell.</th>
+                                        <th>Wisdom</th>
+                                        <th>Charisma</th>
+                                    </tr>
+                                    <tr>
+                                        {% for ithability in player.ability %} 
+                                        <td>{{ithability}}</td>
+                                        {% endfor %}
+                                    </tr>
+                                </table>
                             </li>
                         </ul>
                     {% endfor %}
@@ -70,13 +84,13 @@
                     <input type="number" name="challenge" id="challenge" style="width:15%;">
 
                     <a id="searchMonsterLink" href="#">
-                    <button style="position: absolute; top: 21%; left: 30%;"> 
+                    <button style="position: absolute; top: 100px; left: 30%;"> 
                             Search 
                     </button>
                     </a>
 
-                    <label style="position: absolute; top: 14%; left: 55%;">List of monsters with that level: </label>
-                    <select style="position: absolute; top: 21%; left: 55%;"
+                    <label style="position: absolute; top: 75px; left: 55%;">List of monsters with that level: </label>
+                    <select style="position: absolute; top: 100px; left: 55%;"
                             id="monster-select"
                             onchange="fetchMonsterDetails(this.value)">
                         <option>Select one</option>
@@ -85,10 +99,31 @@
                         {% endfor %}
                     </select>
 
-                    <p> Monster details </p>
+                    <h2> Monster details </h2>
+                    <p id="type">Species: </p>
+                    <p id="alignment">Alignment: </p>
+
                     <p id="monster-hp">HP: </p>
                     <p id="monster-dice">Dice: </p>
 
+                    <table>
+                        <tr>
+                            <th>Strength</th>
+                            <th>Dexterity</th>
+                            <th>Const.</th>
+                            <th>Intell.</th>
+                            <th>Wisdom</th>
+                            <th>Charisma</th>
+                        </tr>
+                        <tr>
+                            <td id="str"></td>
+                            <td id="dex"></td>
+                            <td id="con"></td>
+                            <td id="int"></td>
+                            <td id="wis"></td>
+                            <td id="cha"></td>
+                        </tr>
+                    </table>
 
                 </div>
             </div>
@@ -135,8 +170,18 @@
             const data = await response.json();
   
             // Update the page with monster details
+            document.getElementById("type").textContent = `Species: ${data.type}`;
+            document.getElementById("alignment").textContent = `Alignment: ${data.alignment}`;
+
             document.getElementById("monster-hp").textContent = `HP: ${data.hit_points}`;
             document.getElementById("monster-dice").textContent = `Attack: ${data.hit_dice}`;
+
+            document.getElementById("str").textContent = `${data.strength}`;
+            document.getElementById("dex").textContent = `${data.dexterity}`;
+            document.getElementById("con").textContent = `${data.constitution}`;
+            document.getElementById("int").textContent = `${data.intelligence}`;
+            document.getElementById("wis").textContent = `${data.wisdom}`;
+            document.getElementById("cha").textContent = `${data.charisma}`;
         } catch (error) {
             console.error("Error fetching monster details:", error);
         }
