@@ -3,3 +3,4 @@ venv_sse
 .env
 __pycache__
 *.pyc
+.pytest_cache

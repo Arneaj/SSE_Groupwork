@@ -20,7 +20,6 @@ def test_character_creation_page(client):
 
 
 # Test creating a player with valid data
-@patch('SSE_Groupwork.app.requests.get')
 def test_create_player_valid(mock_get, client):
     """
     Test that the player creation works when valid data is provided.
@@ -42,7 +41,6 @@ def test_create_player_valid(mock_get, client):
 
 
 # Test creating a player with invalid data (empty name)
-@patch('SSE_Groupwork.app.requests.get')
 def test_create_player_invalid_name(mock_get, client):
     """
     Test that the player creation fails when no character name is provided.
@@ -64,7 +62,6 @@ def test_create_player_invalid_name(mock_get, client):
 
 
 # Test creating a player with missing race
-@patch('SSE_Groupwork.app.requests.get')
 def test_create_player_missing_race(mock_get, client):
     """
     Test that the player creation fails when no race is selected.
@@ -86,7 +83,6 @@ def test_create_player_missing_race(mock_get, client):
 
 
 # Test creating a player with missing class
-@patch('SSE_Groupwork.app.requests.get')
 def test_create_player_missing_class(mock_get, client):
     """
     Test that the player creation fails when no class is selected.
@@ -108,7 +104,6 @@ def test_create_player_missing_class(mock_get, client):
 
 
 # Test creating a player with invalid class
-@patch('SSE_Groupwork.app.requests.get')
 def test_create_player_invalid_class(mock_get, client):
     """
     Test that the player creation fails when an invalid class is provided.
@@ -130,7 +125,6 @@ def test_create_player_invalid_class(mock_get, client):
 
 
 # Test creating a player when the race API returns an empty list
-@patch('SSE_Groupwork.app.requests.get')
 def test_create_player_empty_race_list(mock_get, client):
     """
     Test that the player creation fails when the race API returns no available races.
@@ -152,7 +146,6 @@ def test_create_player_empty_race_list(mock_get, client):
 
 
 # Test creating a player when the class API returns an empty list
-@patch('SSE_Groupwork.app.requests.get')
 def test_create_player_empty_class_list(mock_get, client):
     """
     Test that the player creation fails when the class API returns no available classes.
