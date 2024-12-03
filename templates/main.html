@@ -70,13 +70,15 @@
                     <input type="number" name="challenge" id="challenge" style="width:15%;">
 
                     <a id="searchMonsterLink" href="#">
-                    <button style="position: absolute; top: 26%; left: 30%;"> 
+                    <button style="position: absolute; top: 21%; left: 30%;"> 
                             Search 
                     </button>
                     </a>
 
-                    <label style="position: absolute; top: 19%; left: 55%;">List of monsters with that level: </label>
-                    <select style="position: absolute; top: 26%; left: 55%;">
+                    <label style="position: absolute; top: 14%; left: 55%;">List of monsters with that level: </label>
+                    <select style="position: absolute; top: 21%; left: 55%;"
+                            id="monster-select"
+                            onchange="fetchMonsterDetails(this.value)">
                         <option>Select one</option>
                         {% for monster in monsters %}
                         <option value="{{ monster.index }}">{{ monster.name }}</option>
@@ -84,7 +86,8 @@
                     </select>
 
                     <p> Monster details </p>
-                    HP: {{ current_monster }}
+                    <p id="monster-hp">HP: </p>
+                    <p id="monster-dice">Dice: </p>
 
 
                 </div>
@@ -118,4 +121,24 @@
         const gameName = "{{game.name}}"; // Use the existing game name
         searchMonsterLink.href = `/STARTGAME?gameName=${gameName}&challenge_index=${challengeValue}`;
     });
+</script>
+
+<script>
+    async function fetchMonsterDetails(monsterIndex) {
+        if (!monsterIndex) return; // Do nothing if no monster is selected
+  
+        try {
+            // Replace with your API endpoint
+            const response = await fetch(`https://www.dnd5eapi.co/api/monsters/${monsterIndex}`);
+            if (!response.ok) throw new Error("Failed to fetch monster details.");
+    
+            const data = await response.json();
+  
+            // Update the page with monster details
+            document.getElementById("monster-hp").textContent = `HP: ${data.hit_points}`;
+            document.getElementById("monster-dice").textContent = `Attack: ${data.hit_dice}`;
+        } catch (error) {
+            console.error("Error fetching monster details:", error);
+        }
+    }
 </script>
