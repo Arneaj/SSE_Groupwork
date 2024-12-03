@@ -143,7 +143,7 @@ def startGame():
         )
 
 
-@app.route('/game_creation')
+@app.route('/game_creation', methods=["GET", "POST"])
 def create_game():
     return render_template(
         "create_new_game.html")

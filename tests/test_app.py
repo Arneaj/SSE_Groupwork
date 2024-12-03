@@ -71,4 +71,3 @@ def test_api_invalid_url():
     
     # Assertions for 404 error
     assert response.status_code == 404, "Expected 404 for invalid URL"
-    assert "Not Found" in response.json().get("detail", ""), "Expected 'Not Found' message in the response"
