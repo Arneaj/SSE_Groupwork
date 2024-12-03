@@ -1,7 +1,7 @@
 import pytest
 import requests
 from unittest.mock import patch
-from SSE_Groupwork.app import app
+import app
 
 # Test the Race API integration
 @patch('app.requests.get')

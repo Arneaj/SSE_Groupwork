@@ -4,9 +4,9 @@ from sqlalchemy import create_engine, text
 from dotenv import load_dotenv
 import os
 import click
-from game_database import db
-from player import Player
-from cli import create_all, drop_all, populate  # Importing commands
+from .game_database import db
+from .player import Player
+from .cli import create_all, drop_all, populate  # Importing commands
 
 
 app = Flask(__name__, template_folder="templates", static_folder="static")

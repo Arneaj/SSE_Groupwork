@@ -1,8 +1,8 @@
 # File to use cli to access and modify database
-from game_database import db as database
+from .game_database import db as database
 import click
 from flask.cli import with_appcontext
-from player import Player
+from .player import Player
 
 
 @click.command("create_all", help="Create tables")

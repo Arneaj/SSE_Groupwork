@@ -1,5 +1,5 @@
 import pytest
-from SSE_Groupwork.app import app
+import app
 from unittest.mock import patch
 
 # Fixture to provide a test client for making requests to the app
