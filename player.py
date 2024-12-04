@@ -12,4 +12,3 @@ class Player(db.Model):
     skill = db.Column(db.String(100), nullable=False)
     current_health = db.Column(db.Integer, nullable=False)
     max_health = db.Column(db.Integer, nullable=False)
-    game_id = db.Column(db.Integer, nullable=False)
