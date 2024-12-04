@@ -30,12 +30,18 @@
                         <option value="{{ class.index }}">{{ class.name }}</option>
                     {% endfor %}
                 </select>
-
                 <label>Choose a background: </label>
                 <select name="background">
                     <option>select one</option>
                     {% for background in backgrounds %}
                         <option value="{{ background.index }}">{{ background.name }}</option>
+                    {% endfor %}
+                </select>
+                <label>Choose your alignment: </label>
+                <select name="alignment">
+                    <option>select one</option>
+                    {% for alignment in alignments %}
+                        <option value="{{ alignment.index }}">{{ alignment.name }}</option>
                     {% endfor %}
                 </select>
                 
