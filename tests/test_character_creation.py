@@ -18,6 +18,13 @@ def test_character_creation_page(client):
     assert b'Choose race' in response.data, "Expected 'Choose race' to be in the page content"
     assert b'Choose a class' in response.data, "Expected 'Choose a class' to be in the page content"
 
+
+def test_calculate_ability_modifier():
+    assert (determine_ability_modifier(2)) == -4
+    assert (determine_ability_modifier(7)) == -2
+    assert (determine_ability_modifier(15)) == 2
+    assert (determine_ability_modifier(20)) == 5
+
 """
 # Test creating a player with valid data
 def test_create_player_valid(mock_get, client):
