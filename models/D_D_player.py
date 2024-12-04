@@ -8,7 +8,7 @@ class DungeonsandDragons_player(db.Model):
     race = db.Column(db.String(100), nullable=False)
     class_name = db.Column(db.String(100), nullable=False)
     alignment = db.Column(db.String(100), nullable=False)
-    abilities = db.Column(db.Integer(100), nullable=False)
+    abilities = db.Column(db.Integer, nullable=False)
     skill = db.Column(db.String(100), nullable=False)
     current_health = db.Column(db.Integer, nullable=False)
     max_health = db.Column(db.Integer, nullable=False)

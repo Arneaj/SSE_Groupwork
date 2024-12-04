@@ -7,6 +7,8 @@ import click
 from .game_database import db
 from .player import Player
 from .game import Game
+from .models.D_D_game import DungeonsandDragons_game
+from .models.D_D_player import DungeonsandDragons_player
 
 # from .cli import create_all, drop_all, populate  # Importing commands
 
@@ -112,10 +114,10 @@ def startGame():
     game_name_input = request.args.get("gameName")
     
     # get the game from the database
-    passed_game = db.get_or_404( "game_data", 0 )
+    passed_game = db.get_or_404( DungeonsandDragons_game, 0 )
             
     # get the players of that game from the database
-    passed_players = [ db.get_or_404( "player_data", player_id ) for player_id in passed_game.player_id ] 
+    passed_players = [ db.get_or_404( DungeonsandDragons_player, player_id ) for player_id in passed_game.player_id ] 
     
     # here should be API request to get the actual game we want
     # from the game_name !
