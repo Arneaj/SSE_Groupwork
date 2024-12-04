@@ -15,7 +15,7 @@ app = Flask(__name__, template_folder="templates", static_folder="static")
 load_dotenv() # Loading the environment variables
 
 # Configuring database
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///gmboard.db" # SQLite URL
+app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql://avr24:f61Q%T421>i@db.doc.ic.ac.uk/avr24" # psql URL
 app.config["DND_API_KEY"] = os.getenv("DND_API_KEY")
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 

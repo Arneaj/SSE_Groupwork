@@ -4,8 +4,9 @@ from .game_database import db as database
 import click
 from flask.cli import with_appcontext
 from .player import Player
+from .game import Game
 
-
+"""
 @click.command("create_all", help="Create tables")
 @with_appcontext
 def create_all():
@@ -48,3 +49,4 @@ def populate():
     for player in initial_player_data:
         database.session.add(player)
     database.session.commit()
+"""
