@@ -11,7 +11,7 @@
                 <input type="text">
 
                 <hr>
-
+                <h3>The Basics</h3>
                 <label>Choose race: </label>
                 <!--Need to make this select list use the api (potentially)-->
                 <select name="race">
@@ -35,23 +35,42 @@
                         <option value="{{ background.index }}">{{ background.name }}</option>
                     {% endfor %}
                 </select>
-
+                
                 <hr>
+                <h3>Ability Scores</h3>
+                <!--<p>Choose your ability scores</p>-->
                 <!--Ability scores-->
                 <!--Will need to add race ability scores to ones chosen-->
                 <!--Need to determine ability modifier depending on ability scores-->
-                <label for="strength">Strength</label>
-                <input type="number" name="strength">
-                <label for="dexterity">Dexterity</label>
-                <input type="number" name="dexterity">
-                <label for="constitution">Constitution</label>
-                <input type="number" name="constitution">
-                <label for="intelligence">Intelligence</label>
-                <input type="number" name="intelligence">
-                <label for="wisdom">Wisdom</label>
-                <input type="number" name="wisdom">
-                <label for="charisma">Charisma</label>
-                <input type="number" name="charisma">
+                <label for="ability1">Strength</label>
+        <select id="ability1" onchange="updateDropdowns()">
+            <!-- Default option with no value -->
+        </select><br>
+
+        <label for="ability2">Dexterity</label>
+        <select id="ability2" onchange="updateDropdowns()">
+            <!-- Default option with no value -->
+        </select><br>
+
+        <label for="ability3">Constitution</label>
+        <select id="ability3" onchange="updateDropdowns()">
+            <!-- Default option with no value -->
+        </select><br>
+
+        <label for="ability4">Intelligence</label>
+        <select id="ability4" onchange="updateDropdowns()">
+            <!-- Default option with no value -->
+        </select><br>
+
+        <label for="ability5">Wisdom</label>
+        <select id="ability5" onchange="updateDropdowns()">
+            <!-- Default option with no value -->
+        </select><br>
+
+        <label for="ability6">Charisma</label>
+        <select id="ability6" onchange="updateDropdowns()">
+            <!-- Default option with no value -->
+        </select><br>
 
                 <!--determine proficiency and saving throws after character creation-->
 
@@ -59,6 +78,6 @@
                 <button name="submit">Save Character</button>
             </form>
         </div>
-
+        <script src="/static/character_form.js"></script>
     </body>
 </html>
