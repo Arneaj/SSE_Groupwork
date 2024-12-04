@@ -174,11 +174,19 @@ def create_player():
 
     backgrounds = backgrounds_response["results"]
 
+    url = "https://www.dnd5eapi.co/api/alignments"
+    response = requests.get(url)
+    if response.status_code == 200:
+        alignments_response = response.json()
+
+    alignments = alignments_response["results"]
+
     return render_template(
         'create_new_character.html',
         races=races,
         classes=classes,
         backgrounds=backgrounds,
+        alignments=alignments,
     )
 
 
