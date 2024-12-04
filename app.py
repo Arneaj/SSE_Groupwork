@@ -7,7 +7,8 @@ import click
 from .game_database import db
 from .player import Player
 from .game import Game
-from .cli import create_all, drop_all, populate  # Importing commands
+
+# from .cli import create_all, drop_all, populate  # Importing commands
 
 
 app = Flask(__name__, template_folder="templates", static_folder="static")
@@ -26,6 +27,7 @@ db.init_app(app)
 # Registering blueprints - come back to later! If others don't want we dont have to do this
 # app.register_blueprint(blueprints.collection)
 
+"""
 # Adding commands to access and modify the database
 with app.app_context():
     app.cli.add_command(create_all)
@@ -40,7 +42,7 @@ with app.app_context():
 def collection():
     players = db.Player.query.all() 
     return render_template("main.html", players=players) # Check whether this is correct - not duplicationg
-
+"""
 
 """
 load_dotenv()
@@ -110,20 +112,10 @@ def startGame():
     game_name_input = request.args.get("gameName")
     
     # get the game from the database
-    Games = db.Game.query.all()
-    passed_game = {}
-    
-    for game in Games:
-        if game["name"] == game_name_input:
-            passed_game = game
+    passed_game = db.get_or_404( "game_data", 0 )
             
     # get the players of that game from the database
-    Players = db.Player.query.all() 
-    passed_players = []  
-    
-    for player in Players:
-        if player["name"] in passed_game["players"]:
-            passed_players.append(player)
+    passed_players = [ db.get_or_404( "player_data", player_id ) for player_id in passed_game.player_id ] 
     
     # here should be API request to get the actual game we want
     # from the game_name !
@@ -192,8 +184,8 @@ def create_player():
 
 @app.route('/games_index', methods=["GET", "POST"])
 def games_index():
-    Games = db.Game.query.all()
-    return render_template("games_index.html", games=Games)
+    passed_games = [ db.get_or_404( DungeonsandDragons_game, i ) for i in range(2) ] 
+    return render_template("games_index.html", games=passed_games)
 
 
 # Every character needs:
