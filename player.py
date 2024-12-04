@@ -1,4 +1,4 @@
-# File to create a player database
+# File to create a player table
 
 from .game_database import db
 
@@ -12,4 +12,3 @@ class Player(db.Model):
     skill = db.Column(db.String(100), nullable=False)
     current_health = db.Column(db.Integer, nullable=False)
     max_health = db.Column(db.Integer, nullable=False)
-    game_id = db.Column(db.Integer, nullable=False)

@@ -19,24 +19,25 @@ def test_game_creation_page(client):
 def test_create_new_game(client):
     # Sending a POST request to create a new game
     response = client.post('/game_creation', data={
-        'gameName': 'Test Game'
+        'gameName': 'TestGame'
     })
     # Assert that the response status is 200 (success) or 302 if it redirects after creation
     assert response.status_code == 200  # or 302 if redirected
     # Check if the page contains 'Start game' which should appear after a successful creation
-    assert b'Start game' in response.data
+    assert b'Start your new game!' in response.data
 
 # Test adding a character to the game
 def test_add_character_to_game(client):
     # First, create the game
     client.post('/game_creation', data={
-        'gameName': 'Test Game'
+        'gameName': 'TestGame'
     })
     
     # Now, add a character to the game (this assumes the game creation page leads to a 'start game' route)
-    response = client.post('/STARTGAME?gameName=Test Game', data={
+    response = client.post('/STARTGAME?gameName=TestGame', data={
         'character': 'TestPlayer'
     })
+    
     # Assert that the response status is 200
     assert response.status_code == 200
     # Check if the page contains the current list of characters in the game
