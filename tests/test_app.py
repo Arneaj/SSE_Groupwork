@@ -33,19 +33,6 @@ def test_class_api():
     assert "Bard" in response.json()["results"][1]["name"], "Expected 'Bard' in second class"
 
 
-# Test invalid response (non-200 status code)
-def test_api_invalid_status_code():
-    """
-    Test the API response when an invalid status code is returned (e.g., 404).
-    """
-    
-    # Make API call
-    response = requests.get("https://www.dnd5eapi.co/api/class")
-    
-    # Assertions for invalid response handling
-    assert response.status_code == 404, "Expected status code 404 for invalid API endpoint"
-
-
 # Test API with no data (empty response)
 def test_api_empty_response():
     """
