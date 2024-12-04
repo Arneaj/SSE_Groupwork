@@ -21,20 +21,22 @@
                 <h1 class="nav-bar"> D&D GM Board </h1>
             </a>
 
-            <ul style="list-style-type: none;">{% for game in games %}
+            <ul style="list-style-type: none;"> 
+                {% for game_players in json_input %}
                 <li class="page box-style">
-                    <h2> {{game.name}} </h2>
+                    <h2> {{game_players.game.game_name}} </h2>
 
-                    <a href="/STARTGAME?gameName={{game.name}}"> 
+                    <a href="/STARTGAME?game_id={{game_players.game.game_id}}"> 
                         <button style="position: absolute; top: 35%; left: 70%;"> Start game </button> 
                     </a>
 
                     <p>
-                        Players: {% for player in game.players %} {{player}} {% endfor %}
+                        Players: {% for player in game_players.players %} {{player.name}} {% endfor %}
                     </p>
                 </li>  
                 <br>              
-            {% endfor %} </ul>     
+                {% endfor %} 
+            </ul>     
         </div>
     </body>
 </html>
