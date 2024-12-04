@@ -25,7 +25,7 @@ db.init_app(app)
 # Registering blueprints - come back to later! If others don't want we dont have to do this
 # app.register_blueprint(blueprints.collection)
 
-# Adding commands to access and modify the database - dont work yet but they will
+# Adding commands to access and modify the database
 with app.app_context():
     app.cli.add_command(create_all)
     app.cli.add_command(populate)
@@ -190,3 +190,62 @@ def create_player():
 def games_index():
     Games = db.Game.query.all()
     return render_template("games_index.html", games=Games)
+
+
+# Every character needs:
+    # name
+    # race
+    # class
+    # background
+    # attribute scores for the 6 attributes
+    # attribute modifiers
+
+def determine_ability_modifier(ability_score):
+    modifier = ability_score - 10
+    modifier = modifier / 2
+    return round(modifier)
+    
+@app.route("/save_player", methods=["GET", "POST"])
+def save_character():
+    # get basic information from the character creation form
+    input_character_name = request.form.get("characterName")
+    input_character_race = request.form.get("race")
+    input_character_class = request.form.get("class")
+    input_character_background = request.form.get("background")
+
+    # get ability scores for the character
+    input_character_strength = request.form.get("ability1")
+    input_character_dexterity = request.form.get("ability2")
+    input_character_constitution = request.form.get("ability3")
+    input_character_intelligence = request.form.get("ability4")
+    input_character_wisdom = request.form.get("ability5")
+    input_character_charisma = request.form.get("ability6")
+
+    # calculate ability modifiers
+    strength_modifier = determine_ability_modifier(input_character_strength)
+    dexterity_modifier = determine_ability_modifier(input_character_dexterity)
+    constitution_modifier = determine_ability_modifier(input_character_constitution)
+    intelligence_modifier = determine_ability_modifier(input_character_intelligence)
+    wisdom_modifier = determine_ability_modifier(input_character_wisdom)
+    charisma_modifier = determine_ability_modifier(input_character_charisma)
+
+    # determine proficiency modifier - if there is time
+
+    # render_template("character.html",
+    #     name=input_character_name,
+    #     race=input_character_race,
+    #     charClass=input_character_class,
+    #     background=input_character_background,
+    #     strength=input_character_strength,
+    #     dexterity=input_character_dexterity,
+    #     constitution=input_character_constitution,
+    #     intelligence=input_character_intelligence,
+    #     wisdom=input_character_wisdom,
+    #     charisma=input_character_charisma,
+    #     strength_modifier=strength_modifier,
+    #     dexterity_modifier=dexterity_modifier,
+    #     constitution_modifier=constitution_modifier,
+    #     intelligence_modifier=intelligence_modifier,
+    #     wisdom_modifier=wisdom_modifier,
+    #     charisma_modifier=charisma_modifier,
+    #     )
