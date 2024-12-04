@@ -1,11 +1,4 @@
-from flask import Blueprint (
-    Blueprint,
-    render_template,
-    redirect,
-    url_for,
-    request,
-    current_app,
-)
+from flask import Blueprint, render_template, redirect, url_for, request
 
 from sqlalchemy import select
 
