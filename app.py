@@ -123,7 +123,8 @@ def startGame():
         if player["name"] in passed_game["players"]:
             passed_players.append(player)
     
-    # here should be API request to get the actual game we want from the game_name !
+    # here should be API request to get the actual game we want
+    # from the game_name !
     
     # here get the monsters
     challenge_rating_input = request.args.get("challenge_index")
@@ -131,7 +132,8 @@ def startGame():
     if challenge_rating_input == None:
         challenge_rating_input = 0
     
-    url = f'https://www.dnd5eapi.co/api/monsters?challenge_rating={challenge_rating_input}'
+    url = f'https://www.dnd5eapi.co/api/monsters?challenge_rating=\
+        {challenge_rating_input}'
     response = requests.get(url)
     if response.status_code == 200:
         monsters_response = response.json()
@@ -204,6 +206,16 @@ def determine_ability_modifier(ability_score):
     modifier = ability_score - 10
     modifier = modifier / 2
     return round(modifier)
+
+def calculate_hp(class_name, constitution):
+    url = f"https://www.dnd5eapi.co/api/classes/{class_name}"
+    response = requests.get(url)
+    if response.status_code == 200:
+        response_specifc_class = response.json()
+
+    hit_die = response_specifc_class['hit_die']
+    return hit_die + constitution
+
     
 @app.route("/save_player", methods=["GET", "POST"])
 def save_character():
@@ -228,6 +240,8 @@ def save_character():
     intelligence_modifier = determine_ability_modifier(input_character_intelligence)
     wisdom_modifier = determine_ability_modifier(input_character_wisdom)
     charisma_modifier = determine_ability_modifier(input_character_charisma)
+
+    max_hp = calculate_hp()
 
     # determine proficiency modifier - if there is time
 
