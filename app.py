@@ -6,6 +6,7 @@ import os
 import click
 from .game_database import db
 from .player import Player
+from .game import Game
 from .cli import create_all, drop_all, populate  # Importing commands
 
 
@@ -37,8 +38,9 @@ with app.app_context():
 
 @app.route("/player_data")
 def collection():
-    players = Player.query.all() 
+    players = db.Player.query.all() 
     return render_template("main.html", players=players) # Check whether this is correct - not duplicationg
+
 
 """
 load_dotenv()
@@ -123,7 +125,8 @@ def startGame():
         if player["name"] in passed_game["players"]:
             passed_players.append(player)
     
-    # here should be API request to get the actual game we want from the game_name !
+    # here should be API request to get the actual game we want
+    # from the game_name !
     
     # here get the monsters
     challenge_rating_input = request.args.get("challenge_index")
@@ -131,7 +134,8 @@ def startGame():
     if challenge_rating_input == None:
         challenge_rating_input = 0
     
-    url = f'https://www.dnd5eapi.co/api/monsters?challenge_rating={challenge_rating_input}'
+    url = f'https://www.dnd5eapi.co/api/monsters?challenge_rating=\
+        {challenge_rating_input}'
     response = requests.get(url)
     if response.status_code == 200:
         monsters_response = response.json()
@@ -155,7 +159,7 @@ def create_game():
 def create_player():
     # got to api and get all information that is needed
 
-    # get races
+    # get races - Note we called them species in database and app
     url = "https://www.dnd5eapi.co/api/races"
     response = requests.get(url)
     if response.status_code == 200:
@@ -204,6 +208,16 @@ def determine_ability_modifier(ability_score):
     modifier = ability_score - 10
     modifier = modifier / 2
     return round(modifier)
+
+def calculate_hp(class_name, constitution):
+    url = f"https://www.dnd5eapi.co/api/classes/{class_name}"
+    response = requests.get(url)
+    if response.status_code == 200:
+        response_specifc_class = response.json()
+
+    hit_die = response_specifc_class['hit_die']
+    return hit_die + constitution
+
     
 @app.route("/save_player", methods=["GET", "POST"])
 def save_character():
@@ -228,6 +242,8 @@ def save_character():
     intelligence_modifier = determine_ability_modifier(input_character_intelligence)
     wisdom_modifier = determine_ability_modifier(input_character_wisdom)
     charisma_modifier = determine_ability_modifier(input_character_charisma)
+
+    max_hp = calculate_hp()
 
     # determine proficiency modifier - if there is time
 
