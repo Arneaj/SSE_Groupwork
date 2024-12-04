@@ -1,4 +1,4 @@
-# File to create a player database
+# File to create a player table
 
 from .game_database import db
 
