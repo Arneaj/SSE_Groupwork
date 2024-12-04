@@ -7,6 +7,8 @@ import click
 from .game_database import db
 from .player import Player
 from .game import Game
+from .models.D_D_game import game_data
+from .models.D_D_player import player_data
 
 # from .cli import create_all, drop_all, populate  # Importing commands
 
@@ -109,25 +111,21 @@ def index():
 @app.route('/STARTGAME', methods=["GET", "POST"])
 def startGame():
     # get the game from the request
-    game_name_input = request.args.get("gameName")
-    
+    game_id_input = request.args.get("game_id")
+
     # get the game from the database
-    passed_game = db.get_or_404( "game_data", 0 )
-            
+    passed_game = db.get_or_404( game_data, game_id_input )
+
     # get the players of that game from the database
-    passed_players = [ db.get_or_404( "player_data", player_id ) for player_id in passed_game.player_id ] 
-    
-    # here should be API request to get the actual game we want
-    # from the game_name !
-    
+    passed_players = [ db.get_or_404( player_data, player_id ) for player_id in passed_game.player_id ]
+
     # here get the monsters
     challenge_rating_input = request.args.get("challenge_index")
-    
+
     if challenge_rating_input == None:
         challenge_rating_input = 0
-    
-    url = f'https://www.dnd5eapi.co/api/monsters?challenge_rating=\
-        {challenge_rating_input}'
+
+    url = f'https://www.dnd5eapi.co/api/monsters?challenge_rating={challenge_rating_input}'
     response = requests.get(url)
     if response.status_code == 200:
         monsters_response = response.json()
@@ -192,8 +190,28 @@ def create_player():
 
 @app.route('/games_index', methods=["GET", "POST"])
 def games_index():
-    passed_games = [ db.get_or_404( DungeonsandDragons_game, i ) for i in range(2) ] 
-    return render_template("games_index.html", games=passed_games)
+    passed_games = [] 
+    
+    i = 0
+    while True:
+        current_db = db.session.get( game_data, i )
+        if current_db == None: break
+        passed_games.append(current_db)
+        i += 1
+    
+    passed_players = [ [ db.get_or_404( player_data, player_id ) for player_id in passed_game.player_id ] for passed_game in passed_games ]
+    
+    passed_json = []
+    
+    for i in range(len(passed_games)):
+        passed_json.append(
+            {
+                "game": passed_games[i],
+                "players": passed_players[i]
+            }
+        )
+    
+    return render_template("games_index.html", json_input=passed_json)
 
 
 # Every character needs:
@@ -204,8 +222,17 @@ def games_index():
     # attribute scores for the 6 attributes
     # attribute modifiers
 
-def determine_ability_modifier(ability_score):
-    modifier = ability_score - 10
+def determine_ability_modifier(ability_score, race):
+    url = f"https://www.dnd5eapi.co/api/races/{race}"
+    response = requests.get(url)
+    if response.status_code == 200:
+        response_specifc_race = response.json()
+
+    race_modifier = 0
+
+    #race_modifier = response_specifc_race[ability]["bonus"] # strength
+
+    modifier = (ability_score + race_modifier) - 10
     modifier = modifier / 2
     return round(modifier)
 
@@ -236,12 +263,12 @@ def save_character():
     input_character_charisma = request.form.get("ability6")
 
     # calculate ability modifiers
-    strength_modifier = determine_ability_modifier(input_character_strength)
-    dexterity_modifier = determine_ability_modifier(input_character_dexterity)
-    constitution_modifier = determine_ability_modifier(input_character_constitution)
-    intelligence_modifier = determine_ability_modifier(input_character_intelligence)
-    wisdom_modifier = determine_ability_modifier(input_character_wisdom)
-    charisma_modifier = determine_ability_modifier(input_character_charisma)
+    strength_modifier = determine_ability_modifier(input_character_strength, input_character_race)
+    dexterity_modifier = determine_ability_modifier(input_character_dexterity, input_character_race)
+    constitution_modifier = determine_ability_modifier(input_character_constitution, input_character_race)
+    intelligence_modifier = determine_ability_modifier(input_character_intelligence, input_character_race)
+    wisdom_modifier = determine_ability_modifier(input_character_wisdom, input_character_race)
+    charisma_modifier = determine_ability_modifier(input_character_charisma, input_character_race)
 
     max_hp = calculate_hp()
 
