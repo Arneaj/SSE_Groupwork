@@ -25,7 +25,7 @@ db.init_app(app)
 # Registering blueprints - come back to later! If others don't want we dont have to do this
 # app.register_blueprint(blueprints.collection)
 
-# Adding commands to access and modify the database - dont work yet but they will
+# Adding commands to access and modify the database
 with app.app_context():
     app.cli.add_command(create_all)
     app.cli.add_command(populate)
