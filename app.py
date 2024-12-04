@@ -206,8 +206,17 @@ def games_index():
     # attribute scores for the 6 attributes
     # attribute modifiers
 
-def determine_ability_modifier(ability_score):
-    modifier = ability_score - 10
+def determine_ability_modifier(ability_score, race):
+    url = f"https://www.dnd5eapi.co/api/races/{race}"
+    response = requests.get(url)
+    if response.status_code == 200:
+        response_specifc_race = response.json()
+
+    race_modifier = 0
+
+    #race_modifier = response_specifc_race[ability]["bonus"] # strength
+
+    modifier = (ability_score + race_modifier) - 10
     modifier = modifier / 2
     return round(modifier)
 
@@ -238,12 +247,12 @@ def save_character():
     input_character_charisma = request.form.get("ability6")
 
     # calculate ability modifiers
-    strength_modifier = determine_ability_modifier(input_character_strength)
-    dexterity_modifier = determine_ability_modifier(input_character_dexterity)
-    constitution_modifier = determine_ability_modifier(input_character_constitution)
-    intelligence_modifier = determine_ability_modifier(input_character_intelligence)
-    wisdom_modifier = determine_ability_modifier(input_character_wisdom)
-    charisma_modifier = determine_ability_modifier(input_character_charisma)
+    strength_modifier = determine_ability_modifier(input_character_strength, input_character_race)
+    dexterity_modifier = determine_ability_modifier(input_character_dexterity, input_character_race)
+    constitution_modifier = determine_ability_modifier(input_character_constitution, input_character_race)
+    intelligence_modifier = determine_ability_modifier(input_character_intelligence, input_character_race)
+    wisdom_modifier = determine_ability_modifier(input_character_wisdom, input_character_race)
+    charisma_modifier = determine_ability_modifier(input_character_charisma, input_character_race)
 
     max_hp = calculate_hp()
 
