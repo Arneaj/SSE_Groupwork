@@ -7,7 +7,7 @@ class player_data(db.Model):
     name = db.Column(db.String(100), nullable=False)
     race = db.Column(db.String(100), nullable=False)
     class_name = db.Column(db.String(100), nullable=False)
-    alignment = db.Column(db.String(100), nullable=False)
+    alignement = db.Column(db.String(100), nullable=False)
     abilities = db.Column(db.Integer(100), nullable=False)
     skill = db.Column(db.String(100), nullable=False)
     current_health = db.Column(db.Integer, nullable=False)

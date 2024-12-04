@@ -25,6 +25,8 @@ def test_calculate_ability_modifier():
     assert (determine_ability_modifier(15)) == 2
     assert (determine_ability_modifier(20)) == 5
 
+
+
 """
 # Test creating a player with valid data
 def test_create_player_valid(mock_get, client):
