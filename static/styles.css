@@ -58,3 +58,8 @@ a:active { text-decoration: none; }
 .inline {
     display: inline;
 }
+
+.characterPadding {
+    padding-left: 50px;
+    padding-right: 50px;
+}
