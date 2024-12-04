@@ -109,7 +109,7 @@ def startGame():
     
     # get the game from the database
     Games = db.Game.query.all()
-    passed_game = Games[0]  
+    passed_game = {}
     
     for game in Games:
         if game["name"] == game_name_input:
@@ -188,6 +188,7 @@ def create_player():
 
 @app.route('/games_index', methods=["GET", "POST"])
 def games_index():
+    Games = db.Game.query.all()
     return render_template("games_index.html", games=Games)
 
 
