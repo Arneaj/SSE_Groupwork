@@ -1,7 +1,7 @@
 from ..database import database as db
 
 # This tells us that the model is a subclass of db.Model
-class DungeonsandDragons_player(db.Model):
+class player_data(db.Model):
     # __tablename__ = "player_data"
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
