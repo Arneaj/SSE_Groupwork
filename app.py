@@ -6,6 +6,7 @@ import os
 import click
 from .game_database import db
 from .player import Player
+from .game import Game
 from .cli import create_all, drop_all, populate  # Importing commands
 
 
@@ -15,7 +16,7 @@ app = Flask(__name__, template_folder="templates", static_folder="static")
 load_dotenv() # Loading the environment variables
 
 # Configuring database
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///gmboard.db" # SQLite URL
+app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql:///gmboard" # Changed to postgresql but was previously sqlite URL
 app.config["DND_API_KEY"] = os.getenv("DND_API_KEY")
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
@@ -37,8 +38,9 @@ with app.app_context():
 
 @app.route("/player_data")
 def collection():
-    players = Player.query.all() 
+    players = db.Player.query.all() 
     return render_template("main.html", players=players) # Check whether this is correct - not duplicationg
+
 
 """
 load_dotenv()
@@ -155,7 +157,7 @@ def create_game():
 def create_player():
     # got to api and get all information that is needed
 
-    # get races
+    # get races - Note we called them species in database and app
     url = "https://www.dnd5eapi.co/api/races"
     response = requests.get(url)
     if response.status_code == 200:
