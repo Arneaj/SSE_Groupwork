@@ -57,7 +57,7 @@ def test_db():
 if __name__ == '__main__':
     app.run(debug=True)
 """
-
+"""
 Games = [
 	{
         "name": "Game1",
@@ -96,6 +96,7 @@ Players = [
         "ability": [ 0,0,0,0,0,0 ]
     }
 ]
+"""
 
 @app.route('/')
 def index():
@@ -107,14 +108,16 @@ def startGame():
     game_name_input = request.args.get("gameName")
     
     # get the game from the database
-    passed_game = Games[0]
+    Games = db.Game.query.all()
+    passed_game = Games[0]  
     
     for game in Games:
         if game["name"] == game_name_input:
             passed_game = game
             
     # get the players of that game from the database
-    passed_players = []
+    Players = db.Player.query.all() 
+    passed_players = []  
     
     for player in Players:
         if player["name"] in passed_game["players"]:
