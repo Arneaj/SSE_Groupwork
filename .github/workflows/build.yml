@@ -30,7 +30,7 @@ env:
   PYTHON_VERSION: "3.12"
   REQUIREMENTS_FILE: "requirements.txt"
 
-# # jobs:
+jobs:
 # #   unit-tests:
 # #     name: Run Unit Tests
 # #     runs-on: ubuntu-latest
