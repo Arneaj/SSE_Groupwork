@@ -1,6 +1,6 @@
 name: Python CI/CD Pipeline
-on: [push]
-jobs:
+# on: [push]
+# jobs:
   # python-formatting:
   #   runs-on: ubuntu-latest
   #   steps:
@@ -18,17 +18,17 @@ jobs:
 
 
 
-# on: 
-#   push:
-# #     branches: 
-# #       - main
-# #   pull_request:
-# #     branches:
-# #       - main
+on: 
+  push:
+    branches: 
+      - main
+  pull_request:
+    branches:
+      - main
 
-# # env:
-# #   PYTHON_VERSION: "3.12"
-# #   REQUIREMENTS_FILE: "requirements.txt"
+env:
+  PYTHON_VERSION: "3.12"
+  REQUIREMENTS_FILE: "requirements.txt"
 
 # # jobs:
 # #   unit-tests:
