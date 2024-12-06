@@ -42,7 +42,6 @@ def populate():
         )
     ]
 
-
     # Add initial player data to the database and commit changes
     for player in initial_player_data:
         database.session.add(player)
