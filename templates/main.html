@@ -37,6 +37,30 @@
                 transform: translate(-20%, 0%);
                 margin: 10px;
             }
+
+            #overlay {
+                position: fixed;
+                display: none;
+                width: 100%;
+                height: 100%;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background-color: rgba(0,0,0,0.5);
+                z-index: 2;
+                cursor: pointer;
+            }
+              
+            #text{
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                font-size: 50px;
+                color: white;
+                transform: translate(-50%,-50%);
+                -ms-transform: translate(-50%,-50%);
+            }
         </style>
     </head>
     <body>
@@ -55,7 +79,7 @@
                         <p value="{{ player.id }}">{{ player.name }}</p>
                         <ul>
                             <li>
-                                HP: {{player.current_health}}/{{player.max_health}}
+                                HP: <div id="{{player.id}}HP" style="display:inline;">{{player.current_health}}</div>/{{player.max_health}}
                             </li>
                             <li>
                                 <table>
@@ -104,7 +128,6 @@
                     <p id="alignment">Alignment: </p>
 
                     <p id="monster-hp">HP: </p>
-                    <p id="monster-dice">Attack: </p>
 
                     <table>
                         <tr>
@@ -142,6 +165,16 @@
                 </div>
             </div>
         </div>
+
+        <div id="overlay" onclick="off()">
+            <div id="text">
+            <p>Overlay Text</p>
+            {% for player in players %}
+            <button style="text-align: center;" onclick="attackPlayer({{player.id}})"> {{player.name}} </button>
+            <br>
+            {% endfor %}
+            </div>
+        </div>
     </body>
 </html>
 
@@ -161,7 +194,8 @@ challengeInput.addEventListener('input', () => {
 </script>
 
 <script>
-async function fetchMonsterDetails(monsterIndex) {
+async function fetchMonsterDetails(monsterIndex) 
+{
     if (!monsterIndex) return; // Do nothing if no monster is selected
 
     try {
@@ -176,7 +210,6 @@ async function fetchMonsterDetails(monsterIndex) {
         document.getElementById("alignment").textContent = `Alignment: ${data.alignment}`;
 
         document.getElementById("monster-hp").textContent = `HP: ${data.hit_points}`;
-        document.getElementById("monster-dice").textContent = `Attack: ${data.hit_points_roll}`;
 
         document.getElementById("str").textContent = `${data.strength}`;
         document.getElementById("dex").textContent = `${data.dexterity}`;
@@ -190,12 +223,16 @@ async function fetchMonsterDetails(monsterIndex) {
 }
 
 monsterList = [];
+
 monsterNamesList = [];
+
 monsterMaxHPList = [];
 monsterHPList = [];
+
 monsterAttacksList = [];
 
-itemList = [];
+current_damage = "1d4";
+
 
 // add a monster to the current interaction
 async function addMonster() 
@@ -226,7 +263,8 @@ async function addMonster()
 }
 
 // remove monster from current interaction
-function removeMonster(monster_id) {
+function removeMonster(monster_id) 
+{
     // Find the index of the player in the array
     const index = monsterList.indexOf( monster_id );
     
@@ -266,7 +304,7 @@ async function displayMonsterList()
 
 
         // Add the item text to the <li>
-        li.textContent = monsterNamesList[index] + ", HP: " + monsterHPList[index] + "/" + monsterMaxHPList[index];
+        li.textContent = `${monsterNamesList[index]}, HP: ${monsterHPList[index]}/${monsterMaxHPList[index]}`;
 
 
         // Create and append the attack buttons
@@ -278,7 +316,7 @@ async function displayMonsterList()
             attackButton.setAttribute("style", "margin: 0px 0px 0px 10px;")
             attackButton.textContent = attack.name;
             attackButton.onclick = function () {
-                attackplayer( int( attack.damage[0].damage_dice ) );
+                on( attack.damage[0].damage_dice );
             };
 
             // Append the remove button to the <li>
@@ -292,5 +330,71 @@ async function displayMonsterList()
         // Append the <li> to the list container
         currentMonsters.appendChild(li);
     });
+}
+
+function attackPlayer( player )
+{
+    const pure_damage = parseDamageString(current_damage);
+
+    const current_hp = Number( document.getElementById(`${player}HP`).textContent )
+
+    document.getElementById(`${player}HP`).textContent = current_hp - pure_damage;
+}
+
+function parseDamageString( damage_string )
+{
+    console.log(damage_string);
+
+    var array = damage_string.split("d");
+
+    if (array.length === 1) return Number( damage_string );
+
+    console.log(array);
+
+    var second_part = array[1]
+    var array2 = second_part.split("+");
+    var array3 = second_part.split("-");
+
+    var dice_max = 0;
+
+    const dice_amount = Number( array[0] );
+    var dice_total_value = 0;
+
+    if (array2.length === 2)
+    {
+        dice_max = Number( array2[0] );
+    } else if (array3.length === 2)
+    {
+        dice_max = Number( array3[0] );
+    } else
+    {
+        dice_max = Number( array[1] );
+    }
+
+    console.log(dice_amount);
+    console.log(dice_max);
+
+    for (var i=0; i<dice_amount; i++)
+    {
+        dice_total_value += Math.floor(Math.random() * dice_max) + 1;
+    }
+
+    console.log(dice_total_value)
+
+    if ( array.length === 3 ) dice_total_value += Number(dice_max);
+
+    console.log(dice_total_value)
+
+    return dice_total_value;
+}
+
+function on( damage_dice )
+{
+    current_damage = damage_dice;
+    document.getElementById("overlay").style.display = "block";
+}
+
+function off() {
+    document.getElementById("overlay").style.display = "none";
 }
 </script>
