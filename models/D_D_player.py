@@ -12,3 +12,15 @@ class player_data(db.Model):
     skill = db.Column(db.String(100), nullable=False)
     current_health = db.Column(db.Integer, nullable=False)
     max_health = db.Column(db.Integer, nullable=False)
+
+    def __repr__(self):
+        return (
+            f"Player('{self.name}', "
+            f"'{self.race}', "
+            f"'{self.class_name}', "
+            f"'{self.alignement}', "
+            f"'{self.abilities}', "
+            f"'{self.skill}', "
+            f"'{self.current_health}', "
+            f"'{self.max_health}')"
+        )

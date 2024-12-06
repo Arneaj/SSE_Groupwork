@@ -1,22 +1,37 @@
 from flask import Flask, render_template, request, jsonify
-import requests
-from sqlalchemy import create_engine, text
-from dotenv import load_dotenv
 import os
-import click
-from .game_database import db
-from .player import Player
-from .game import Game
+from dotenv import load_dotenv
+import requests
+import random
+import blueprint
+from sqlalchemy.orm import joinedload
+from sqlalchemy import create_engine, text
+from .database import database as db
 from .models.D_D_game import game_data
 from .models.D_D_player import player_data
+import click
+from .cli import create_all, drop_all, populate
 
 # from .cli import create_all, drop_all, populate  # Importing commands
 
+def app(testing=False):
+    # Initialise the Flask app
+    app = Flask(__name__, template_folder="templates", static_folder="static")
 
-app = Flask(__name__, template_folder="templates", static_folder="static")
+    if testing:
+        app.config.update(
+            {
+                "TESTING": True,
+                "SECRET_KEY": "testing_key",
+                "SQLALCHEMY_DATABASE_URI": "sqlite:///:memory:",
+                "SQLALCHEMY_TRACK_MODIFICATIONS": False,
+                "DND_API_KEY": os.getenv("DND_API_KEY"),
+            }
+        )
+        db.init_app(app)
+        app.register_blueprint(blueprint.dungeons_and_dragons)
 
-
-load_dotenv() # Loading the environment variables
+    return app
 
 # Configuring database
 app.config["SQLALCHEMY_DATABASE_URI"] = ( "postgresql://avr24:f61Q%T421>i@db.doc.ic.ac.uk/avr24" ) # psql URL
@@ -26,18 +41,15 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 # Initialising database
 db.init_app(app)
 
-# Registering blueprints - come back to later! If others don't want we dont have to do this
-# app.register_blueprint(blueprints.collection)
-
-"""
-# Adding commands to access and modify the database
 with app.app_context():
     app.cli.add_command(create_all)
-    app.cli.add_command(populate)
     app.cli.add_command(drop_all)
-    
+    app.cli.add_command(populate)
+
     # Debugging statement echoing that CLI commands registered
     click.echo("Registered CLI commands successfully.")
+
+"""
 
 
 @app.route("/player_data")
@@ -65,12 +77,12 @@ if __name__ == '__main__':
 """
 """
 Games = [
-	{
+    {
         "name": "Game1",
         "players": ["Molly","Callum","Charlotte","Arnie"] # Still need to link the players from the database once created
     },
 
-	{
+    {
         "name": "Game2",
         "players": ["Molly","Callum","Charlotte"]
     }
@@ -106,7 +118,7 @@ Players = [
 
 @app.route('/')
 def index():
-	return render_template("index.html")
+    return render_template("index.html")
 
 
 @app.route('/process_new_game', methods=["GET", "POST"])
@@ -143,25 +155,25 @@ def process_new_game():
 @app.route('/STARTGAME', methods=["GET", "POST"])
 def startGame():
     # get the game from the request
-    game_id_input = request.args.get("game_id")
-    players_id = request.args.get("playerList")
+    game_name_input = request.args.get("gameName")
     
-    if players_id != None:
-        haha = 2
-
     # get the game from the database
-    passed_game = db.get_or_404( game_data, game_id_input )
-
+    passed_game = db.get_or_404( "game_data", 0 )
+            
     # get the players of that game from the database
-    passed_players = [ db.get_or_404( player_data, player_id ) for player_id in passed_game.player_id ]
-
+    passed_players = [ db.get_or_404( "player_data", player_id ) for player_id in passed_game.player_id ] 
+    
+    # here should be API request to get the actual game we want
+    # from the game_name !
+    
     # here get the monsters
     challenge_rating_input = request.args.get("challenge_index")
-
+    
     if challenge_rating_input == None:
         challenge_rating_input = 0
-
-    url = f'https://www.dnd5eapi.co/api/monsters?challenge_rating={challenge_rating_input}'
+    
+    url = f'https://www.dnd5eapi.co/api/monsters?challenge_rating=\
+        {challenge_rating_input}'
     response = requests.get(url)
     if response.status_code == 200:
         monsters_response = response.json()
@@ -174,7 +186,6 @@ def startGame():
         players=passed_players,
         monsters=monsters,
         )
-
 
 @app.route('/game_creation', methods=["GET", "POST"])
 def create_game():
@@ -192,9 +203,10 @@ def create_game():
         players=players
     )
 
-@app.route('/player_creation')
+@app.route('/player_creation', methods=["GET", "POST"])
 def create_player():
-    # got to api and get all information that is needed
+
+    # go to api and get all information that is needed
 
     # get races - Note we called them species in database and app
     url = "https://www.dnd5eapi.co/api/races"
@@ -234,32 +246,10 @@ def create_player():
         alignments=alignments,
     )
 
-
 @app.route('/games_index', methods=["GET", "POST"])
 def games_index():
-    passed_games = [] 
-    
-    i = 0
-    while True:
-        current_db = db.session.get( game_data, i )
-        if current_db == None: break
-        passed_games.append(current_db)
-        i += 1
-    
-    passed_players = [ [ db.get_or_404( player_data, player_id ) for player_id in passed_game.player_id ] for passed_game in passed_games ]
-    
-    passed_json = []
-    
-    for i in range(len(passed_games)):
-        passed_json.append(
-            {
-                "game": passed_games[i],
-                "players": passed_players[i]
-            }
-        )
-    
-    return render_template("games_index.html", json_input=passed_json)
-
+    passed_games = [ db.get_or_404( game_data, i ) for i in range(2) ] 
+    return render_template("games_index.html", games=passed_games)
 
 # Every character needs:
     # name
@@ -268,29 +258,30 @@ def games_index():
     # background
     # attribute scores for the 6 attributes
     # attribute modifiers
+ 
+def determine_ability_modifier(ability_score):
+    return round(ability_score - 10) // 2
 
-def determine_ability_modifier(ability_score, race):
-    url = f"https://www.dnd5eapi.co/api/races/{race}"
-    response = requests.get(url)
-    if response.status_code == 200:
-        response_specifc_race = response.json()
+def roll_ability_scores():
+    scores = []
+    for i in range(6):
+        rolls = sorted([random.randint(1, 6) for j in range(4)], reverse=True)
+        scores.append(sum(rolls[1:])) # Drop the lowest roll and keep the rest
+    return scores
 
-    race_modifier = 0
+def calculate_hp(class_name, constitution_score):
+    constitution_modifier = determine_ability_modifier(constitution_score)
 
-    #race_modifier = response_specifc_race[ability]["bonus"] # strength
-
-    modifier = (ability_score + race_modifier) - 10
-    modifier = modifier / 2
-    return round(modifier)
-
-def calculate_hp(class_name, constitution):
+    # Fetch the hit die and constitution modifier from the API
     url = f"https://www.dnd5eapi.co/api/classes/{class_name}"
     response = requests.get(url)
     if response.status_code == 200:
         response_specifc_class = response.json()
+    else: 
+        raise ValueError("Failed to fetch class data.")
 
     hit_die = response_specifc_class['hit_die']
-    return hit_die + constitution
+    return hit_die + constitution_modifier
 
     
 @app.route("/save_player", methods=["GET", "POST"])
@@ -310,14 +301,38 @@ def save_character():
     input_character_charisma = request.form.get("ability6")
 
     # calculate ability modifiers
-    strength_modifier = determine_ability_modifier(input_character_strength, input_character_race)
-    dexterity_modifier = determine_ability_modifier(input_character_dexterity, input_character_race)
-    constitution_modifier = determine_ability_modifier(input_character_constitution, input_character_race)
-    intelligence_modifier = determine_ability_modifier(input_character_intelligence, input_character_race)
-    wisdom_modifier = determine_ability_modifier(input_character_wisdom, input_character_race)
-    charisma_modifier = determine_ability_modifier(input_character_charisma, input_character_race)
+    strength_modifier = determine_ability_modifier(input_character_strength)
+    dexterity_modifier = determine_ability_modifier(input_character_dexterity)
+    constitution_modifier = determine_ability_modifier(input_character_constitution)
+    intelligence_modifier = determine_ability_modifier(input_character_intelligence)
+    wisdom_modifier = determine_ability_modifier(input_character_wisdom)
+    charisma_modifier = determine_ability_modifier(input_character_charisma)
 
-    max_hp = calculate_hp()
+    max_hp = calculate_hp(input_character_class, input_character_constitution)
+
+    new_character = player_data(
+        name=input_character_name,
+        race=input_character_race,
+        char_class=input_character_class,
+        background=input_character_background,
+        strength=input_character_strength,
+        dexterity=input_character_dexterity,
+        constitution=input_character_constitution,
+        intelligence=input_character_intelligence,
+        wisdom=input_character_wisdom,
+        charisma=input_character_charisma,
+        max_hp=max_hp,
+        current_HP=max_hp
+        ability_modifiers = modifiers
+    )
+
+    db.session.add(new_character)
+    db.session.commit()
+
+    return render_template("character.html", character=new_character)
+
+    if __name__ == "__main__":
+        app.run(debug=True)
 
     # determine proficiency modifier - if there is time
 

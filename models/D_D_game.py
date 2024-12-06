@@ -11,3 +11,10 @@ class game_data(db.Model):
         self.game_id = id
         self.game_name = name
         self.player_id = p_ids
+
+    __table_args__ = (
+        db.UniqueConstraint("game_name", "player_id", name="unique_game_name_player_id"),
+    )
+
+    def __repr__(self):
+        return f"Game(game_id={self.game_id}, game_name={self.game_name}, player_id={self.player_id})"
