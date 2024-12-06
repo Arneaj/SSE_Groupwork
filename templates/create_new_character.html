@@ -4,12 +4,21 @@
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/dark.css">
         <link rel="stylesheet" href="/static/styles.css">
         <style>
-            
+            .box-style
+            {
+                width: 50%;
+                border-radius: 25px;
+                padding: 30px;
+            }
         </style>
     </head>
     <body>
         <div class="container">
-            <form class="page center characterPadding" action="/save_player">
+            <a href="/">
+                <h1 class="nav-bar"> D&D GM Board </h1>
+            </a>
+
+            <form class="page center box-style characterPadding" style="top:90%; align-text: center;" action="/save_player">
                 <label>Character name: </label>
                 <input type="text">
 
