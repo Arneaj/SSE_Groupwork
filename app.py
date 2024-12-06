@@ -3,7 +3,7 @@ import os
 from dotenv import load_dotenv
 import requests
 import random
-import blueprint
+from .Blueprint import dungeons_and_dragons
 from sqlalchemy.orm import joinedload
 from sqlalchemy import create_engine, text
 from .database import database as db
@@ -29,9 +29,11 @@ def app(testing=False):
             }
         )
         db.init_app(app)
-        app.register_blueprint(blueprint.dungeons_and_dragons)
+        app.register_blueprint(dungeons_and_dragons)
 
     return app
+
+app = app()
 
 # Configuring database
 app.config["SQLALCHEMY_DATABASE_URI"] = ( "postgresql://avr24:f61Q%T421>i@db.doc.ic.ac.uk/avr24" ) # psql URL
