@@ -308,11 +308,6 @@ def save_character():
     input_character_class = data.get("class")
     input_character_background = data.get("background")
     input_character_alignment = data.get("alignment")
-    
-    print(input_character_name)
-    print(input_character_race)
-    print(input_character_class)
-    print(input_character_alignment)
 
     # get ability scores for the character
     input_character_strength = int( data.get("ability1") )
@@ -321,13 +316,6 @@ def save_character():
     input_character_intelligence = int( data.get("ability4") )
     input_character_wisdom = int( data.get("ability5") )
     input_character_charisma = int( data.get("ability6") )
-    
-    print(input_character_strength)
-    print(input_character_dexterity)
-    print(input_character_constitution)
-    print(input_character_intelligence)
-    print(input_character_wisdom)
-    print(input_character_charisma)
 
     # calculate ability modifiers
     strength_modifier = determine_ability_modifier(input_character_strength)

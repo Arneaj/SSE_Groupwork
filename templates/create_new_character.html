@@ -103,7 +103,6 @@
 <script>
 document.getElementById('submitPlayer').addEventListener('click', () => {
     try {
-        console.log("hello")
         var playerName = document.getElementById('playerName').value;
         var playerRace = document.getElementById('playerRace').value;
         var playerClass = document.getElementById('playerClass').value;
@@ -115,7 +114,6 @@ document.getElementById('submitPlayer').addEventListener('click', () => {
         var intelligence = document.getElementById('ability4').value;
         var wisdom = document.getElementById('ability5').value;
         var charisma = document.getElementById('ability6').value;
-        console.log("nice_to_meet_you")
 
         fetch(`/save_player`, {
             method: 'POST',
