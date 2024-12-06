@@ -12,12 +12,14 @@ from .models.D_D_player import player_data
 import click
 from .cli import create_all, drop_all, populate
 
-# from .cli import create_all, drop_all, populate  # Importing commands
+# MAY NEED TO IMPLEMENT DROP_ALL IN HERE so we can have nice stuff saved in our tables for the demo
+# from .cli import create_all, drop_all, populate  # Importing commands - commented out as we didn't want to create/drop things every time at one point
 
 def app(testing=False):
     # Initialise the Flask app
     app = Flask(__name__, template_folder="templates", static_folder="static")
 
+    # For testing the app
     if testing:
         app.config.update(
             {
@@ -36,7 +38,7 @@ def app(testing=False):
 app = app()
 
 # Configuring database
-app.config["SQLALCHEMY_DATABASE_URI"] = ( "postgresql://avr24:f61Q%T421>i@db.doc.ic.ac.uk/avr24" ) # psql URL
+app.config["SQLALCHEMY_DATABASE_URI"] = ( "postgresql://avr24:f61Q%T421>i@db.doc.ic.ac.uk/avr24" ) # psql URL - using Arni's personal database
 app.config["DND_API_KEY"] = os.getenv("DND_API_KEY")
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
@@ -119,16 +121,17 @@ Players = [
 ]
 """
 
+# Adding behaviours for different app routes
 @app.route('/')
 def index():
-    return render_template("index.html")
+    return render_template("index.html") # Takes user to landing page
 
 
 @app.route('/process_new_game', methods=["GET", "POST"])
 def process_new_game():
-    data = request.get_json()
-    game_name = data.get('gameName')
-    player_list = data.get('playerList')
+    data = request.get_json() # Gets the json object
+    game_name = data.get('gameName') # Different games
+    player_list = data.get('playerList') # Different players
     
     player_list = [ int(player_id) for player_id in player_list ]
     
@@ -150,24 +153,25 @@ def process_new_game():
     
     return jsonify(game_id= game_id)
 
-
+# The start game page
 @app.route('/STARTGAME', methods=["GET", "POST"])
 def startGame():
-    # get the game from the request
+    # Get the game from the request - game_id is separate to the player id (primary key)
     game_id_input = request.args.get("game_id")
 
-    # get the game from the database
+    # Get the game from the database
     passed_game = db.get_or_404( game_data, game_id_input )
 
-    # get the players of that game from the database
+    # Get the players of that game from the database
     passed_players = [ db.get_or_404( player_data, player_id ) for player_id in passed_game.player_id ]
 
-    # here get the monsters
-    challenge_rating_input = request.args.get("challenge_index")
+    # Gets the monsters
+    challenge_rating_input = request.args.get("challenge_index") # Challenge rating input required for fetching appropriate monsters
 
     if challenge_rating_input == None:
         challenge_rating_input = 0
 
+    # Gets different monsters depending on player's challenge rating input
     url = f'https://www.dnd5eapi.co/api/monsters?challenge_rating={challenge_rating_input}'
     response = requests.get(url)
     if response.status_code == 200:
@@ -175,13 +179,14 @@ def startGame():
 
     monsters = monsters_response["results"]
 
-    return render_template(
+    return render_template( # Takes user to the main page - containing info on game, players, abilities, monsters, dice
         "main.html", 
         game=passed_game, 
         players=passed_players,
         monsters=monsters,
         )
 
+# Functionality for the new game page
 @app.route('/game_creation', methods=["GET", "POST"])
 def create_game():
     players = []
@@ -189,7 +194,7 @@ def create_game():
     id = 0
     current_player = db.session.get( player_data, id )
     while ( current_player ) != None:
-        players.append(current_player)
+        players.append(current_player) # Adds current player details to table
         id+=1
         current_player = db.session.get( player_data, id )
     
@@ -198,27 +203,29 @@ def create_game():
         players=players
     )
 
+# The create player page
 @app.route('/player_creation', methods=["GET", "POST"])
 def create_player():
 
-    # go to api and get all information that is needed
+    # go to api and get all information that is needed - STILL RELEVANT?
 
-    # get races - Note we called them species in database and app
+    # Get races - Note: we called them "species" in database and app
     url = "https://www.dnd5eapi.co/api/races"
-    response = requests.get(url)
+    response = requests.get(url) # Gets the races from the api
     if response.status_code == 200:
         races_response = response.json()
 
-    races = races_response["results"]
+    races = races_response["results"] # Returns the races from the json
 
-    # get classes
+    # Gets DnD classes
     url = "https://www.dnd5eapi.co/api/classes"
     response = requests.get(url)
     if response.status_code == 200:
         classes_response = response.json()
 
-    classes = classes_response["results"]
+    classes = classes_response["results"] # Returns the classes from the json
 
+    # Gets DnD backgrounds
     url = "https://www.dnd5eapi.co/api/backgrounds"
     response = requests.get(url)
     if response.status_code == 200:
@@ -226,6 +233,7 @@ def create_player():
 
     backgrounds = backgrounds_response["results"]
 
+    # Gets alignments
     url = "https://www.dnd5eapi.co/api/alignments"
     response = requests.get(url)
     if response.status_code == 200:
@@ -233,7 +241,7 @@ def create_player():
 
     alignments = alignments_response["results"]
 
-    return render_template(
+    return render_template( # Renders the create new character page
         'create_new_character.html',
         races=races,
         classes=classes,

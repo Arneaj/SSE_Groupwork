@@ -1,9 +1,9 @@
-from ..database import database as db
+from ..database import database as db # Database from parent folder
 
 # This tells us that the model is a subclass of db.Model
 class player_data(db.Model):
     # __tablename__ = "player_data"
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True) # Integer id is used as the primary key, to link tables
     name = db.Column(db.String(100), nullable=False)
     race = db.Column(db.String(100), nullable=False)
     class_name = db.Column(db.String(100), nullable=False)
