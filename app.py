@@ -42,6 +42,7 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 # Initialising database
 db.init_app(app)
+app.register_blueprint(dungeons_and_dragons)
 
 with app.app_context():
     app.cli.add_command(create_all)
@@ -125,15 +126,11 @@ def index():
 
 @app.route('/process_new_game', methods=["GET", "POST"])
 def process_new_game():
-    print("stp fais quelque chose")
-    
     data = request.get_json()
     game_name = data.get('gameName')
     player_list = data.get('playerList')
     
     player_list = [ int(player_id) for player_id in player_list ]
-    
-    print(player_list)
     
     game_id = 0
     while True:
@@ -250,8 +247,28 @@ def create_player():
 
 @app.route('/games_index', methods=["GET", "POST"])
 def games_index():
-    passed_games = [ db.get_or_404( game_data, i ) for i in range(2) ] 
-    return render_template("games_index.html", games=passed_games)
+    passed_games = [] 
+    
+    i = 0
+    while True:
+        current_db = db.session.get( game_data, i )
+        if current_db == None: break
+        passed_games.append(current_db)
+        i += 1
+    
+    passed_players = [ [ db.get_or_404( player_data, player_id ) for player_id in passed_game.player_id ] for passed_game in passed_games ]
+    
+    passed_json = []
+    
+    for i in range(len(passed_games)):
+        passed_json.append(
+            {
+                "game": passed_games[i],
+                "players": passed_players[i]
+            }
+        )
+    
+    return render_template("games_index.html", json_input=passed_json)
 
 # Every character needs:
     # name

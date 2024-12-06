@@ -144,7 +144,8 @@ document.getElementById('submitGame').addEventListener('click', () => {
             return res.json()
           })
         .then((response) => {
-            document.getElementById('submitGameLink').href = `/STARTGAME?game_id=${encodeURIComponent(response.game_id)}`;
+            //document.getElementById('submitGameLink').href = `/STARTGAME?game_id=${encodeURIComponent(response.game_id)}`;
+            window.location.href = `/STARTGAME?game_id=${encodeURIComponent(response.game_id)}`;
         })
     } catch (error) {
         console.error('Error:', error);
