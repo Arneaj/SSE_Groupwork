@@ -1,0 +1,124 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    margin-top: 50px;
+}
+.diceResult {
+    font-size: 3em;
+    margin-top: 10px;
+    font-weight: bold;
+    width: 100px;
+    height: 100px;
+    line-height: 100px;
+    background-color: #a53719;
+    color: white;
+    margin-left: auto;
+    margin-right: auto;
+    display: inline-block;
+    margin-bottom: 10px;
+    cursor: pointer;
+    z-index: 1;
+}
+.line {
+    position: absolute;
+    background-color: black;
+    z-index: 0;
+}
+.line-d4vert {
+    width: 2px;
+    height: 400px;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%)
+}
+/* Special square styling for the D6 dice */
+.diceResult {
+    width: 100px;
+    height: 100px;
+    position: relative;
+    background-color: black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.d4, .d4::after {
+    clip-path: polygon(50% 0%, 100% 71%, 50% 100%, 0 71%);
+}
+
+.d6, .d6::after {
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+}
+
+.d8, .d8::after {
+    clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+}
+
+.d10, .d10::after {
+    clip-path: polygon(0 40%, 50% 0, 100% 40%, 100% 60%, 50% 100%, 0 60%);
+}
+
+.d12, .d12::after {
+    clip-path: polygon(
+        50% 0%, 80% 10%, 100% 35%, 100% 70%, 80% 90%, 
+        50% 100%, 20% 90%, 0% 70%, 0% 35%, 20% 10%, 
+        50% 0%, 70% 5% 
+    );
+}
+.d20, .d20::after {
+    clip-path: polygon(0 20%, 50% 0, 100% 20%, 100% 80%, 50% 100%, 0 80%);
+}
+
+.diceResult::after {
+    content: "";
+    width: 90px;
+    height: 90px;
+    position: absolute;
+    background-color: #3498db;
+    z-index: -1;
+}
+
+
+
+
+.diceWrapper {
+    max-width: 1200px; /* Max width of the dice container */
+    margin-left: auto;
+    margin-right: auto;
+    padding: 20px; /* Optional padding around the dice */
+    box-sizing: border-box; /* Ensure padding does not affect the width */
+}
+.diceContainer {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr); /* Default to 6 dice per row */
+    gap: 10px; /* Reduced gap between dice */
+    margin-bottom: 30px;
+}
+.diceContainer div {
+    text-align: center;
+}
+.diceLabel {
+    font-size: 1.2em;
+    margin-bottom: 5px;
+}
+.diceResult:hover {
+    /*background-color: #a53719; /* Change color on hover */
+}
+
+/* Responsive styles for smaller screens */
+@media (max-width: 1000px) {
+    .diceContainer {
+        grid-template-columns: repeat(3, 1fr); /* 3 dice per row on smaller screens */
+    }
+}
+
+@media (max-width: 650px) {
+    .diceContainer {
+        grid-template-columns: repeat(2, 1fr); /* 2 dice per row on even smaller screens */
+    }
+}
+
+@media (max-width: 400px) {
+    .diceContainer {
+        grid-template-columns: 1fr; /* 1 dice per row on very small screens */
+    }
+}

@@ -4,6 +4,7 @@
         <meta charset="UTF-8">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/dark.css">
         <link rel="stylesheet" href="/static/styles.css">
+        <link rel="stylesheet" href="/static/dice.css">
 
         <style>
             .box-style
@@ -164,6 +165,43 @@
                     <div id="current-monsters"></div>
                 </div>
             </div>
+            <div class="" style="">
+                <div class="page box-style">
+                    <h2>In case you forgot your dice</h2>
+                    
+                        <!-- Dice options displayed in a row with labels above the dice -->
+                        <div class="diceContainer">
+                            <div>
+                                <div class="diceLabel">D4</div>
+                                <div class="diceResult d4" id="resultD4" data-sides="4">?
+                                    <div class="line line-d4vert"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="diceLabel">D6</div>
+                                <div class="diceResult d6" id="resultD6" data-sides="6">?</div>
+                            </div>
+                            <div>
+                                <div class="diceLabel">D8</div>
+                                <div class="diceResult d8" id="resultD8" data-sides="8">?</div>
+                            </div>
+                            <div>
+                                <div class="diceLabel">D10</div>
+                                <div class="diceResult d10" id="resultD10" data-sides="10">?</div>
+                            </div>
+                            <div>
+                                <div class="diceLabel">D12</div>
+                                <div class="diceResult d12" id="resultD12" data-sides="12">?</div>
+                            </div>
+                            <div>
+                                <div class="diceLabel">D20</div>
+                                <div class="diceResult d20" id="resultD20" data-sides="20">?</div>
+                            </div>
+                        </div>
+                    
+
+                </div>
+            </div>
         </div>
 
         <div id="overlay" onclick="off()">
@@ -179,7 +217,7 @@
 </html>
 
 
-
+<script src="/static/dice.js"></script>
 <script>
 // Get the necessary elements
 const challengeInput = document.getElementById('challenge');
