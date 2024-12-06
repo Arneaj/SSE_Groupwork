@@ -154,25 +154,21 @@ def process_new_game():
 @app.route('/STARTGAME', methods=["GET", "POST"])
 def startGame():
     # get the game from the request
-    game_name_input = request.args.get("gameName")
-    
+    game_id_input = request.args.get("game_id")
+
     # get the game from the database
-    passed_game = db.get_or_404( "game_data", 0 )
-            
+    passed_game = db.get_or_404( game_data, game_id_input )
+
     # get the players of that game from the database
-    passed_players = [ db.get_or_404( "player_data", player_id ) for player_id in passed_game.player_id ] 
-    
-    # here should be API request to get the actual game we want
-    # from the game_name !
-    
+    passed_players = [ db.get_or_404( player_data, player_id ) for player_id in passed_game.player_id ]
+
     # here get the monsters
     challenge_rating_input = request.args.get("challenge_index")
-    
+
     if challenge_rating_input == None:
         challenge_rating_input = 0
-    
-    url = f'https://www.dnd5eapi.co/api/monsters?challenge_rating=\
-        {challenge_rating_input}'
+
+    url = f'https://www.dnd5eapi.co/api/monsters?challenge_rating={challenge_rating_input}'
     response = requests.get(url)
     if response.status_code == 200:
         monsters_response = response.json()
