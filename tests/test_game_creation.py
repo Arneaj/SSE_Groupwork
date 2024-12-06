@@ -1,4 +1,4 @@
-'''''''''
+'''
 
 import pytest
 from ..app import *
@@ -90,3 +90,5 @@ def test_start_game_page(client):
     assert b'Test Game' in response.data
     # Check if it displays an option to start the game
     assert b'Start' in response.data
+    
+'''

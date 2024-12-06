@@ -307,6 +307,8 @@ def save_character():
     intelligence_modifier = determine_ability_modifier(input_character_intelligence)
     wisdom_modifier = determine_ability_modifier(input_character_wisdom)
     charisma_modifier = determine_ability_modifier(input_character_charisma)
+    
+    modifiers = [ strength_modifier, dexterity_modifier, constitution_modifier, intelligence_modifier, wisdom_modifier, charisma_modifier]
 
     max_hp = calculate_hp(input_character_class, input_character_constitution)
 
@@ -322,7 +324,7 @@ def save_character():
         wisdom=input_character_wisdom,
         charisma=input_character_charisma,
         max_hp=max_hp,
-        current_HP=max_hp
+        current_HP=max_hp,
         ability_modifiers = modifiers
     )
 

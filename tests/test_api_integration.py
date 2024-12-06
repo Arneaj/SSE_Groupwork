@@ -1,4 +1,4 @@
-'''''''''
+'''
 
 import pytest
 import requests
@@ -18,4 +18,4 @@ def test_class_api():
     assert "Barbarian" in response.json()["results"][0]["name"]
     assert "Bard" in response.json()["results"][1]["name"]
 
-''''''''''
+'''
