@@ -165,6 +165,7 @@
                     <div id="current-monsters"></div>
                 </div>
             </div>
+
             <div class="" style="">
                 <div class="page box-style">
                     <h2>In case you forgot your dice</h2>
@@ -205,10 +206,10 @@
         </div>
 
         <div id="overlay" onclick="off()">
-            <div id="text">
+            <div id="text" style="text-align: center;">
             <p>Overlay Text</p>
             {% for player in players %}
-            <button style="text-align: center;" onclick="attackPlayer({{player.id}})"> {{player.name}} </button>
+            <button onclick="attackPlayer({{player.id}})"> {{player.name}} </button>
             <br>
             {% endfor %}
             </div>
