@@ -108,10 +108,46 @@ Players = [
 def index():
 	return render_template("index.html")
 
+
+@app.route('/process_new_game', methods=["GET", "POST"])
+def process_new_game():
+    print("stp fais quelque chose")
+    
+    data = request.get_json()
+    game_name = data.get('gameName')
+    player_list = data.get('playerList')
+    
+    player_list = [ int(player_id) for player_id in player_list ]
+    
+    print(player_list)
+    
+    game_id = 0
+    while True:
+        current_db = db.session.get( game_data, game_id )
+        if current_db == None: break
+        game_id += 1
+    
+    db.session.add(
+        game_data(
+            game_id,
+            game_name,
+            player_list
+        )
+    )
+    
+    db.session.commit()
+    
+    return jsonify(game_id= game_id)
+
+
 @app.route('/STARTGAME', methods=["GET", "POST"])
 def startGame():
     # get the game from the request
     game_id_input = request.args.get("game_id")
+    players_id = request.args.get("playerList")
+    
+    if players_id != None:
+        haha = 2
 
     # get the game from the database
     passed_game = db.get_or_404( game_data, game_id_input )
@@ -142,8 +178,19 @@ def startGame():
 
 @app.route('/game_creation', methods=["GET", "POST"])
 def create_game():
+    players = []
+    
+    id = 0
+    current_player = db.session.get( player_data, id )
+    while ( current_player ) != None:
+        players.append(current_player)
+        id+=1
+        current_player = db.session.get( player_data, id )
+    
     return render_template(
-        "create_new_game.html")
+        "create_new_game.html",
+        players=players
+    )
 
 @app.route('/player_creation')
 def create_player():

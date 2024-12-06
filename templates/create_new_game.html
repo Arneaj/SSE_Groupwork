@@ -19,42 +19,137 @@
                 <h1 class="nav-bar"> D&D GM Board </h1>
             </a>
 
-            <form class="page center box-style" action="/STARTGAME">
+            <div class="page center box-style">
                 <h1>Create New Game</h1>
                 <label for="gameName">Enter the name of your new game:</label>
-                <input type="text" name="gameName">
+                <input type="text" name="gameName" id="gameName">
             <!--Might need some javascript to get a list of names for players
             when entering player name, if new, add to database, if not access
             name in database-->
-            <div>
-                <label>Select the character you wish to add to your game:</label>
-                <select id="select1">
-                    <option value="Name 1">Name 1</option>
-                    <option value="Name 2">Name 2</option>
-                    <option value="Name 3">Name 3</option>
-                </select>
+                <div>
+                    <label>Select the character you wish to add to your game:</label>
+                    <select id="select1">
+                        {% for player in players %}
+                        <option value="{{player.id}}"> {{player.name}} </option>
+                        {% endfor %}
+                    </select>
 
-                <button id="add-player" type="button" onclick="getPlayer()">Add Player to Game</button>
+                    <button id="add-player" type="button" onclick="getPlayer()">Add Player to Game</button>
 
-                <h3>Current List of Characters in Game:</h3>
-                <ul id="playerListContainer">
-                    <!-- Selected items will appear here -->
-                </ul>
-            </div>  
+                    <h3>Current List of Characters in Game:</h3>
+                    <ul id="playerListContainer">
+                        <!-- Selected items will appear here -->
+                    </ul>
+                </div> 
+
                 <a href="/player_creation">
                     <button type="button"> Create new player </button>
                 </a>
 
                 <br>
+
+                <input style="display: none;" type="number" name="game_id" value=0>
                 
                 <div style="text-align: center;">
+                    <a href="#" id="submitGameLink">
                     <label for="submit"></label>
                     <button id="submitGame" name="submit">Start your new game!</button>
+                    </a>
                 </div>
-                <!--Scripts-->
-                <script src="/static/list_players.js"></script>
                 
-            </form>
+            </div>
         </div>
     </body>
 </html>
+
+<!--Scripts-->
+<script>
+// Array to store players
+var playerNamesList = [];
+var playerList = [];
+
+{% for player in players %}
+playerNamesList.push( "{{player.name}}" );
+{% endfor %}
+            
+// Function to add player selected to list
+function getPlayer() {
+    // Get value of selected input
+    const player_id = document.getElementById("select1").value;
+
+    // Check if the selected value is already in the list
+    if (!playerList.includes( player_id )) {
+        playerList.push( player_id );
+        renderPlayerList();
+    }
+}
+
+// Function to remove player from the list
+function removePlayer(player_id) {
+    // Find the index of the player in the array
+    const index = playerList.indexOf( player_id );
+    
+    if (index !== -1) {
+        // Remove the player from the array
+        playerList.splice( index, 1 );
+        renderPlayerList();
+    }
+}
+
+// Function to render the player list
+function renderPlayerList() {
+    const playerListContainer = document.querySelector('#playerListContainer');
+    playerListContainer.innerHTML = "";
+
+    // Loop through the playerList and create a <li> for each item
+    playerList.forEach(item => {
+        const li = document.createElement("li");
+
+        // Add the item text to the <li>
+        li.textContent = playerNamesList[ item ];
+
+        // Create a "Remove player" button
+        const removeButton = document.createElement("button");
+        removeButton.setAttribute("type", "button")
+        removeButton.setAttribute("style", "margin: 5px 0px 5px 50px;")
+        removeButton.textContent = "Remove";
+        removeButton.onclick = function () {
+            removePlayer( item );
+        };
+
+        // Append the remove button to the <li>
+        li.appendChild(removeButton);
+
+        // Append the <li> to the list container
+        playerListContainer.appendChild(li);
+    });
+}
+
+
+document.getElementById('submitGame').addEventListener('click', () => {
+    try {
+        var gameName = document.getElementById('gameName').value;
+
+        fetch(`/process_new_game`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                gameName: gameName,
+                playerList: playerList,
+            })
+        })
+        .then(res => {
+            return res.json()
+          })
+        .then((response) => {
+            document.getElementById('submitGameLink').href = `/STARTGAME?game_id=${encodeURIComponent(response.game_id)}`;
+        })
+    } catch (error) {
+        console.error('Error:', error);
+    }
+});
+</script>
+
+

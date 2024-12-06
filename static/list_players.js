@@ -40,6 +40,7 @@ function renderPlayerList() {
         // Create a "Remove player" button
         const removeButton = document.createElement("button");
         removeButton.setAttribute("type", "button")
+        removeButton.setAttribute("style", "margin: 5px 0px 5px 50px;")
         removeButton.textContent = "Remove";
         removeButton.onclick = function () {
             removePlayer(item);
@@ -52,3 +53,39 @@ function renderPlayerList() {
         playerListContainer.appendChild(li);
     });
 }
+
+
+
+document.getElementById('submitGame').addEventListener('click', () => {
+    try {
+        var gameName = document.getElementById('gameName').value;
+
+        if (!playerList || !Array.isArray(playerList)) {
+            throw new Error('Player list is invalid or undefined');
+        }
+
+        // Send a POST request to the Flask function
+        const response = fetch(`/process_new_game`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                gameName: gameName,
+                playerList: playerList,
+            }),
+        });
+
+        if (!response.ok) {
+            throw new Error(`Server error: ${response.status}`);
+        }
+
+        const data = response.json();
+        const gameId = data.game_id;
+
+        document.getElementById('submitGame').href = `/STARTGAME?game_id=${encodeURIComponent(gameId)}`;
+
+    } catch (error) {
+        console.error('Error:', error);
+    }
+});
