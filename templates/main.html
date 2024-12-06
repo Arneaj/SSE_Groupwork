@@ -133,22 +133,12 @@
             </div>
 
             <div class="flexboxrow">
-                
-                <div class="page box-style">
-                    <h2>Items</h2>
-
-                    
-                </div>
                 <div class="page box-style">
                     <h2>Current interaction</h2>
 
                     <h3>Monsters to beat</h3>
 
                     <div id="current-monsters"></div>
-
-                    <h3>Items to gain</h3>
-
-                    <div id="current_items"></div>
                 </div>
             </div>
         </div>
@@ -243,6 +233,10 @@ function removeMonster(monster_id) {
     if (index !== -1) {
         // Remove the player from the array
         monsterList.splice( index, 1 );
+        monsterNamesList.splice( index, 1 );
+        monsterMaxHPList.splice( index, 1 );
+        monsterHPList.splice( index, 1 );
+        monsterAttacksList.splice( index, 1 );
 
         displayMonsterList();
     }
@@ -256,6 +250,15 @@ async function displayMonsterList()
 
     // Loop through the playerList and create a <li> for each item
     monsterList.forEach( async item => {
+        const index = monsterList.indexOf( item );
+
+        const li = document.createElement("li");
+        li.setAttribute("style", "display: flex; flex-wrap: wrap;")
+
+        // Add the item text to the <li>
+            li.textContent = monsterNamesList[index];// + ", HP: " + monsterHPList[index] + "/" + monsterMaxHPList[index];
+
+
         // Create a "Remove monster" button
         const removeButton = document.createElement("button");
         removeButton.setAttribute("type", "button")
@@ -265,24 +268,25 @@ async function displayMonsterList()
             removeMonster( item );
         };
 
-        
-        // Create a "Attack player" button
-        const attackButton = document.createElement("button");
-        attackButton.setAttribute("type", "button")
-        attackButton.setAttribute("style", "margin: 5px 0px 5px 50px;")
-        attackButton.textContent = "Attack";
-        attackButton.onclick = function () {
-            attackplayer(  );
-        };
-
-        const li = document.createElement("li");
-
-        // Add the item text to the <li>
-        const index = monsterList.indexOf( item );
-        li.textContent = monsterNamesList[index];// + ", HP: " + monsterHPList[index] + "/" + monsterMaxHPList[index];
-
         // Append the remove button to the <li>
         li.appendChild(removeButton);
+
+
+        // Create and append the attack buttons
+        for (const attack of monsterAttacksList[index])
+        {
+            // Create a "Attack player" button
+            const attackButton = document.createElement("button");
+            attackButton.setAttribute("type", "button")
+            attackButton.setAttribute("style", "margin: 5px 0px 5px 10px;")
+            attackButton.textContent = attack.name;
+            attackButton.onclick = function () {
+                attackplayer( int( attack.damage[0].damage_dice ) );
+            };
+
+            // Append the remove button to the <li>
+            li.appendChild(attackButton);
+        }
 
         // Append the <li> to the list container
         currentMonsters.appendChild(li);
