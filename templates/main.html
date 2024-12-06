@@ -132,7 +132,7 @@
                 </div>
             </div>
 
-            <div class="flexboxrow">
+            <div class="" style="">
                 <div class="page box-style">
                     <h2>Current interaction</h2>
 
@@ -253,10 +253,6 @@ async function displayMonsterList()
         const index = monsterList.indexOf( item );
 
         const li = document.createElement("li");
-        li.setAttribute("style", "display: flex; flex-wrap: wrap;")
-
-        // Add the item text to the <li>
-            li.textContent = monsterNamesList[index];// + ", HP: " + monsterHPList[index] + "/" + monsterMaxHPList[index];
 
 
         // Create a "Remove monster" button
@@ -268,8 +264,9 @@ async function displayMonsterList()
             removeMonster( item );
         };
 
-        // Append the remove button to the <li>
-        li.appendChild(removeButton);
+
+        // Add the item text to the <li>
+        li.textContent = monsterNamesList[index] + ", HP: " + monsterHPList[index] + "/" + monsterMaxHPList[index];
 
 
         // Create and append the attack buttons
@@ -278,7 +275,7 @@ async function displayMonsterList()
             // Create a "Attack player" button
             const attackButton = document.createElement("button");
             attackButton.setAttribute("type", "button")
-            attackButton.setAttribute("style", "margin: 5px 0px 5px 10px;")
+            attackButton.setAttribute("style", "margin: 0px 0px 0px 10px;")
             attackButton.textContent = attack.name;
             attackButton.onclick = function () {
                 attackplayer( int( attack.damage[0].damage_dice ) );
@@ -287,6 +284,10 @@ async function displayMonsterList()
             // Append the remove button to the <li>
             li.appendChild(attackButton);
         }
+
+
+        // Append the remove button to the <li>
+        li.appendChild(removeButton);
 
         // Append the <li> to the list container
         currentMonsters.appendChild(li);
