@@ -301,19 +301,33 @@ def calculate_hp(class_name, constitution_score):
     
 @app.route("/save_player", methods=["GET", "POST"])
 def save_character():
+    data = request.get_json()
     # get basic information from the character creation form
-    input_character_name = request.form.get("characterName")
-    input_character_race = request.form.get("race")
-    input_character_class = request.form.get("class")
-    input_character_background = request.form.get("background")
+    input_character_name = data.get("characterName")
+    input_character_race = data.get("race")
+    input_character_class = data.get("class")
+    input_character_background = data.get("background")
+    input_character_alignment = data.get("alignment")
+    
+    print(input_character_name)
+    print(input_character_race)
+    print(input_character_class)
+    print(input_character_alignment)
 
     # get ability scores for the character
-    input_character_strength = request.form.get("ability1")
-    input_character_dexterity = request.form.get("ability2")
-    input_character_constitution = request.form.get("ability3")
-    input_character_intelligence = request.form.get("ability4")
-    input_character_wisdom = request.form.get("ability5")
-    input_character_charisma = request.form.get("ability6")
+    input_character_strength = int( data.get("ability1") )
+    input_character_dexterity = int( data.get("ability2") )
+    input_character_constitution = int( data.get("ability3") )
+    input_character_intelligence = int( data.get("ability4") )
+    input_character_wisdom = int( data.get("ability5") )
+    input_character_charisma = int( data.get("ability6") )
+    
+    print(input_character_strength)
+    print(input_character_dexterity)
+    print(input_character_constitution)
+    print(input_character_intelligence)
+    print(input_character_wisdom)
+    print(input_character_charisma)
 
     # calculate ability modifiers
     strength_modifier = determine_ability_modifier(input_character_strength)
@@ -326,27 +340,36 @@ def save_character():
     modifiers = [ strength_modifier, dexterity_modifier, constitution_modifier, intelligence_modifier, wisdom_modifier, charisma_modifier]
 
     max_hp = calculate_hp(input_character_class, input_character_constitution)
+    
+    player_id = 0
+    while True:
+        current_db = db.session.get( player_data, player_id )
+        if current_db == None: break
+        player_id += 1
 
     new_character = player_data(
+        id=player_id,
         name=input_character_name,
         race=input_character_race,
-        char_class=input_character_class,
-        background=input_character_background,
-        strength=input_character_strength,
-        dexterity=input_character_dexterity,
-        constitution=input_character_constitution,
-        intelligence=input_character_intelligence,
-        wisdom=input_character_wisdom,
-        charisma=input_character_charisma,
-        max_hp=max_hp,
-        current_HP=max_hp,
-        ability_modifiers = modifiers
+        class_name=input_character_class,
+        alignement=input_character_alignment,
+        abilities=[ input_character_strength,
+                    input_character_dexterity,
+                    input_character_constitution,
+                    input_character_intelligence,
+                    input_character_wisdom,
+                    input_character_charisma
+        ],
+        skill="",
+        current_health=max_hp,
+        max_health=max_hp,
+        #ability_modifiers = modifiers
     )
 
     db.session.add(new_character)
     db.session.commit()
 
-    return render_template("character.html", character=new_character)
+    return jsonify(hello=0) #render_template("character.html", character=new_character)
 
     if __name__ == "__main__":
         app.run(debug=True)

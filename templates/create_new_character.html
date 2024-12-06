@@ -18,36 +18,36 @@
                 <h1 class="nav-bar"> D&D GM Board </h1>
             </a>
 
-            <form class="page center box-style characterPadding" style="top:90%; align-text: center;" action="/save_player">
+            <div class="page center box-style characterPadding" style="top:90%; align-text: center;">
                 <label>Character name: </label>
-                <input type="text">
+                <input type="text" id="playerName">
 
                 <hr>
                 <h3>The Basics</h3>
                 <label>Choose race: </label>
                 <!--Need to make this select list use the api (potentially)-->
-                <select name="race">
+                <select name="race" id="playerRace">
                     <option>select one</option>
                     {% for race in races %}
                         <option value="{{ race.index }}">{{ race.name }}</option>
                     {% endfor %}
-                </select name="class">
+                </select>
                 <label>Choose a class: </label>
-                <select>
+                <select name="class" id="playerClass">
                     <option>select one</option>
                     {% for class in classes %}
                         <option value="{{ class.index }}">{{ class.name }}</option>
                     {% endfor %}
                 </select>
                 <label>Choose a background: </label>
-                <select name="background">
+                <select name="background" id="playerBG">
                     <option>select one</option>
                     {% for background in backgrounds %}
                         <option value="{{ background.index }}">{{ background.name }}</option>
                     {% endfor %}
                 </select>
                 <label>Choose your alignment: </label>
-                <select name="alignment">
+                <select name="alignment" id="playerAlignment">
                     <option>select one</option>
                     {% for alignment in alignments %}
                         <option value="{{ alignment.index }}">{{ alignment.name }}</option>
@@ -61,41 +61,89 @@
                 <!--Will need to add race ability scores to ones chosen-->
                 <!--Need to determine ability modifier depending on ability scores-->
                 <label for="ability1">Strength</label>
-        <select id="ability1" onchange="updateDropdowns()">
-            <!-- Default option with no value -->
-        </select><br>
+                <select id="ability1" onchange="updateDropdowns()">
+                    <!-- Default option with no value -->
+                </select><br>
 
-        <label for="ability2">Dexterity</label>
-        <select id="ability2" onchange="updateDropdowns()">
-            <!-- Default option with no value -->
-        </select><br>
+                <label for="ability2">Dexterity</label>
+                <select id="ability2" onchange="updateDropdowns()">
+                    <!-- Default option with no value -->
+                </select><br>
 
-        <label for="ability3">Constitution</label>
-        <select id="ability3" onchange="updateDropdowns()">
-            <!-- Default option with no value -->
-        </select><br>
+                <label for="ability3">Constitution</label>
+                <select id="ability3" onchange="updateDropdowns()">
+                    <!-- Default option with no value -->
+                </select><br>
 
-        <label for="ability4">Intelligence</label>
-        <select id="ability4" onchange="updateDropdowns()">
-            <!-- Default option with no value -->
-        </select><br>
+                <label for="ability4">Intelligence</label>
+                <select id="ability4" onchange="updateDropdowns()">
+                    <!-- Default option with no value -->
+                </select><br>
 
-        <label for="ability5">Wisdom</label>
-        <select id="ability5" onchange="updateDropdowns()">
-            <!-- Default option with no value -->
-        </select><br>
+                <label for="ability5">Wisdom</label>
+                <select id="ability5" onchange="updateDropdowns()">
+                    <!-- Default option with no value -->
+                </select><br>
 
-        <label for="ability6">Charisma</label>
-        <select id="ability6" onchange="updateDropdowns()">
-            <!-- Default option with no value -->
-        </select><br>
+                <label for="ability6">Charisma</label>
+                <select id="ability6" onchange="updateDropdowns()">
+                    <!-- Default option with no value -->
+                </select><br>
 
                 <!--determine proficiency and saving throws after character creation-->
 
-                <label for="Submit"></label>
-                <button name="submit">Save Character</button>
-            </form>
+                <label for="submitPlayer"></label>
+                <button name="submitPlayer" id="submitPlayer">Save Character</button>
+            </div>
         </div>
         <script src="/static/character_form.js"></script>
     </body>
 </html>
+
+<script>
+document.getElementById('submitPlayer').addEventListener('click', () => {
+    try {
+        console.log("hello")
+        var playerName = document.getElementById('playerName').value;
+        var playerRace = document.getElementById('playerRace').value;
+        var playerClass = document.getElementById('playerClass').value;
+        var playerBG = document.getElementById('playerBG').value;
+        var playerAlignment = document.getElementById('playerAlignment').value;
+        var strength = document.getElementById('ability1').value;
+        var dexterity = document.getElementById('ability2').value;
+        var constitution = document.getElementById('ability3').value;
+        var intelligence = document.getElementById('ability4').value;
+        var wisdom = document.getElementById('ability5').value;
+        var charisma = document.getElementById('ability6').value;
+        console.log("nice_to_meet_you")
+
+        fetch(`/save_player`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                characterName: playerName,
+                race: playerRace,
+                class: playerClass,
+                background: playerBG,
+                alignment: playerAlignment,
+                ability1: strength,
+                ability2: dexterity,
+                ability3: constitution,
+                ability4: intelligence,
+                ability5: wisdom,
+                ability6: charisma
+            })
+        })
+        
+        window.location.href = `/game_creation`;
+
+    } catch (error) {
+        console.error('Error:', error);
+    }
+});
+</script>
+    
+    
+    
