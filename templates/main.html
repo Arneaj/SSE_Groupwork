@@ -80,7 +80,7 @@
                 </div>
                 <div class="monsters page box-style">
                     <h2>Monsters</h2>
-                    <label>Challenge rating: </label>
+                    <label for="challenge">Challenge rating: </label>
                     <input type="number" name="challenge" id="challenge" style="width:15%;">
 
                     <a id="searchMonsterLink" href="#">
@@ -89,7 +89,7 @@
                     </button>
                     </a>
 
-                    <label style="position: absolute; top: 75px; left: 55%;">List of monsters with that level: </label>
+                    <label for="monster-select" style="position: absolute; top: 75px; left: 55%;">List of monsters with that level: </label>
                     <select style="position: absolute; top: 100px; left: 55%;"
                             id="monster-select"
                             onchange="fetchMonsterDetails(this.value)">
@@ -125,6 +125,10 @@
                         </tr>
                     </table>
 
+                    <button id="add-monster-button" onclick="addMonster()">
+                        Add monster
+                    </button>
+
                 </div>
             </div>
 
@@ -135,8 +139,15 @@
 
                 </div>
                 <div class="page box-style">
-                    <h2>Something</h2>
+                    <h2>Current interaction</h2>
 
+                    <h3>Monsters to beat</h3>
+
+                    <div id="current-monsters"></div>
+
+                    <h3>Items to gain</h3>
+
+                    <div id="current_items"></div>
                 </div>
             </div>
         </div>
@@ -146,44 +157,84 @@
 
 
 <script>
-    // Get the necessary elements
-    const challengeInput = document.getElementById('challenge');
-    const searchMonsterLink = document.getElementById('searchMonsterLink');
+// Get the necessary elements
+const challengeInput = document.getElementById('challenge');
+const searchMonsterLink = document.getElementById('searchMonsterLink');
 
-    // Event listener to update the href when input changes
-    challengeInput.addEventListener('input', () => {
-        const challengeValue = challengeInput.value; // Get the input value
-        const game_id = "{{game.game_id}}"; // Use the existing game name
-        searchMonsterLink.href = `/STARTGAME?game_id=${game_id}&challenge_index=${challengeValue}`;
-    });
+// Event listener to update the href when input changes
+challengeInput.addEventListener('input', () => {
+    const challengeValue = challengeInput.value; // Get the input value
+    const game_id = "{{game.game_id}}"; // Use the existing game name
+    searchMonsterLink.href = `/STARTGAME?game_id=${game_id}&challenge_index=${challengeValue}`;
+});
 </script>
 
 <script>
-    async function fetchMonsterDetails(monsterIndex) {
-        if (!monsterIndex) return; // Do nothing if no monster is selected
-  
-        try {
-            // Replace with your API endpoint
-            const response = await fetch(`https://www.dnd5eapi.co/api/monsters/${monsterIndex}`);
-            if (!response.ok) throw new Error("Failed to fetch monster details.");
-    
-            const data = await response.json();
-  
-            // Update the page with monster details
-            document.getElementById("type").textContent = `Species: ${data.type}`;
-            document.getElementById("alignment").textContent = `Alignment: ${data.alignment}`;
+function fetchMonsterDetails(monsterIndex) {
+    if (!monsterIndex) return; // Do nothing if no monster is selected
 
-            document.getElementById("monster-hp").textContent = `HP: ${data.hit_points}`;
-            document.getElementById("monster-dice").textContent = `Attack: ${data.hit_points_roll}`;
+    try {
+        // Replace with your API endpoint
+        const response = fetch(`https://www.dnd5eapi.co/api/monsters/${monsterIndex}`);
+        if (!response.ok) throw new Error("Failed to fetch monster details.");
 
-            document.getElementById("str").textContent = `${data.strength}`;
-            document.getElementById("dex").textContent = `${data.dexterity}`;
-            document.getElementById("con").textContent = `${data.constitution}`;
-            document.getElementById("int").textContent = `${data.intelligence}`;
-            document.getElementById("wis").textContent = `${data.wisdom}`;
-            document.getElementById("cha").textContent = `${data.charisma}`;
-        } catch (error) {
-            console.error("Error fetching monster details:", error);
-        }
+        const data = response.json();
+
+        // Update the page with monster details
+        document.getElementById("type").textContent = `Species: ${data.type}`;
+        document.getElementById("alignment").textContent = `Alignment: ${data.alignment}`;
+
+        document.getElementById("monster-hp").textContent = `HP: ${data.hit_points}`;
+        document.getElementById("monster-dice").textContent = `Attack: ${data.hit_points_roll}`;
+
+        document.getElementById("str").textContent = `${data.strength}`;
+        document.getElementById("dex").textContent = `${data.dexterity}`;
+        document.getElementById("con").textContent = `${data.constitution}`;
+        document.getElementById("int").textContent = `${data.intelligence}`;
+        document.getElementById("wis").textContent = `${data.wisdom}`;
+        document.getElementById("cha").textContent = `${data.charisma}`;
+    } catch (error) {
+        console.error("Error fetching monster details:", error);
     }
+}
+
+monsterList = [];
+itemList = [];
+
+function addMonster() 
+{
+    monster_index = document.getElementById("monster-select").value;
+    if (!monster_index) return; // Do nothing if no monster is selected
+
+    try {
+        // Update the page with monster details
+        monsterList.push(monster_index);
+
+        displayMonsterList();
+    } catch (error) {
+        console.error("Error fetching monster details:", error);
+    }
+}
+
+function displayMonsterList()
+{
+    const currentMonsters = document.querySelector('#current-monsters');
+    currentMonsters.innerHTML = "";
+
+    // Loop through the playerList and create a <li> for each item
+    monsterList.forEach(item => {
+        const response = fetch(`https://www.dnd5eapi.co/api/monsters/${item}`);
+        if (!response.ok) throw new Error("Failed to fetch monster details.");
+
+        const data = response.json();
+
+        const li = document.createElement("li");
+
+        // Add the item text to the <li>
+        li.textContent = data.name;
+
+        // Append the <li> to the list container
+        currentMonsters.appendChild(li);
+    });
+}
 </script>
