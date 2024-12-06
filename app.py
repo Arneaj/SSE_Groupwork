@@ -273,9 +273,26 @@ def games_index():
     # background
     # attribute scores for the 6 attributes
     # attribute modifiers
+
+def get_race_modifier(skill, race):
+    url = f"https://www.dnd5eapi.co/api/races/{race}"
+
+    response = requests.get(url)
+    if response.status_code == 200:
+        specific_race_data = response.json()
+
+    bonuses = specific_race_data.get("ability_bonuses", [])
+
+    for bonus in bonuses:
+        ability = bonus["ability_score"]["name"] # STR
+        if (ability == skill):
+            return bonus["bonus"]
+    # if no modifier for that race and skill, return 0 
+    return 0
  
-def determine_ability_modifier(ability_score):
-    return round(ability_score - 10) // 2
+def determine_ability_modifier(skill, ability_score, race):
+    race_modifier = get_race_modifier(skill, race)
+    return round((ability_score + race_modifier) - 10) // 2
 
 def roll_ability_scores():
     scores = []
@@ -330,12 +347,12 @@ def save_character():
     print(input_character_charisma)
 
     # calculate ability modifiers
-    strength_modifier = determine_ability_modifier(input_character_strength)
-    dexterity_modifier = determine_ability_modifier(input_character_dexterity)
-    constitution_modifier = determine_ability_modifier(input_character_constitution)
-    intelligence_modifier = determine_ability_modifier(input_character_intelligence)
-    wisdom_modifier = determine_ability_modifier(input_character_wisdom)
-    charisma_modifier = determine_ability_modifier(input_character_charisma)
+    strength_modifier = determine_ability_modifier("STR", input_character_strength, input_character_race)
+    dexterity_modifier = determine_ability_modifier("DEX", input_character_dexterity, input_character_race)
+    constitution_modifier = determine_ability_modifier("CON", input_character_constitution, input_character_race)
+    intelligence_modifier = determine_ability_modifier("INT", input_character_intelligence, input_character_race)
+    wisdom_modifier = determine_ability_modifier("WIS", input_character_wisdom, input_character_race)
+    charisma_modifier = determine_ability_modifier("CHA", input_character_charisma, input_character_race)
     
     modifiers = [ strength_modifier, dexterity_modifier, constitution_modifier, intelligence_modifier, wisdom_modifier, charisma_modifier]
 
