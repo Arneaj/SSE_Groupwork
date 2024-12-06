@@ -301,8 +301,8 @@ def roll_ability_scores():
         scores.append(sum(rolls[1:])) # Drop the lowest roll and keep the rest
     return scores
 
-def calculate_hp(class_name, constitution_score):
-    constitution_modifier = determine_ability_modifier(constitution_score)
+def calculate_hp(race_name, class_name, constitution_score):
+    constitution_modifier = determine_ability_modifier("CON", constitution_score, race_name)
 
     # Fetch the hit die and constitution modifier from the API
     url = f"https://www.dnd5eapi.co/api/classes/{class_name}"
@@ -344,7 +344,7 @@ def save_character():
     
     modifiers = [ strength_modifier, dexterity_modifier, constitution_modifier, intelligence_modifier, wisdom_modifier, charisma_modifier]
 
-    max_hp = calculate_hp(input_character_class, input_character_constitution)
+    max_hp = calculate_hp(input_character_race, input_character_class, input_character_constitution)
     
     player_id = 0
     while True:
