@@ -3,29 +3,43 @@
 
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="/static/index.css">
-    <title>DnD Game Tracker Homepage</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/dark.css">
+    <link rel="stylesheet" href="/static/styles.css">
+    <title>SSE Groupwork</title>
+    <style>
+        
+        .page
+        {
+            text-align: center;
+        }
+
+        .box-style
+        {
+            width: 30%;
+            border-radius: 25px;
+            padding: 30px;
+        }
+    </style>
 </head>
 <body>
-    <header>
+    <div class="container">
         <a href="/">
-            <h1 class="nav-bar">Dungeons & Dragons</h1>
+            <h1 class="nav-bar"> D&D GM Board </h1>
         </a>
-        <h2>Dungeon Master Game Tracker</h2>
-    </header>
-    <main class="outer-frame">
-        <div class="frame">
+
+        <div class="page center box-style"> 
+
             <a href="/game_creation">
                 <button class="button"> Create new game </button>
             </a>
-    
+
             <br>
-    
+
             <a href="/games_index">
                 <button class="button"> Load game </button>
             </a>
         </div>
-    </main>
+    </div>
 </body>
 
 </html>
