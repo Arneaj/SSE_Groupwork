@@ -108,12 +108,6 @@
                     <label for="challenge">Challenge rating: </label>
                     <input type="number" name="challenge" id="challenge" style="width:15%;">
 
-                    <a id="searchMonsterLink" href="#">
-                    <button style="position: absolute; top: 100px; left: 30%;"> 
-                            Search 
-                    </button>
-                    </a>
-
                     <label for="monster-select" style="position: absolute; top: 75px; left: 55%;">List of monsters with that level: </label>
                     <select style="position: absolute; top: 100px; left: 55%;"
                             id="monster-select"
@@ -221,7 +215,7 @@
 // Get the necessary elements
 const challengeInput = document.getElementById('challenge');
 const searchMonsterLink = document.getElementById('searchMonsterLink');
-const challengeRating = 0;
+var challengeRating = 0;
 
 
 // Event listener to update the href when input changes
@@ -231,12 +225,12 @@ challengeInput.addEventListener('input', async () => {
 
     challengeRating = challengeInput.value;
 
-    const response = await fetch(`https://www.dnd5eapi.co/api/monsters/${challengeRating}`);
+    const response = await fetch(`https://www.dnd5eapi.co/api/monsters?challenge_rating=${challengeRating}`);
     if (!response.ok) throw new Error("Failed to fetch monster details.");
 
     const data = await response.json();
 
-    data.forEach( async monster => {
+    data.results.forEach( async monster => {
         const option = document.createElement("option");
 
         // Add the item text to the <li>
@@ -246,6 +240,8 @@ challengeInput.addEventListener('input', async () => {
         // Append the <li> to the list container
         currentMonsters.appendChild(option);
     });
+
+    fetchMonsterDetails(data.results[0].index)
 });
 </script>
 
