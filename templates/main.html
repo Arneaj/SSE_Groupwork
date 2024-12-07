@@ -119,9 +119,6 @@
                             id="monster-select"
                             onchange="fetchMonsterDetails(this.value)">
                         <option>Select one</option>
-                        {% for monster in monsters %}
-                        <option value="{{ monster.index }}">{{ monster.name }}</option>
-                        {% endfor %}
                     </select>
 
                     <h2> Monster details </h2>
@@ -207,7 +204,7 @@
 
         <div id="overlay" onclick="off()">
             <div id="text" style="text-align: center;">
-            <p>Overlay Text</p>
+            <p>Choose who to attack</p>
             {% for player in players %}
             <button onclick="attackPlayer({{player.id}})"> {{player.name}} </button>
             <br>
@@ -224,12 +221,31 @@
 // Get the necessary elements
 const challengeInput = document.getElementById('challenge');
 const searchMonsterLink = document.getElementById('searchMonsterLink');
+const challengeRating = 0;
+
 
 // Event listener to update the href when input changes
-challengeInput.addEventListener('input', () => {
-    const challengeValue = challengeInput.value; // Get the input value
-    const game_id = "{{game.game_id}}"; // Use the existing game name
-    searchMonsterLink.href = `/STARTGAME?game_id=${game_id}&challenge_index=${challengeValue}`;
+challengeInput.addEventListener('input', async () => {
+    const currentMonsters = document.querySelector('#monster-select');
+    currentMonsters.innerHTML = "";
+
+    challengeRating = challengeInput.value;
+
+    const response = await fetch(`https://www.dnd5eapi.co/api/monsters/${challengeRating}`);
+    if (!response.ok) throw new Error("Failed to fetch monster details.");
+
+    const data = await response.json();
+
+    data.forEach( async monster => {
+        const option = document.createElement("option");
+
+        // Add the item text to the <li>
+        option.textContent = `${monster.name}`;
+        option.value = `${monster.index}`
+
+        // Append the <li> to the list container
+        currentMonsters.appendChild(option);
+    });
 });
 </script>
 
@@ -432,6 +448,11 @@ function off()
 
 function save()
 {
+    currentHPList = []
+    {% for player in players %}
+    currentHPList.append( Number( document.getElementById(`{{player.id}}HP`).textContent ) )
+    {% endfor %}
+
 
 }
 </script>
