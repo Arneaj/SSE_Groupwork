@@ -241,7 +241,14 @@ challengeInput.addEventListener('input', async () => {
         currentMonsters.appendChild(option);
     });
 
-    fetchMonsterDetails(data.results[0].index)
+    try
+    {
+        fetchMonsterDetails(data.results[0].index);
+    }
+    catch (error)
+    {
+        console.log("No monster in this challenge rating!");
+    }
 });
 </script>
 
@@ -391,6 +398,8 @@ function attackPlayer( player )
     const current_hp = Number( document.getElementById(`${player}HP`).textContent )
 
     document.getElementById(`${player}HP`).textContent = current_hp - pure_damage;
+
+    save();
 }
 
 function parseDamageString( damage_string )
@@ -442,13 +451,33 @@ function off()
     document.getElementById("overlay").style.display = "none";
 }
 
+player_ids = [];
+{% for player in players %}
+player_ids.push({{player.id}});
+{% endfor %}
+
+
 function save()
 {
     currentHPList = []
-    {% for player in players %}
-    currentHPList.append( Number( document.getElementById(`{{player.id}}HP`).textContent ) )
-    {% endfor %}
 
+    player_ids.forEach( id => {
+        currentHPList.push( Number( document.getElementById(`${id}HP`).textContent ) );
+    })
 
+    try {
+        fetch(`/save`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                player_ids: player_ids,
+                currentHPList: currentHPList,
+            })
+        })
+    } catch (error) {
+        console.error("Couldn't save:", error);
+    }
 }
 </script>

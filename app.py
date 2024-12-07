@@ -382,7 +382,7 @@ def save_character():
     db.session.add(new_character)
     db.session.commit()
 
-    return jsonify(hello=0) #render_template("character.html", character=new_character)
+    return jsonify(state=200) #render_template("character.html", character=new_character)
 
     if __name__ == "__main__":
         app.run(debug=True)
@@ -407,3 +407,18 @@ def save_character():
     #     wisdom_modifier=wisdom_modifier,
     #     charisma_modifier=charisma_modifier,
     #     )
+
+
+@app.route("/save", methods=["GET", "POST"])
+def save():
+    data = request.get_json()
+    
+    player_ids = data.get("player_ids")
+    current_HP = data.get("currentHPList")
+    
+    for i, id in enumerate(player_ids):
+        player_data.query.get(id).current_health = current_HP[i]
+        
+    db.session.commit()
+    
+    return jsonify(state=200)
