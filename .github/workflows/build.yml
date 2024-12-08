@@ -28,7 +28,7 @@ jobs:
 
   deploy:
     name: Deploy to Production
-    #needs: [unit-tests, integration-tests, system-tests]
+    needs: tests
     if: success() && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
