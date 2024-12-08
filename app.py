@@ -9,6 +9,7 @@ from sqlalchemy import create_engine, text
 from .database import database as db
 from .models.D_D_game import game_data
 from .models.D_D_player import player_data
+from sqlalchemy.exc import IntegrityError
 import click
 from .cli import create_all, drop_all, populate
 
@@ -189,19 +190,19 @@ def startGame():
 # Functionality for the new game page
 @app.route('/game_creation', methods=["GET", "POST"])
 def create_game():
-    players = []
+    players = db.session.query(player_data).all()  # Fetch all players
+    game_name = request.form.get('gameName')      # Get the game name from the form data
     
-    id = 0
-    current_player = db.session.get( player_data, id )
-    while ( current_player ) != None:
-        players.append(current_player) # Adds current player details to table
-        id+=1
-        current_player = db.session.get( player_data, id )
+    # Ensure the game is created successfully
+    if game_name:
+        return render_template(
+            "create_new_game.html",
+            players=players,
+            game_name=game_name  # Pass the game name to the template
+        )
     
-    return render_template(
-        "create_new_game.html",
-        players=players
-    )
+    # If no game name was provided, render the game creation form (consider returning a 400 response)
+    return render_template("create_new_game.html", players=players)
 
 # The create player page
 @app.route('/player_creation', methods=["GET", "POST"])
@@ -256,11 +257,15 @@ def games_index():
     i = 0
     while True:
         current_db = db.session.get( game_data, i )
-        if current_db == None: break
+        if current_db == None: 
+            break
         passed_games.append(current_db)
         i += 1
     
-    passed_players = [ [ db.get_or_404( player_data, player_id ) for player_id in passed_game.player_id ] for passed_game in passed_games ]
+    passed_players = [ 
+        [ db.get_or_404( player_data, player_id ) for player_id in passed_game.player_id ] 
+        for passed_game in passed_games 
+        ]
     
     passed_json = []
     
@@ -288,15 +293,17 @@ def get_race_modifier(skill, race):
     response = requests.get(url)
     if response.status_code == 200:
         specific_race_data = response.json()
-
-    bonuses = specific_race_data.get("ability_bonuses", [])
-
-    for bonus in bonuses:
-        ability = bonus["ability_score"]["name"] # STR
-        if (ability == skill):
-            return bonus["bonus"]
-    # if no modifier for that race and skill, return 0 
+        if isinstance(specific_race_data, list):  # Check if the response is a list
+            return 0  # No modifier available for the given race
+        bonuses = specific_race_data.get("ability_bonuses", [])
+        if isinstance(bonuses, list):
+            for bonus in bonuses:
+                ability = bonus["ability_score"]["name"]  # e.g., "Strength", "Dexterity", etc
+                if ability.lower() == skill.lower():
+                    return bonus["bonus"]
+    # If no modifier for that race and skill, or if the request fails, return 0
     return 0
+
  
 def determine_ability_modifier(skill, ability_score, race):
     race_modifier = get_race_modifier(skill, race)
@@ -309,83 +316,102 @@ def roll_ability_scores():
         scores.append(sum(rolls[1:])) # Drop the lowest roll and keep the rest
     return scores
 
-def calculate_hp(race_name, class_name, constitution_score):
-    constitution_modifier = determine_ability_modifier("CON", constitution_score, race_name)
+def calculate_hp(class_name, constitution_score, race):
+    constitution_modifier = determine_ability_modifier("Constitution", constitution_score, race)
+
+    if not class_name.startswith("/api/classes/"):
+        class_name = f"/api/classes/{class_name}"
 
     # Fetch the hit die and constitution modifier from the API
-    url = f"https://www.dnd5eapi.co/api/classes/{class_name}"
-    response = requests.get(url)
+    url = f"https://www.dnd5eapi.co{class_name}"
+
+    try:
+        response = requests.get(url)
+        response.raise_for_status() # Raise exception if the request fails
+    except requests.exceptions.RequestException as e:
+        raise ValueError(f"Failed to fetch class data from {url}: {str(e)}")
+    
+    # If the response is successful, extract the hit die
     if response.status_code == 200:
         response_specifc_class = response.json()
+        if isinstance(response_specifc_class, list) and len(response_specifc_class) > 0:
+            hit_die = response_specifc_class[0].get('hit_die', 0) # Default to 0 if not found
+        else:
+            hit_die = 0 # No valid hit die found, use default
     else: 
-        raise ValueError("Failed to fetch class data.")
+        raise ValueError(f"Failed to fetch class data. Status code: {response.status_code}")
 
-    hit_die = response_specifc_class['hit_die']
     return hit_die + constitution_modifier
-
     
-@app.route("/save_player", methods=["GET", "POST"])
+@app.route("/save_player", methods=["POST"])
 def save_character():
     data = request.get_json()
-    # get basic information from the character creation form
+
+    # Validate required fields
+    if not data.get("characterName"):
+        return jsonify({"error": "Character name is required"}), 400
+
+    if not data.get("race"):
+        return jsonify({"error": "Race is required"}), 400
+
+    if not data.get("class"):
+        return jsonify({"error": "Class is required"}), 400
+
+    # Get basic information from the character creation form
     input_character_name = data.get("characterName")
     input_character_race = data.get("race")
     input_character_class = data.get("class")
-    input_character_background = data.get("background")
-    input_character_alignment = data.get("alignment")
 
-    # get ability scores for the character
-    input_character_strength = int( data.get("ability1") )
-    input_character_dexterity = int( data.get("ability2") )
-    input_character_constitution = int( data.get("ability3") )
-    input_character_intelligence = int( data.get("ability4") )
-    input_character_wisdom = int( data.get("ability5") )
-    input_character_charisma = int( data.get("ability6") )
+    # Get ability scores for the character
+    input_character_strength = int(data.get("ability1"))
+    input_character_dexterity = int(data.get("ability2"))
+    input_character_constitution = int(data.get("ability3"))
+    input_character_intelligence = int(data.get("ability4"))
+    input_character_wisdom = int(data.get("ability5"))
+    input_character_charisma = int(data.get("ability6"))
 
-    # calculate ability modifiers
-    strength_modifier = determine_ability_modifier("STR", input_character_strength, input_character_race)
-    dexterity_modifier = determine_ability_modifier("DEX", input_character_dexterity, input_character_race)
-    constitution_modifier = determine_ability_modifier("CON", input_character_constitution, input_character_race)
-    intelligence_modifier = determine_ability_modifier("INT", input_character_intelligence, input_character_race)
-    wisdom_modifier = determine_ability_modifier("WIS", input_character_wisdom, input_character_race)
-    charisma_modifier = determine_ability_modifier("CHA", input_character_charisma, input_character_race)
-    
-    modifiers = [ strength_modifier, dexterity_modifier, constitution_modifier, intelligence_modifier, wisdom_modifier, charisma_modifier]
+    # Calculate max HP
+    max_hp = calculate_hp(input_character_class, input_character_constitution, input_character_race)
+    # Calculate current health (using a placeholder logic for this example)
+    current_health = max_hp  # Placeholder; adjust based on your game mechanics
 
-    max_hp = calculate_hp(input_character_race, input_character_class, input_character_constitution)
-    
-    player_id = 0
-    while True:
-        current_db = db.session.get( player_data, player_id )
-        if current_db == None: break
-        player_id += 1
+    # Ensure unique player ID
+    last_player_id_row = db.session.query(player_data.id).order_by(db.desc(player_data.id)).first()
+    player_id = last_player_id_row[0] + 1 if last_player_id_row else 1
 
+    # Set alignment only if provided, else default to 'Neutral'
+    alignment = data.get('alignment', 'Neutral')
+
+    # Create new character with all fields
     new_character = player_data(
         id=player_id,
         name=input_character_name,
         race=input_character_race,
         class_name=input_character_class,
-        alignement=input_character_alignment,
-        abilities=[ input_character_strength,
-                    input_character_dexterity,
-                    input_character_constitution,
-                    input_character_intelligence,
-                    input_character_wisdom,
-                    input_character_charisma
+        abilities=[
+            input_character_strength,
+            input_character_dexterity,
+            input_character_constitution,
+            input_character_intelligence,
+            input_character_wisdom,
+            input_character_charisma
         ],
-        skill="",
-        current_health=max_hp,
+        current_health=current_health,
         max_health=max_hp,
-        #ability_modifiers = modifiers
+        alignment=alignment  # Ensure alignment is passed properly
     )
 
     db.session.add(new_character)
     db.session.commit()
 
-    return jsonify(state=200) #render_template("character.html", character=new_character)
+    return jsonify({"message": "Character created successfully"}), 201  # Return 201 for success with resource creation
 
-    if __name__ == "__main__":
-        app.run(debug=True)
+
+
+
+
+
+
 
     # determine proficiency modifier - if there is time
 
