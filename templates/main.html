@@ -5,6 +5,7 @@
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/dark.css">
         <link rel="stylesheet" href="/static/styles.css">
         <link rel="stylesheet" href="/static/dice.css">
+        <link rel="stylesheet" href="/static/additional.css">
 
         <style>
             .box-style
@@ -88,7 +89,7 @@
 
             <div class="flexboxrow">
                 
-                <div class="characters page box-style">
+                <div class="characters page box-style frame">
                     <h2>Characters</h2>
                     {% for player in players %}
                         <p value="{{ player.id }}">{{ player.name }}</p>
@@ -99,12 +100,12 @@
                             <li>
                                 <table>
                                     <tr>
-                                        <th>Strength</th>
-                                        <th>Dext.</th>
-                                        <th>Const.</th>
-                                        <th>Intell.</th>
-                                        <th>Wisdom</th>
-                                        <th>Char.</th>
+                                        <th>STR</th>
+                                        <th>DEX</th>
+                                        <th>CON</th>
+                                        <th>INT</th>
+                                        <th>WIS</th>
+                                        <th>CHA</th>
                                     </tr>
                                     <tr>
                                         {% for ability in player.abilities %} 
@@ -114,13 +115,13 @@
                                 </table>
                             </li>
                             <li>
-                                <button id="{{player.id}}Attack" onclick="on( 'player', '1d4' )"> Sword </button>
+                                <button class="interactables" id="{{player.id}}Attack" onclick="on( 'player', '1d4' )"> Sword </button>
                             </li>
                         </ul>
                     {% endfor %}
 
                 </div>
-                <div class="monsters page box-style">
+                <div class="monsters page box-style frame">
                     <h2>Monsters</h2>
                     <label for="challenge">Challenge rating: </label>
                     <input type="number" name="challenge" id="challenge" style="width:15%;">
@@ -140,12 +141,12 @@
 
                     <table>
                         <tr>
-                            <th>Strength</th>
-                            <th>Dext.</th>
-                            <th>Const.</th>
-                            <th>Intell.</th>
-                            <th>Wisdom</th>
-                            <th>Char.</th>
+                            <th>STR</th>
+                            <th>DEX</th>
+                            <th>CON</th>
+                            <th>INT</th>
+                            <th>WIS</th>
+                            <th>CHA</th>
                         </tr>
                         <tr>
                             <td id="str"></td>
@@ -157,7 +158,7 @@
                         </tr>
                     </table>
 
-                    <button id="add-monster-button" onclick="addMonster()">
+                    <button class="interactables" id="add-monster-button" onclick="addMonster()">
                         Add monster
                     </button>
 
@@ -165,7 +166,7 @@
             </div>
 
             <div class="" style="">
-                <div class="page box-style">
+                <div class="page box-style frame">
                     <h2>Current interaction</h2>
 
                     <h3>Monsters to beat</h3>
@@ -175,8 +176,8 @@
             </div>
 
             <div class="" style="caret-color: transparent;">
-                <div class="page box-style">
-                    <h2>In case you forgot your dice</h2>
+                <div class="page box-style frame">
+                    <h2>In case you forgot your dice...</h2>
                     
                         <!-- Dice options displayed in a row with labels above the dice -->
                     <div class="diceContainer">
