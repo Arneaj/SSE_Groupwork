@@ -123,7 +123,7 @@ Players = [
 """
 
 # Adding behaviours for different app routes
-@app.route('/')
+@app.route('/', methods=["GET", "POST"])
 def index():
     return render_template("index.html") # Takes user to landing page
 
@@ -190,16 +190,7 @@ def startGame():
 # Functionality for the new game page
 @app.route('/game_creation', methods=["GET", "POST"])
 def create_game():
-    players = db.session.query(player_data).all()  # Fetch all players
-    game_name = request.form.get('gameName')      # Get the game name from the form data
-    
-    # Ensure the game is created successfully
-    if game_name:
-        return render_template(
-            "create_new_game.html",
-            players=players,
-            game_name=game_name  # Pass the game name to the template
-        )
+    players = db.session.query(player_data).order_by( player_data.id ).all()  # Fetch all players    
     
     # If no game name was provided, render the game creation form (consider returning a 400 response)
     return render_template("create_new_game.html", players=players)

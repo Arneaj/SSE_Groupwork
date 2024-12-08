@@ -64,10 +64,12 @@
 <script>
 // Array to store players
 var playerNamesList = [];
+var playerIDsList = [];
 var playerList = [];
 
 {% for player in players %}
 playerNamesList.push( "{{player.name}}" );
+playerIDsList.push( "{{player.id}}" );
 {% endfor %}
             
 // Function to add player selected to list
@@ -103,8 +105,10 @@ function renderPlayerList() {
     playerList.forEach(item => {
         const li = document.createElement("li");
 
+        const index = playerIDsList.indexOf( item );
+
         // Add the item text to the <li>
-        li.textContent = playerNamesList[ item ];
+        li.textContent = playerNamesList[ index ];
 
         // Create a "Remove player" button
         const removeButton = document.createElement("button");
