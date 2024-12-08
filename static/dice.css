@@ -1,31 +1,38 @@
 .diceResult {
-    font-size: 3em;
+    font-size: 2em;
     margin-top: 10px;
     font-weight: bold;
     width: 100px;
     height: 100px;
     line-height: 100px;
-    background-color: #a53719;
     color: white;
     margin-left: auto;
     margin-right: auto;
     display: inline-block;
     margin-bottom: 10px;
     cursor: pointer;
-    z-index: 1;
+    z-index: 5;
 }
+
+.d4 {
+    z-index: 0;
+}
+
 .line {
     position: absolute;
     background-color: black;
-    z-index: 0;
+    z-index: 1;
 }
+
 .line-d4vert {
     width: 2px;
     height: 400px;
     top: 0;
     left: 50%;
-    transform: translateX(-50%)
+    transform: translateX(-50%);
 }
+
+
 /* Special square styling for the D6 dice */
 .diceResult {
     width: 100px;
@@ -41,15 +48,132 @@
 }
 
 .d6, .d6::after {
-    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+    clip-path: polygon(0 25%, 50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%);
+}
+
+.line-d61 {
+    width: 2px;
+    height: 52px;
+    bottom: 0%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.line-d62 {
+    width: 2px;
+    height: 67px;
+    top: 1%;
+    left: 20%;
+    transform: rotate(-65deg)
+}
+
+.line-d63 {
+    width: 2px;
+    height: 67px;
+    top: 1%;
+    left: 80%;
+    transform: rotate(65deg)
 }
 
 .d8, .d8::after {
     clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
 }
 
+.line-d81 {
+    width: 2px;
+    height: 73px;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.line-d82 {
+    width: 2px;
+    height: 108px;
+    top: 50;
+    left: 0%;
+    transform: rotate(-65deg);
+}
+.line-d83 {
+    width: 2px;
+    height: 112px;
+    top: 50;
+    left: 100%;
+    transform: rotate(66deg)
+}
+
+.line-d84 {
+    width: 2px;
+    height: 50px;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%)
+}
+
 .d10, .d10::after {
     clip-path: polygon(0 40%, 50% 0, 100% 40%, 100% 60%, 50% 100%, 0 60%);
+}
+
+.line-d101 {
+    width: 2px;
+    height: 30px;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%)
+}
+
+.line-d102 {
+    width: 2px;
+    height: 55px;
+    top: -1%;
+    left: 34%;
+    transform: rotate(35deg);
+    background-color: #000000;
+}
+
+.line-d103 {
+    width: 2px;
+    height: 22px;
+    top: 45%;
+    left: 9%;
+    transform: rotate(55deg);
+    background-color: #000000;
+}
+
+.line-d104 {
+    width: 2px;
+    height: 55px;
+    top: -1%;
+    right: 34%;
+    transform: rotate(-35deg);
+    background-color: #000000;
+}
+
+.line-d105 {
+    width: 2px;
+    height: 22px;
+    top: 45%;
+    right: 9%;
+    transform: rotate(-55deg);
+    background-color: #000000;
+}
+
+.line-d106 {
+    width: 2px;
+    height: 38px;
+    top: 40%;
+    right: 34%;
+    transform: rotate(55deg);
+    background-color: #000000;
+}
+
+.line-d107 {
+    width: 2px;
+    height: 38px;
+    top: 40%;
+    left: 34%;
+    transform: rotate(-55deg);
+    background-color: #000000;
 }
 
 .d12, .d12::after {
@@ -59,21 +183,203 @@
         50% 0%, 70% 5% 
     );
 }
+
+.line-d121 {
+    width: 2px;
+    height: 20px;
+    top: 0%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.line-d122 {
+    width: 2px;
+    height: 40px;
+    top: 16%;
+    left: 0%;
+    transform: rotate(-80deg);
+}
+
+.line-d123 {
+    width: 2px;
+    height: 40px;
+    top: 16%;
+    right: 0%;
+    transform: rotate(80deg);
+}
+
+.line-d124 {
+    width: 2px;
+    height: 26px;
+    bottom: 1%;
+    left: 23%;
+    transform: rotate(-140deg);
+}
+
+.line-d125 {
+    width: 2px;
+    height: 26px;
+    bottom: 1%;
+    right: 23%;
+    transform: rotate(140deg);
+}
+
+.line-d126 {
+    width: 2px;
+    height: 37px;
+    top: 10%;
+    left: 35%;
+    transform: rotate(-125deg);
+}
+
+.line-d127 {
+    width: 2px;
+    height: 37px;
+    top: 10%;
+    right: 35%;
+    transform: rotate(125deg);
+}
+
+.line-d128 {
+    width: 2px;
+    height: 39px;
+    top: 39%;
+    right: 26%;
+    transform: rotate(20deg);
+}
+
+.line-d129 {
+    width: 2px;
+    height: 37px;
+    top: 39%;
+    left: 26%;
+    transform: rotate(-20deg);
+}
+
+.line-d1210 {
+    width: 2px;
+    height: 35px;
+    bottom: 7%;
+    right: 50%;
+    transform: rotate(90deg);
+
+}
+
 .d20, .d20::after {
     clip-path: polygon(0 20%, 50% 0, 100% 20%, 100% 80%, 50% 100%, 0 80%);
 }
+
+.line-d201 {
+    width: 2px;
+    height: 19px;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.line-d202 {
+    width: 2px;
+    height: 97px;
+    top: -25%;
+    left: 0%;
+    transform: translateX(-50%);
+    transform: rotate(-96deg);
+}
+
+.line-d203 {
+    width: 2px;
+    height: 97px;
+    top: -25%;
+    right: 0%;
+    transform: translateX(-50%);
+    transform: rotate(96deg);
+}
+
+.line-d204 {
+    width: 2px;
+    height: 16px;
+    bottom: 20%;
+    left: 10%;
+    transform: rotate(49deg)
+}
+
+.line-d205 {
+    width: 2px;
+    height: 104px;
+    top: -35%;
+    left: 3%;
+    transform: translateX(-50%);
+    transform: rotate(-15deg);
+}
+
+.line-d206 {
+    width: 2px;
+    height: 104px;
+    top: -35%;
+    right: 3%;
+    transform: translateX(-50%);
+    transform: rotate(15deg);
+}
+
+.line-d207 {
+    width: 2px;
+    height: 15px;
+    bottom: 20%;
+    right: 10%;
+    transform: rotate(-49deg)
+}
+
+.line-d208 {
+    width: 2px;
+    height: 44px;
+    bottom: -3%;
+    right: 33%;
+    transform: translateX(-50%);
+    transform: rotate(49deg);
+}
+
+.line-d209 {
+    width: 2px;
+    height: 44px;
+    bottom: -3%;
+    left: 33%;
+    transform: translateX(-50%);
+    transform: rotate(-49deg);
+}
+
+.line-d2010 {
+    width: 2px;
+    height: 60px;
+    top: 13%;
+    left: 33%;
+    transform: rotate(34deg)
+}
+
+.line-d2011 {
+    width: 2px;
+    height: 60px;
+    top: 13%;
+    right: 33%;
+    transform: rotate(-34deg)
+}
+
+.line-d2012 {
+    width: 2px;
+    height: 63px;
+    bottom: 2%;
+    right: 50%;
+    transform: rotate(-90deg);
+}
+
 
 .diceResult::after {
     content: "";
     width: 90px;
     height: 90px;
     position: absolute;
-    background-color: #3498db;
+    background-color: darkred;
     z-index: -1;
 }
-
-
-
 
 .diceWrapper {
     max-width: 1200px; /* Max width of the dice container */
@@ -81,12 +387,14 @@
     margin-right: auto;
     padding: 20px; /* Optional padding around the dice */
     box-sizing: border-box; /* Ensure padding does not affect the width */
+    
 }
 .diceContainer {
     display: grid;
     grid-template-columns: repeat(6, 1fr); /* Default to 6 dice per row */
     gap: 10px; /* Reduced gap between dice */
     margin-bottom: 30px;
+    width: 100%;
 }
 .diceContainer div {
     text-align: center;
