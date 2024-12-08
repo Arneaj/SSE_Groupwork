@@ -350,27 +350,6 @@ async function addMonster()
     } catch (error) {
         console.error("Error fetching monster details:", error);
     }
-
-    const currentMonsters = document.querySelector('#monsters-to-attack');
-    currentMonsters.innerHTML = "";
-
-    monsterList.forEach( async item => {
-        const index = monsterList.indexOf( item );
-
-        const button = document.createElement("button");
-
-        button.setAttribute("type", "button");
-        button.setAttribute("style", "margin: 5px 0px 5px 50px;");
-        button.textContent = `${monsterNamesList[index]}`;
-        button.onclick = function () {
-            removeMonster( item );
-        };
-
-        const br = document.createElement("br");
-        
-        currentMonsters.appendChild(button);
-        currentMonsters.appendChild(br)
-    });
 }
 
 // remove monster from current interaction
@@ -441,6 +420,27 @@ async function displayMonsterList()
         // Append the <li> to the list container
         currentMonsters.appendChild(li);
     });
+
+    const attackMonsters = document.querySelector('#monsters-to-attack');
+    attackMonsters.innerHTML = "";
+
+    monsterList.forEach( async item => {
+        const index = monsterList.indexOf( item );
+
+        const button = document.createElement("button");
+
+        button.setAttribute("type", "button");
+        button.setAttribute("style", "margin: 5px 0px 5px 50px;");
+        button.textContent = `${monsterNamesList[index]}`;
+        button.onclick = function () {
+            attackMonster( item );
+        };
+
+        const br = document.createElement("br");
+        
+        attackMonsters.appendChild(button);
+        attackMonsters.appendChild(br)
+    });
 }
 
 function attackPlayer( player )
@@ -458,9 +458,9 @@ function attackMonster( monster_id )
 {
     const pure_damage = parseDamageString(current_damage);
 
-    //monsterHPList[monsterList.indexOf(monster_id)] -= pure_damage;
+    monsterHPList[monsterList.indexOf(monster_id)] -= pure_damage;
 
-    save();
+    displayMonsterList();
 }
 
 function parseDamageString( damage_string )
