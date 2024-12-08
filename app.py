@@ -243,8 +243,9 @@ def create_player():
 
 @app.route('/games_index', methods=["GET", "POST"])
 def games_index():
-    passed_games = [] 
+    passed_games = db.session.query( game_data ).order_by( game_data.game_id ).all()
     
+    """
     i = 0
     while True:
         current_db = db.session.get( game_data, i )
@@ -252,9 +253,14 @@ def games_index():
             break
         passed_games.append(current_db)
         i += 1
+    """
     
     passed_players = [ 
-        [ db.get_or_404( player_data, player_id ) for player_id in passed_game.player_id ] 
+        [ 
+            db.session.get( player_data, player_id ) 
+            for player_id in passed_game.player_id 
+            if db.session.get( player_data, player_id ) != None
+        ] 
         for passed_game in passed_games 
         ]
     
