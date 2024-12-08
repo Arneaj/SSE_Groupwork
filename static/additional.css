@@ -1,0 +1,10 @@
+.frame {
+    border: 6px solid rgb(153, 135, 32);
+    background-color: rgba(85, 80, 82, 80%);
+}
+
+.interactables {
+    border: 5px solid rgb(186, 161, 20);
+    background: radial-gradient(rgb(172, 172, 180) 0%, rgba(236,236,236,1) 87%, rgba(255,255,255,1) 100%);
+    color: rgb(96, 86, 27);
+}
