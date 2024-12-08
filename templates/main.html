@@ -313,7 +313,14 @@ async function addMonster()
         monsterHPList.push(data.hit_points);
         monsterMaxHPList.push(data.hit_points);
 
-        monsterAttacksList.push(data.actions);
+        this_monsterAttackList = [];
+        for (attack of data.actions)
+        {
+            if (attack.damage === undefined) continue;
+
+            this_monsterAttackList.push(attack)
+        }
+        monsterAttacksList.push(this_monsterAttackList);
 
         displayMonsterList();
     } catch (error) {
