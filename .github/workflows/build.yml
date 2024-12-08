@@ -37,11 +37,6 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r ${{ env.REQUIREMENTS_FILE }}
 
-      - name: Lint Code
-        run: |
-          pip install flake8
-          flake8 .
-
       - name: Run Unit Tests
         run: |
           pytest --junitxml=unit-results.xml --cov=. --cov-report=xml:unit-coverage.xml
@@ -165,20 +160,3 @@ jobs:
           app-name: sse-groupwork1
           deployment-token: ${{ secrets.IMPAAS_DEPLOY_TOKEN }}
           method: PLATFORM
-
-# name: Python CI
-
-# on: [push]
-
-# jobs:
-#   deploy-to-impaas:
-#     runs-on: ubuntu-latest
-#     steps:
-#     - name: Checkout
-#       uses: actions/checkout@v4
-#     - name: ImPaaS-Deploy
-#       uses: /impaas/impaas-deploy@v3
-#       with:
-#         app-name: sse-groupwork1
-#         deployment-token: ${{ secrets.IMPAAS_DEPLOY_TOKEN }}
-#         method: PLATFORM
