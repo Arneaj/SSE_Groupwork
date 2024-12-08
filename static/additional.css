@@ -7,4 +7,18 @@
     border: 5px solid rgb(186, 161, 20);
     background: radial-gradient(rgb(172, 172, 180) 0%, rgba(236,236,236,1) 87%, rgba(255,255,255,1) 100%);
     color: rgb(96, 86, 27);
+    box-shadow: 0 9px rgba(58, 51, 54, 0.8);
+}
+
+.interactables:active {
+    box-shadow: 0 5px rgba(36, 33, 34, 0.8);
+    transform: translateY(4px);
+}
+
+.interactables:hover {
+    background: radial-gradient(rgb(172, 172, 180) 0%, rgba(236,236,236,1) 87%, rgba(255,255,255,1) 100%);
+}
+
+.interactables:focus {
+    box-shadow: 0 9px rgba(58, 51, 54, 0.8);
 }
