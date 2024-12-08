@@ -3,6 +3,7 @@
     <head>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/dark.css">
         <link rel="stylesheet" href="/static/styles.css">
+        <link rel="stylesheet" href="/static/additional.css">
         <style>
             .box-style
             {
@@ -15,10 +16,10 @@
     <body>
         <div class="container">
             <a href="/">
-                <h1 class="nav-bar"> D&D GM Board </h1>
+                <h1 class="nav-bar">Create a New Character</h1>
             </a>
 
-            <div class="page center box-style characterPadding" style="top:90%; align-text: center;">
+            <div class="page center box-style characterPadding frame" style="top:90%; align-text: center;">
                 <label>Character name: </label>
                 <input type="text" id="playerName">
 
@@ -93,7 +94,7 @@
                 <!--determine proficiency and saving throws after character creation-->
 
                 <label for="submitPlayer"></label>
-                <button name="submitPlayer" id="submitPlayer">Save Character</button>
+                <button class="interactables" name="submitPlayer" id="submitPlayer">Save Character</button>
             </div>
         </div>
         <script src="/static/character_form.js"></script>
