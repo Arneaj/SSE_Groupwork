@@ -445,6 +445,7 @@ async function displayMonsterList()
             const attackButton = document.createElement("button");
             attackButton.setAttribute("type", "button")
             attackButton.setAttribute("style", "margin: 0px 0px 0px 10px;")
+            attackButton.setAttribute("class", "interactables")
             attackButton.textContent = attack.name;
             attackButton.onclick = function () {
                 on( "monster", attack.damage[0].damage_dice );
