@@ -1,9 +1,8 @@
 <!DOCTYPE html>
 <html>
     <head lang="en">
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/dark.css">
-        <link rel="stylesheet" href="/static/styles.css">
-        <title>SSE Groupwork</title>
+        <link rel="stylesheet" href="\static\index.css">
+        <title>DnD Game Creation Form</title>
         <style>
             .box-style
             {
@@ -14,13 +13,14 @@
         </style>
     </head>
     <body>
-        <div class="container">
+        <header>
             <a href="/">
-                <h1 class="nav-bar"> D&D GM Board </h1>
+                <h1 class="nav-bar">Start A New Game</h1>
             </a>
-
-            <div class="page center box-style">
-                <h1>Create New Game</h1>
+        </header>
+        <div class="container">
+            <div class="page center box-style frame">
+                <h3>Create New Game</h3>
                 <label for="gameName">Enter the name of your new game:</label>
                 <input type="text" name="gameName" id="gameName">
             <!--Might need some javascript to get a list of names for players
@@ -36,7 +36,7 @@
 
                     <button id="add-player" type="button" onclick="getPlayer()">Add Character to Game</button>
 
-                    <h3>Current List of Characters in Game:</h3>
+                    <h4>Current List of Characters in Game:</h4>
                     <ul id="playerListContainer">
                         <!-- Selected items will appear here -->
                     </ul>
@@ -54,7 +54,6 @@
                     <label for="submitGame"></label>
                     <button id="submitGame" name="submit">Start your new game!</button>
                 </div>
-                
             </div>
         </div>
     </body>
