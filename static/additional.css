@@ -22,3 +22,8 @@
 button:focus {
     box-shadow: 0 9px rgba(58, 51, 54, 0.8);
 }
+
+select, option, input, td {
+    background-color: rgb(41, 39, 39);
+    color: whitesmoke;
+}
