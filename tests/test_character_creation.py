@@ -52,7 +52,7 @@ def mock_get(url):
 @pytest.mark.parametrize("test_input, expected", [
     ({
         'characterName': 'TestPlayer',
-        'race': 'Elf',
+        'race': 'elf',
         'class': 'fighter',
         'ability1': 8,
         'ability2': 10,
@@ -72,6 +72,15 @@ def test_create_player_valid(monkeypatch, client, test_input, expected):
     response = client.post('/save_player',
                            data=json.dumps(test_input),
                            content_type='application/json')
+    
+    db.session.query( player_data ).where( 
+        player_data.name == 'TestPlayer', 
+        player_data.race == 'elf',
+        player_data.class_name == 'fighter'
+                                  ).delete()
+    
+    db.session.commit()
+    
     assert response.status_code == expected, f"Expected status code {expected}, got {response.status_code}"
 
 # Test for invalid player creation (empty name)

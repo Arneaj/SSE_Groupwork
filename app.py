@@ -245,16 +245,6 @@ def create_player():
 def games_index():
     passed_games = db.session.query( game_data ).order_by( game_data.game_id ).all()
     
-    """
-    i = 0
-    while True:
-        current_db = db.session.get( game_data, i )
-        if current_db == None: 
-            break
-        passed_games.append(current_db)
-        i += 1
-    """
-    
     passed_players = [ 
         [ 
             db.session.get( player_data, player_id ) 
@@ -262,7 +252,7 @@ def games_index():
             if db.session.get( player_data, player_id ) != None
         ] 
         for passed_game in passed_games 
-        ]
+    ]
     
     passed_json = []
     
