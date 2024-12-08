@@ -355,11 +355,10 @@ async function addMonster()
 // remove monster from current interaction
 function removeMonster(monster_id) 
 {
-    // Find the index of the player in the array
+    // Find the index of the monster in the array
     const index = monsterList.indexOf( monster_id );
     
     if (index !== -1) {
-        // Remove the player from the array
         monsterList.splice( index, 1 );
         monsterNamesList.splice( index, 1 );
         monsterMaxHPList.splice( index, 1 );
@@ -458,7 +457,21 @@ function attackMonster( monster_id )
 {
     const pure_damage = parseDamageString(current_damage);
 
-    monsterHPList[monsterList.indexOf(monster_id)] -= pure_damage;
+    // Find the index of the monster in the array
+    const index = monsterList.indexOf( monster_id );
+    
+    if (index !== -1) {
+        monsterHPList[index] -= pure_damage;
+
+        if (monsterHPList[index] <= 0)
+        {
+            monsterList.splice( index, 1 );
+            monsterNamesList.splice( index, 1 );
+            monsterMaxHPList.splice( index, 1 );
+            monsterHPList.splice( index, 1 );
+            monsterAttacksList.splice( index, 1 );
+        }
+    }
 
     displayMonsterList();
 }
