@@ -1,4 +1,4 @@
-'''''''''
+
 
 import pytest
 import requests
@@ -62,4 +62,3 @@ def test_api_invalid_url():
     assert response.status_code == 404, "Expected 404 for invalid URL"
 
 
-''''''''''
