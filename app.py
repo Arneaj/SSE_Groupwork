@@ -15,6 +15,7 @@ from .cli import create_all, drop_all, populate
 # MAY NEED TO IMPLEMENT DROP_ALL IN HERE so we can have nice stuff saved in our tables for the demo
 # from .cli import create_all, drop_all, populate  # Importing commands - commented out as we didn't want to create/drop things every time at one point
 
+
 def app(testing=False):
     # Initialise the Flask app
     app = Flask(__name__, template_folder="templates", static_folder="static")
