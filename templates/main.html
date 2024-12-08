@@ -354,21 +354,22 @@ async function addMonster()
     const currentMonsters = document.querySelector('#monsters-to-attack');
     currentMonsters.innerHTML = "";
 
-    // Loop through the playerList and create a <li> for each item
     monsterList.forEach( async item => {
         const index = monsterList.indexOf( item );
 
         const button = document.createElement("button");
 
-        button.setAttribute("type", "button")
-        button.setAttribute("style", "margin: 5px 0px 5px 50px;")
+        button.setAttribute("type", "button");
+        button.setAttribute("style", "margin: 5px 0px 5px 50px;");
         button.textContent = `${monsterNamesList[index]}`;
         button.onclick = function () {
             removeMonster( item );
         };
 
-        // Append the <li> to the list container
+        const br = document.createElement("br");
+        
         currentMonsters.appendChild(button);
+        currentMonsters.appendChild(br)
     });
 }
 
@@ -457,7 +458,9 @@ function attackMonster( monster_id )
 {
     const pure_damage = parseDamageString(current_damage);
 
-    monsterHPList[monsterList.indexOf(monster_id)] = monsterHPList[monsterList.indexOf(monster_id)] - pure_damage;
+    //monsterHPList[monsterList.indexOf(monster_id)] -= pure_damage;
+
+    save();
 }
 
 function parseDamageString( damage_string )
