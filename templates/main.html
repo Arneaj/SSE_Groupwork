@@ -74,8 +74,8 @@
 
             <div class="flexboxrow">
                 
-                <div class="characters page box-style">
-                    <h2>Characters</h2>
+                <div class="characters page box-style frame">
+                    <h3>Characters</h3>
                     {% for player in players %}
                         <p value="{{ player.id }}">{{ player.name }}</p>
                         <ul>
@@ -85,12 +85,12 @@
                             <li>
                                 <table>
                                     <tr>
-                                        <th>Strength</th>
-                                        <th>Dext.</th>
-                                        <th>Const.</th>
-                                        <th>Intell.</th>
-                                        <th>Wisdom</th>
-                                        <th>Char.</th>
+                                        <th>STR</th>
+                                        <th>DEX</th>
+                                        <th>CON</th>
+                                        <th>INT</th>
+                                        <th>WIS</th>
+                                        <th>CHA</th>
                                     </tr>
                                     <tr>
                                         {% for ability in player.abilities %} 
@@ -103,8 +103,8 @@
                     {% endfor %}
 
                 </div>
-                <div class="monsters page box-style">
-                    <h2>Monsters</h2>
+                <div class="monsters page box-style frame">
+                    <h3>Monsters</h3>
                     <label for="challenge">Challenge rating: </label>
                     <input type="number" name="challenge" id="challenge" style="width:15%;">
 
@@ -115,7 +115,7 @@
                         <option>Select one</option>
                     </select>
 
-                    <h2> Monster details </h2>
+                    <h4> Monster details </h4>
                     <p id="type">Species: </p>
                     <p id="alignment">Alignment: </p>
 
@@ -123,12 +123,12 @@
 
                     <table>
                         <tr>
-                            <th>Strength</th>
-                            <th>Dext.</th>
-                            <th>Const.</th>
-                            <th>Intell.</th>
-                            <th>Wisdom</th>
-                            <th>Char.</th>
+                            <th>STR</th>
+                                <th>DEX</th>
+                                <th>CON</th>
+                                <th>INT</th>
+                                <th>WIS</th>
+                                <th>CHA</th>
                         </tr>
                         <tr>
                             <td id="str"></td>
@@ -148,18 +148,18 @@
             </div>
 
             <div class="" style="">
-                <div class="page box-style">
-                    <h2>Current interaction</h2>
+                <div class="page box-style frame">
+                    <h3>Current interaction</h3>
 
-                    <h3>Monsters to beat</h3>
+                    <h4>Monsters to beat</h4>
 
                     <div id="current-monsters"></div>
                 </div>
             </div>
 
             <div class="" style="caret-color: transparent;">
-                <div class="page box-style">
-                    <h2>In case you forgot your dice...</h2>
+                <div class="page box-style frame">
+                    <h3>In case you forgot your dice...</h3>
                     
                         <!-- Dice options displayed in a row with labels above the dice -->
                         <div class="diceWrapper">
@@ -235,8 +235,6 @@
                                 </div>
                             </div>
                         </div>
-                    
-
                 </div>
             </div>
         </div>

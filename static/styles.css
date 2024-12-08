@@ -3,11 +3,42 @@ body
     background: url("https://images5.alphacoders.com/890/890333.png") no-repeat center fixed; 
     background-size: cover;
     color: white;
+    font-family: "Copperplate Gothic";
 }
 
-h1 
-{
-    color: white;
+h1 {
+    font-size: 4.5rem;
+    text-align: center;
+    position: sticky;
+    text-shadow: 1px 1px 2px black;
+    z-index: 3;
+    color: whitesmoke;
+}
+
+h2 {
+    font-size: 2.5rem;
+    text-align: center;
+    margin: auto;
+    margin-bottom: 10px;
+    margin-top: -40px;
+    text-shadow: 1px 1px 2px black;
+    z-index: 3;
+}
+
+h3 {
+    font-size: 2rem;
+    text-align: center;
+    text-shadow: 1px 1px 2px black;
+    z-index: 3;
+}
+
+h4 {
+    font-size: 1.5rem;
+    text-align: center;
+    margin: auto;
+    margin-bottom: 10px;
+    text-shadow: 1px 1px 2px black;
+    z-index: 3;
 }
 
 .container 
@@ -63,3 +94,71 @@ a:active { text-decoration: none; }
     padding-left: 50px;
     padding-right: 50px;
 }
+
+.frame {
+    position: relative;
+    padding: 20px;
+    border: 6px solid rgb(153, 135, 32);
+    background-color: rgba(85, 80, 82, 80%);
+    max-width: 1000px;
+    min-width: 500px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: auto;
+}
+
+.frame::before {
+    content: '';
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    right: -10px;
+    bottom: -10px;
+    border: 4px solid rgb(96, 86, 27);
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.7);  
+    clip-path: polygon(
+    0 20%,
+    10% 0,
+    90% 0,
+    100% 20%,
+    100% 80%,
+    90% 100%,
+    10% 100%,
+    0% 80%
+  );
+  z-index: -5;
+}
+
+a, select, input, option {z-index: 10;}
+button {z-index: 4;}
+
+button {
+    width: 16em;
+    height: 4em;
+    font-size: 13px;
+    font-family: "Copperplate Gothic";
+    font-weight: 800;
+    border: 5px solid rgb(186, 161, 20);
+    background: radial-gradient(rgb(172, 172, 180) 0%, rgba(236,236,236,1) 87%, rgba(255,255,255,1) 100%);
+    border-radius: 10px;
+    color: rgb(96, 86, 27);
+    margin: 10px;
+    opacity: 100%;
+    box-shadow: 0 9px rgba(58, 51, 54, 0.8);
+    z-index: 20;
+}
+
+button:active {
+    box-shadow: 0 5px rgba(36, 33, 34, 0.8);
+    transform: translateY(4px);
+  }
+
+  
+select, option, input, td {
+    background-color: rgb(41, 39, 39);
+    color: whitesmoke;
+    font-family: "Copperplate Gothic";
+    font-size: 1rem;
+}
+
