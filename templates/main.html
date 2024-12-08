@@ -427,6 +427,7 @@ async function displayMonsterList()
         const removeButton = document.createElement("button");
         removeButton.setAttribute("type", "button")
         removeButton.setAttribute("style", "margin: 5px 0px 5px 50px;")
+        removeButton.setAttribute("class", "interactables")
         removeButton.textContent = "Remove";
         removeButton.onclick = function () {
             removeMonster( item );
