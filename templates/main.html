@@ -39,7 +39,7 @@
                 margin: 10px;
             }
 
-            #overlay {
+            #overlay_player_attack {
                 position: fixed;
                 display: none;
                 width: 100%;
@@ -61,6 +61,20 @@
                 color: white;
                 transform: translate(-50%,-50%);
                 -ms-transform: translate(-50%,-50%);
+            }
+
+            #overlay_monster_attack {
+                position: fixed;
+                display: none;
+                width: 100%;
+                height: 100%;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background-color: rgba(0,0,0,0.5);
+                z-index: 2;
+                cursor: pointer;
             }
         </style>
     </head>
@@ -98,6 +112,9 @@
                                         {% endfor %}
                                     </tr>
                                 </table>
+                            </li>
+                            <li>
+                                <button id="{{player.id}}Attack" onclick="on( 'player', '1d4' )"> Sword </button>
                             </li>
                         </ul>
                     {% endfor %}
@@ -196,13 +213,20 @@
             </div>
         </div>
 
-        <div id="overlay" onclick="off()">
+        <div id="overlay_monster_attack" onclick="off('monster')">
             <div id="text" style="text-align: center;">
             <p>Choose who to attack</p>
             {% for player in players %}
             <button onclick="attackPlayer({{player.id}})"> {{player.name}} </button>
             <br>
             {% endfor %}
+            </div>
+        </div>
+
+        <div id="overlay_player_attack" onclick="off('player')">
+            <div id="text" style="text-align: center;">
+            <p>Choose who to attack</p>
+            <div id="monsters-to-attack"> </div>
             </div>
         </div>
     </body>
@@ -326,6 +350,26 @@ async function addMonster()
     } catch (error) {
         console.error("Error fetching monster details:", error);
     }
+
+    const currentMonsters = document.querySelector('#monsters-to-attack');
+    currentMonsters.innerHTML = "";
+
+    // Loop through the playerList and create a <li> for each item
+    monsterList.forEach( async item => {
+        const index = monsterList.indexOf( item );
+
+        const button = document.createElement("button");
+
+        button.setAttribute("type", "button")
+        button.setAttribute("style", "margin: 5px 0px 5px 50px;")
+        button.textContent = `${monsterNamesList[index]}`;
+        button.onclick = function () {
+            removeMonster( item );
+        };
+
+        // Append the <li> to the list container
+        currentMonsters.appendChild(button);
+    });
 }
 
 // remove monster from current interaction
@@ -382,7 +426,7 @@ async function displayMonsterList()
             attackButton.setAttribute("style", "margin: 0px 0px 0px 10px;")
             attackButton.textContent = attack.name;
             attackButton.onclick = function () {
-                on( attack.damage[0].damage_dice );
+                on( "monster", attack.damage[0].damage_dice );
             };
 
             // Append the remove button to the <li>
@@ -407,6 +451,13 @@ function attackPlayer( player )
     document.getElementById(`${player}HP`).textContent = current_hp - pure_damage;
 
     save();
+}
+
+function attackMonster( monster_id )
+{
+    const pure_damage = parseDamageString(current_damage);
+
+    monsterHPList[monsterList.indexOf(monster_id)] = monsterHPList[monsterList.indexOf(monster_id)] - pure_damage;
 }
 
 function parseDamageString( damage_string )
@@ -447,15 +498,15 @@ function parseDamageString( damage_string )
     return dice_total_value;
 }
 
-function on( damage_dice )
+function on( player_or_monster, damage_dice )
 {
     current_damage = damage_dice;
-    document.getElementById("overlay").style.display = "block";
+    document.getElementById(`overlay_${player_or_monster}_attack`).style.display = "block";
 }
 
-function off() 
+function off( player_or_monster ) 
 {
-    document.getElementById("overlay").style.display = "none";
+    document.getElementById(`overlay_${player_or_monster}_attack`).style.display = "none";
 }
 
 player_ids = [];
