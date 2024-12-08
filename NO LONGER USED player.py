@@ -2,6 +2,7 @@
 
 from .game_database import db
 
+
 class Player(db.Model):
     __tablename__ = "player_data"
     id = db.Column(db.Integer, primary_key=True)

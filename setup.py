@@ -5,10 +5,10 @@ setup(
     version="0.1",
     packages=find_packages(),
     install_requires=[
-        'flask',
-        'requests',
-        'sqlalchemy',
-        'python-dotenv',
-        'pytest',
+        "flask",
+        "requests",
+        "sqlalchemy",
+        "python-dotenv",
+        "pytest",
     ],
 )
