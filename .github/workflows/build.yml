@@ -12,8 +12,9 @@ jobs:
           python-version: "3.12"
       - name: Install packages
         run: pip install -r requirements.txt
-      - name: Run black
-        run: black --check .
+      - name: Run flake8
+        run: flake8 .
+        if: ${{ success() }}
 
   test: 
     needs: python-formatting
