@@ -1,11 +1,11 @@
 import pytest
-from ..app import test_client
+from .. import app
 
 
 @pytest.fixture
 def client():
     # This fixture sets up a test client for making requests to your app
-    with test_client() as client:
+    with app.test_client() as client:
         yield client
 
 

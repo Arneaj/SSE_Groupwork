@@ -1,5 +1,6 @@
 import pytest
-from ..app import test_client, determine_ability_modifier
+from ..app import determine_ability_modifier
+from .. import app
 from ..database import database as db
 from ..models.D_D_player import player_data
 import requests
@@ -10,7 +11,7 @@ from unittest.mock import Mock
 # Mock Flask client for testing
 @pytest.fixture
 def client():
-    with test_client() as client:
+    with app.test_client() as client:
         yield client
 
 
