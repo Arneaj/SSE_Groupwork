@@ -340,12 +340,18 @@ def save_character():
     input_character_charisma = int(data.get("ability6"))
 
     # Calculate max HP
-    max_hp = calculate_hp(input_character_class, input_character_constitution, input_character_race)
+    max_hp = calculate_hp(
+        input_character_class, 
+        input_character_constitution, 
+        input_character_race
+    )
     # Calculate current health (using a placeholder logic for this example)
-    current_health = max_hp  # Placeholder; adjust based on your game mechanics
+    current_health = max_hp  # Placeholder; adjust based on game mechanics
 
     # Ensure unique player ID
-    last_player_id_row = db.session.query(player_data.id).order_by(db.desc(player_data.id)).first()
+    last_player_id_row = db.session.query(player_data.id
+                                          ).order_by(db.desc(player_data.id)
+                                          ).first()
     player_id = last_player_id_row[0] + 1 if last_player_id_row else 1
 
     # Set alignment only if provided, else default to 'Neutral'
@@ -395,7 +401,8 @@ def save_character():
     db.session.add(new_character)
     db.session.commit()
 
-    return jsonify({"message": "Character created successfully"}), 200  # Return 200 for success with resource creation
+    # Return 200 for success with resource creation
+    return jsonify({"message": "Character created successfully"}), 200  
 
 
 
