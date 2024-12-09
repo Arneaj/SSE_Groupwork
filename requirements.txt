@@ -1,5 +1,3 @@
-black @ git+https://github.com/psf/black@0db1173bbcfbea4c54ed6b1a13986d426acadc31
-blinker==1.9.0
 blueprint==3.4.2
 certifi==2024.8.30
 charset-normalizer==3.4.0
