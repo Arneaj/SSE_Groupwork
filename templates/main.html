@@ -284,7 +284,10 @@ var challengeRating = 0;
 
 
 // Event listener to update the href when input changes
-challengeInput.addEventListener('input', async () => {
+challengeInput.addEventListener('input', async () => updateMonsterDropdown());
+
+async function updateMonsterDropdown()
+{
     const currentMonsters = document.querySelector('#monster-select');
     currentMonsters.innerHTML = "";
 
@@ -314,7 +317,9 @@ challengeInput.addEventListener('input', async () => {
     {
         console.log("No monster in this challenge rating!");
     }
-});
+}
+
+updateMonsterDropdown();
 </script>
 
 <script>
