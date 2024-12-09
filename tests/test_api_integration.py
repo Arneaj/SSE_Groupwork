@@ -1,8 +1,5 @@
-
-
-import pytest
 import requests
-from unittest.mock import patch
+
 
 # Test species API
 def test_race_api():
@@ -11,10 +8,10 @@ def test_race_api():
     assert "Dragonborn" in response.json()["results"][0]["name"]
     assert "Dwarf" in response.json()["results"][1]["name"]
 
+
 # Test class API
-def test_class_api():    
+def test_class_api():
     response = requests.get("https://www.dnd5eapi.co/api/classes")
     assert response.status_code == 200
     assert "Barbarian" in response.json()["results"][0]["name"]
     assert "Bard" in response.json()["results"][1]["name"]
-

@@ -1,34 +1,56 @@
 import pytest
-from ..app import *
+from ..app import test_client, determine_ability_modifier
+from ..database import database as db
+from ..models.D_D_player import player_data
 import requests
 import json
 from unittest.mock import Mock
 
+
 # Mock Flask client for testing
 @pytest.fixture
 def client():
-    with app.test_client() as client:
+    with test_client() as client:
         yield client
+
 
 # Test the player creation page
 def test_character_creation_page(client):
     """
-    Test that the character creation page loads properly with the expected fields.
+    Test that the character creation page loads
+    properly with the expected fields.
     """
     response = client.get('/player_creation')
-    assert response.status_code == 200, "Expected status code 200"
-    assert b'Choose race' in response.data, "Expected 'Choose race' to be in the page content"
-    assert b'Choose a class' in response.data, "Expected 'Choose a class' to be in the page content"
+    error_msg = "Expected status code 200"
+    assert response.status_code == 200, error_msg
+    error_msg = "Expected 'Choose race' to be in the page content"
+    assert b'Choose race' in response.data, error_msg
+    error_msg = "Expected 'Choose a class' to be in the page content"
+    assert b'Choose a class' in response.data, error_msg
+
 
 # Test ability modifier calculation
 def test_calculate_ability_modifier():
     """
     Test the calculation of ability modifiers based on ability score and race.
     """
-    assert determine_ability_modifier(skill="stealth", ability_score=2, race="human") == -4
-    assert determine_ability_modifier(skill="acrobatics", ability_score=7, race="elf") == -2
-    assert determine_ability_modifier(skill="persuasion", ability_score=15, race="dwarf") == 2
-    assert determine_ability_modifier(skill="intimidation", ability_score=20, race="orc") == 5
+    assert determine_ability_modifier(
+        skill="stealth",
+        ability_score=2,
+        race="human") == -4
+    assert determine_ability_modifier(
+        skill="acrobatics",
+        ability_score=7,
+        race="elf") == -2
+    assert determine_ability_modifier(
+        skill="persuasion",
+        ability_score=15,
+        race="dwarf") == 2
+    assert determine_ability_modifier(
+        skill="intimidation",
+        ability_score=20,
+        race="orc") == 5
+
 
 # Mock function to simulate requests.get for the DnD API
 def mock_get(url):
@@ -44,10 +66,13 @@ def mock_get(url):
         mock_response = Mock()
         mock_response.status_code = 404
         mock_response.raise_for_status = lambda: (_ for _ in ()).throw(
-            requests.exceptions.HTTPError(f"HTTP error {mock_response.status_code}")
+            requests.exceptions.HTTPError(
+                f"HTTP error {mock_response.status_code}"
+            )
         )
         return mock_response
-    
+
+
 # Test for valid player creation
 @pytest.mark.parametrize("test_input, expected", [
     ({
@@ -63,7 +88,6 @@ def mock_get(url):
         'alignment': 'Lawful Good'
     }, 200)
 ])
-
 def test_create_player_valid(monkeypatch, client, test_input, expected):
     """
     Test the creation of a valid player character.
@@ -72,16 +96,18 @@ def test_create_player_valid(monkeypatch, client, test_input, expected):
     response = client.post('/save_player',
                            data=json.dumps(test_input),
                            content_type='application/json')
-    
-    db.session.query( player_data ).where( 
-        player_data.name == 'TestPlayer', 
+
+    db.session.query(player_data).where(
+        player_data.name == 'TestPlayer',
         player_data.race == 'elf',
         player_data.class_name == 'fighter'
                                   ).delete()
-    
+
     db.session.commit()
-    
-    assert response.status_code == expected, f"Expected status code {expected}, got {response.status_code}"
+
+    error_msg = f"Expected status code {expected}, got {response.status_code}"
+    assert response.status_code == expected, error_msg
+
 
 # Test for invalid player creation (empty name)
 def test_create_player_invalid_name(monkeypatch, client):
@@ -91,7 +117,7 @@ def test_create_player_invalid_name(monkeypatch, client):
     monkeypatch.setattr(requests, "get", mock_get)
     response = client.post('/save_player',
                            data=json.dumps({
-                               'characterName': '', # Empty name
+                               'characterName': '',  # Empty name
                                'race': 'Elf',
                                'class': 'fighter',
                                'ability1': 8,
@@ -103,7 +129,9 @@ def test_create_player_invalid_name(monkeypatch, client):
                                'alignment': 'Lawful Good'
                            }),
                            content_type='application/json')
-    assert response.status_code == 400, f"Expected status code 400, got {response.status_code}"
+    error_msg = f"Expected status code 400, got {response.status_code}"
+    assert response.status_code == 400, error_msg
+
 
 # Test creating a player with missing race
 def test_create_player_missing_race(monkeypatch, client):
@@ -112,9 +140,10 @@ def test_create_player_missing_race(monkeypatch, client):
     """
     # Mock the response from the DnD API (for races)
     mock_response = Mock()
-    mock_response.status_code = 404  # Assuming the API returns a 404 error for missing races
+    mock_response.status_code = 404
+    # Assuming the API returns a 404 error for missing races
     monkeypatch.setattr(requests, "get", lambda url: mock_response)
-    
+
     response = client.post('/save_player',
                            data=json.dumps({
                                'characterName': 'TestPlayer',
@@ -129,7 +158,9 @@ def test_create_player_missing_race(monkeypatch, client):
                                'alignment': 'Lawful Good'
                            }),
                            content_type='application/json')
-    assert response.status_code == 400, f"Expected status code 400, got {response.status_code}"
+    error_msg = f"Expected status code 400, got {response.status_code}"
+    assert response.status_code == 400, error_msg
+
 
 # Test creating a player with missing class
 def test_create_player_missing_class(monkeypatch, client):
@@ -138,9 +169,10 @@ def test_create_player_missing_class(monkeypatch, client):
     """
     # Mock the response from the DnD API (for classes)
     mock_response = Mock()
-    mock_response.status_code = 404  # Assuming the API returns a 404 error for missing classes
+    mock_response.status_code = 404
+    # Assuming the API returns a 404 error for missing classes
     monkeypatch.setattr(requests, "get", lambda url: mock_response)
-    
+
     response = client.post('/save_player',
                            data=json.dumps({
                                'characterName': 'TestPlayer',
@@ -155,4 +187,5 @@ def test_create_player_missing_class(monkeypatch, client):
                                'alignment': 'Lawful Good'
                            }),
                            content_type='application/json')
-    assert response.status_code == 400, f"Expected status code 400, got {response.status_code}"
+    error_msg = f"Expected status code 400, got {response.status_code}"
+    assert response.status_code == 400, error_msg
