@@ -1,20 +1,17 @@
 from flask import Flask, render_template, request, jsonify
 import os
-from dotenv import load_dotenv
+# from dotenv import load_dotenv
 import requests
 import random
 from .Blueprint import dungeons_and_dragons
-from sqlalchemy.orm import joinedload
-from sqlalchemy import create_engine, text
+# from sqlalchemy.orm import joinedload
+# from sqlalchemy import create_engine, text
 from .database import database as db
 from .models.D_D_game import game_data
 from .models.D_D_player import player_data
-from sqlalchemy.exc import IntegrityError
+# from sqlalchemy.exc import IntegrityError
 import click
 from .cli import create_all, drop_all, populate
-
-# MAY NEED TO IMPLEMENT DROP_ALL IN HERE so we can have nice stuff saved in our tables for the demo
-# from .cli import create_all, drop_all, populate  # Importing commands - commented out as we didn't want to create/drop things every time at one point
 
 
 def app(testing=False):
@@ -32,7 +29,9 @@ def app(testing=False):
                 "DND_API_KEY": os.getenv("DND_API_KEY"),
             }
         )
-        db.init_app(app)
+        with app.app_context():
+            db.init_app(app)
+            db.create_all()
         app.register_blueprint(dungeons_and_dragons)
 
     return app
@@ -42,8 +41,10 @@ app = app()
 
 # Configuring database
 app.config["SQLALCHEMY_DATABASE_URI"] = (
-    "postgresql://avr24:f61Q%T421>i@db.doc.ic.ac.uk/avr24"  # psql URL - using Arni's personal database
-)
+    "postgresql://avr24:f61Q%T421>i@db.doc.ic.ac.uk/avr24"
+    )
+# psql URL - using Arni's personal database
+
 app.config["DND_API_KEY"] = os.getenv("DND_API_KEY")
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
@@ -58,73 +59,6 @@ with app.app_context():
 
     # Debugging statement echoing that CLI commands registered
     click.echo("Registered CLI commands successfully.")
-
-"""
-
-
-@app.route("/player_data")
-def collection():
-    players = db.Player.query.all() 
-    return render_template("main.html", players=players) # Check whether this is correct - not duplicationg
-"""
-
-"""
-load_dotenv()
-DATABASE_URL = os.getenv("DATABASE_URL")
-engine = create_engine(DATABASE_URL)
-
-@app.route('/test-db', methods=['GET'])
-def test_db():
-    try:
-        with engine.connect() as connection:
-            result = connection.execute(text("SELECT 1"))
-            return jsonify({"status": "success", "result": [dict(row) for row in result]})
-    except Exception as e:
-        return jsonify({"status": "error", "error": str(e)})
-
-if __name__ == '__main__':
-    app.run(debug=True)
-"""
-"""
-Games = [
-    {
-        "name": "Game1",
-        "players": ["Molly","Callum","Charlotte","Arnie"] # Still need to link the players from the database once created
-    },
-
-    {
-        "name": "Game2",
-        "players": ["Molly","Callum","Charlotte"]
-    }
-]
-
-Players = [
-    {
-        "name": "Arnie",
-        "max_HP": 120,
-        "current_HP": 100,
-        "ability": [ 0,0,0,0,0,0 ]
-    },
-    {
-        "name": "Charlotte",
-        "max_HP": 120,
-        "current_HP": 120,
-        "ability": [ 0,0,0,0,0,0 ]
-    },
-    {
-        "name": "Molly",
-        "max_HP": 120,
-        "current_HP": 110,
-        "ability": [ 0,0,0,0,0,0 ]
-    },
-    {
-        "name": "Callum",
-        "max_HP": 1000,
-        "current_HP": 205,
-        "ability": [ 0,0,0,0,0,0 ]
-    }
-]
-"""
 
 
 # Adding behaviours for different app routes
@@ -144,7 +78,7 @@ def process_new_game():
     game_id = 0
     while True:
         current_db = db.session.get(game_data, game_id)
-        if current_db == None:
+        if current_db is None:
             break
         game_id += 1
 
@@ -158,15 +92,17 @@ def process_new_game():
 # The start game page
 @app.route("/STARTGAME", methods=["GET", "POST"])
 def startGame():
-    # Get the game from the request - game_id is separate to the player id (primary key)
+    # Get the game from the request
     game_id_input = request.args.get("game_id")
+    # game_id is separate to the player id (primary key)
 
     # Get the game from the database
     passed_game = db.get_or_404(game_data, game_id_input)
 
     # Get the players of that game from the database
     passed_players = [
-        db.get_or_404(player_data, player_id) for player_id in passed_game.player_id
+        db.get_or_404(player_data, player_id)
+        for player_id in passed_game.player_id
     ]
 
     # Gets the monsters
@@ -174,18 +110,23 @@ def startGame():
         "challenge_index"
     )  # Challenge rating input required for fetching appropriate monsters
 
-    if challenge_rating_input == None:
+    if challenge_rating_input is None:
         challenge_rating_input = 0
 
     # Gets different monsters depending on player's challenge rating input
-    url = f"https://www.dnd5eapi.co/api/monsters?challenge_rating={challenge_rating_input}"
+    url = (
+        f"https://www.dnd5eapi.co/api/monsters"
+        f"?challenge_rating={challenge_rating_input}"
+    )
     response = requests.get(url)
     if response.status_code == 200:
         monsters_response = response.json()
 
     monsters = monsters_response["results"]
 
-    return render_template(  # Takes user to the main page - containing info on game, players, abilities, monsters, dice
+    return render_template(
+        # Takes user to the main page
+        # containing info on game, players, abilities, monsters, dice
         "main.html",
         game=passed_game,
         players=passed_players,
@@ -200,7 +141,8 @@ def create_game():
         db.session.query(player_data).order_by(player_data.id).all()
     )  # Fetch all players
 
-    # If no game name was provided, render the game creation form (consider returning a 400 response)
+    # If no game name was provided
+    # render the game creation form (consider returning a 400 response)
     return render_template("create_new_game.html", players=players)
 
 
@@ -253,23 +195,14 @@ def create_player():
 
 @app.route("/games_index", methods=["GET", "POST"])
 def games_index():
-    passed_games = db.session.query(game_data).order_by(game_data.game_id).all()
-
-    """
-    i = 0
-    while True:
-        current_db = db.session.get( game_data, i )
-        if current_db == None: 
-            break
-        passed_games.append(current_db)
-        i += 1
-    """
+    passed_games = db.session.query(game_data).order_by(
+        game_data.game_id).all()
 
     passed_players = [
         [
             db.session.get(player_data, player_id)
             for player_id in passed_game.player_id
-            if db.session.get(player_data, player_id) != None
+            if db.session.get(player_data, player_id) is not None
         ]
         for passed_game in passed_games
     ]
@@ -277,10 +210,10 @@ def games_index():
     passed_json = []
 
     for i in range(len(passed_games)):
-        passed_json.append({"game": passed_games[i], "players": passed_players[i]})
+        passed_json.append({"game": passed_games[i],
+                            "players": passed_players[i]})
 
     return render_template("games_index.html", json_input=passed_json)
-
 
 # Every character needs:
 # name
@@ -297,7 +230,8 @@ def get_race_modifier(skill, race):
     response = requests.get(url)
     if response.status_code == 200:
         specific_race_data = response.json()
-        if isinstance(specific_race_data, list):  # Check if the response is a list
+        # Check if the response is a list
+        if isinstance(specific_race_data, list):
             return 0  # No modifier available for the given race
         bonuses = specific_race_data.get("ability_bonuses", [])
         if isinstance(bonuses, list):
@@ -344,7 +278,8 @@ def calculate_hp(class_name, constitution_score, race):
     # If the response is successful, extract the hit die
     if response.status_code == 200:
         response_specifc_class = response.json()
-        if isinstance(response_specifc_class, list) and len(response_specifc_class) > 0:
+        if (isinstance(response_specifc_class, list) and
+                len(response_specifc_class) > 0):
             hit_die = response_specifc_class[0].get(
                 "hit_die", 0
             )  # Default to 0 if not found
@@ -386,15 +321,17 @@ def save_character():
     input_character_charisma = int(data.get("ability6"))
 
     # Calculate max HP
-    max_hp = calculate_hp(
-        input_character_class, input_character_constitution, input_character_race
-    )
+    max_hp = calculate_hp(input_character_class,
+                          input_character_constitution,
+                          input_character_race)
     # Calculate current health (using a placeholder logic for this example)
     current_health = max_hp  # Placeholder; adjust based on your game mechanics
 
     # Ensure unique player ID
     last_player_id_row = (
-        db.session.query(player_data.id).order_by(db.desc(player_data.id)).first()
+        db.session.query(player_data.id)
+        .order_by(db.desc(player_data.id))
+        .first()
     )
     player_id = last_player_id_row[0] + 1 if last_player_id_row else 1
 
@@ -431,25 +368,6 @@ def save_character():
 
     # determine proficiency modifier - if there is time
 
-    # render_template("character.html",
-    #     name=input_character_name,
-    #     race=input_character_race,
-    #     charClass=input_character_class,
-    #     background=input_character_background,
-    #     strength=input_character_strength,
-    #     dexterity=input_character_dexterity,
-    #     constitution=input_character_constitution,
-    #     intelligence=input_character_intelligence,
-    #     wisdom=input_character_wisdom,
-    #     charisma=input_character_charisma,
-    #     strength_modifier=strength_modifier,
-    #     dexterity_modifier=dexterity_modifier,
-    #     constitution_modifier=constitution_modifier,
-    #     intelligence_modifier=intelligence_modifier,
-    #     wisdom_modifier=wisdom_modifier,
-    #     charisma_modifier=charisma_modifier,
-    #     )
-
 
 @app.route("/save", methods=["GET", "POST"])
 def save():
@@ -462,5 +380,4 @@ def save():
         player_data.query.get(id).current_health = current_HP[i]
 
     db.session.commit()
-
     return jsonify(state=200)
