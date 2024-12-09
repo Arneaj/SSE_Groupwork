@@ -270,7 +270,7 @@ def get_race_modifier(skill, race):
         bonuses = specific_race_data.get("ability_bonuses", [])
         if isinstance(bonuses, list):
             for bonus in bonuses:
-                ability = bonus["ability_score"]["name"]  # e.g., "Strength", "Dexterity", etc
+                ability = bonus["ability_score"]["index"]  # e.g., "Strength", "Dexterity", etc
                 if ability.lower() == skill.lower():
                     return bonus["bonus"]
     # If no modifier for that race and skill, or if the request fails, return 0
@@ -289,7 +289,7 @@ def roll_ability_scores():
     return scores
 
 def calculate_hp(class_name, constitution_score, race):
-    constitution_modifier = determine_ability_modifier("Constitution", constitution_score, race)
+    constitution_modifier = determine_ability_modifier("con", constitution_score, race)
 
     if not class_name.startswith("/api/classes/"):
         class_name = f"/api/classes/{class_name}"
@@ -305,11 +305,8 @@ def calculate_hp(class_name, constitution_score, race):
     
     # If the response is successful, extract the hit die
     if response.status_code == 200:
-        response_specifc_class = response.json()
-        if isinstance(response_specifc_class, list) and len(response_specifc_class) > 0:
-            hit_die = response_specifc_class[0].get('hit_die', 0) # Default to 0 if not found
-        else:
-            hit_die = 0 # No valid hit die found, use default
+        response_specific_class = response.json()
+        hit_die = response_specific_class.get('hit_die', 0) # Default to 0 if not found
     else: 
         raise ValueError(f"Failed to fetch class data. Status code: {response.status_code}")
 
@@ -353,6 +350,27 @@ def save_character():
 
     # Set alignment only if provided, else default to 'Neutral'
     alignment = data.get('alignment', 'Neutral')
+    
+    modifiers = [ 
+        determine_ability_modifier(
+            "str", input_character_strength, input_character_race
+            ),
+        determine_ability_modifier(
+            "dex", input_character_dexterity, input_character_race
+            ),
+        determine_ability_modifier(
+            "con", input_character_constitution, input_character_race
+            ),
+        determine_ability_modifier(
+            "int", input_character_intelligence, input_character_race
+            ),
+        determine_ability_modifier(
+            "wis", input_character_wisdom, input_character_race
+            ),
+        determine_ability_modifier(
+            "cha", input_character_charisma, input_character_race
+            ),
+    ]
 
     # Create new character with all fields
     new_character = player_data(
@@ -362,12 +380,12 @@ def save_character():
         class_name=input_character_class,
         skill="",
         abilities=[
-            input_character_strength,
-            input_character_dexterity,
-            input_character_constitution,
-            input_character_intelligence,
-            input_character_wisdom,
-            input_character_charisma
+            input_character_strength + modifiers[0],
+            input_character_dexterity + modifiers[1],
+            input_character_constitution + modifiers[2],
+            input_character_intelligence + modifiers[3],
+            input_character_wisdom + modifiers[4],
+            input_character_charisma + modifiers[5]
         ],
         current_health=current_health,
         max_health=max_hp,
