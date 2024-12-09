@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, jsonify
 import os
 import requests
 import random
-from .Blueprint import dungeons_and_dragons
+from .Blueprint.D_D import dungeons_and_dragons
 from .database import database as db
 from .models.D_D_game import game_data
 from .models.D_D_player import player_data
