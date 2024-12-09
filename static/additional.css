@@ -27,3 +27,8 @@ select, option, input, td {
     background-color: rgb(41, 39, 39);
     color: whitesmoke;
 }
+
+hr {
+    height: 5px;
+    background-color:rgb(153, 135, 32);
+}
