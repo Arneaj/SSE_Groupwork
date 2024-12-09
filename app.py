@@ -161,30 +161,15 @@ def startGame():
     game_id_input = request.args.get("game_id")
 
     # Get the game from the database
-    passed_game = db.get_or_404( game_data, game_id_input )
+    passed_game = db.get_or_404( game_data, game_id_input, description="Found no such game in database" )
 
     # Get the players of that game from the database
-    passed_players = [ db.get_or_404( player_data, player_id ) for player_id in passed_game.player_id ]
-
-    # Gets the monsters
-    challenge_rating_input = request.args.get("challenge_index") # Challenge rating input required for fetching appropriate monsters
-
-    if challenge_rating_input == None:
-        challenge_rating_input = 0
-
-    # Gets different monsters depending on player's challenge rating input
-    url = f'https://www.dnd5eapi.co/api/monsters?challenge_rating={challenge_rating_input}'
-    response = requests.get(url)
-    if response.status_code == 200:
-        monsters_response = response.json()
-
-    monsters = monsters_response["results"]
+    passed_players = [ db.get_or_404( player_data, player_id, description="At least one player missing from the database" ) for player_id in passed_game.player_id ]
 
     return render_template( # Takes user to the main page - containing info on game, players, abilities, monsters, dice
         "main.html", 
         game=passed_game, 
         players=passed_players,
-        monsters=monsters,
         )
 
 # Functionality for the new game page
