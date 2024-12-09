@@ -210,7 +210,7 @@ def games_index():
     passed_json = []
 
     for i in range(len(passed_games)):
-        passed_json.append({"game": passed_games[i],
+        passed_json.append({"game": passed_games[i],g
                             "players": passed_players[i]})
 
     return render_template("games_index.html", json_input=passed_json)

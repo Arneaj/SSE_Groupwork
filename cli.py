@@ -1,7 +1,7 @@
 import click
 from flask.cli import with_appcontext
 from .database import database
-from .models.D_D_game import game_data
+# from .models.D_D_game import game_data
 from .models.D_D_player import player_data
 
 
