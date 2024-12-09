@@ -1,5 +1,6 @@
 name: Build
 on: [push]
+
 jobs: 
   python-formatting:
     runs-on: ubuntu-latest
@@ -37,5 +38,5 @@ jobs:
         uses: /impaas/impaas-deploy@v3
         with:
           app-name: sse-groupwork1
-          deployment-token: ${{ secrets.IMPAAS_DEPLOY_TOKEN }}
+          deployment-token: ${{secrets.IMPAAS_DEPLOY_TOKEN}}
           method: PLATFORM
