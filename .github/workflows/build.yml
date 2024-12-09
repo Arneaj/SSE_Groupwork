@@ -39,11 +39,3 @@ jobs:
           app-name: sse-groupwork1
           deployment-token: ${{ secrets.IMPAAS_DEPLOY_TOKEN }}
           method: PLATFORM
-      - name: Notify on Failure
-        if: failure()
-        uses: impaas/impaas-notify@v2
-        with:
-          app-name: sse-groupwork1
-          deployment-token: ${{ secrets.IMPAAS_DEPLOY_TOKEN }}
-          message: |
-            Build failed
